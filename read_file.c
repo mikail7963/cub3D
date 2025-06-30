@@ -12,54 +12,48 @@
 
 #include "cub3D.h"
 
+void rbg_line(t_rgb *rgb, char *line)
+{
+    char *tmp;
+    char **double_tmp;
+
+    tmp = ft_strdup(line + 2);
+    double_tmp = ft_split(tmp, ',');
+    if (double_tmp[0] && double_tmp[1] && double_tmp[2])
+	{
+        rgb->r = ft_atoi(double_tmp[0]);
+        rgb->g = ft_atoi(double_tmp[1]);
+        rgb->b = ft_atoi(double_tmp[2]);
+    }
+    free(tmp);
+    free(double_tmp[0]);
+    free(double_tmp[1]);
+    free(double_tmp[2]);
+    free(double_tmp);
+}
+
+
 void read_fc_rgb(t_cub *cub, int fd)
 {
     char *line = get_next_line(fd);
-    char *tmp;
-    char **double_tmp;
 	int i = 0;
     while (line != NULL && i != 2)
     {
 		cub->map_index++;
         if (line[0] == 'F' && line[1] == ' ')
         {
-            tmp = ft_strdup(line + 2);
-            double_tmp = ft_split(tmp, ',');
-            if (double_tmp[0] && double_tmp[1] && double_tmp[2]) 
-			{
-                cub->fc.floor_c.r = ft_atoi(double_tmp[0]);
-                cub->fc.floor_c.g = ft_atoi(double_tmp[1]);
-                cub->fc.floor_c.b = ft_atoi(double_tmp[2]);
-            }
-            free(tmp);
-            free(double_tmp[0]);
-            free(double_tmp[1]);
-            free(double_tmp[2]);
-            free(double_tmp);
-			i++;
+            rbg_line(&cub->fc.floor_c, line);
+            i++;
         }
         if (line[0] == 'C' && line[1] == ' ')
         {
-            tmp = ft_strdup(line + 2);
-            double_tmp = ft_split(tmp, ',');
-            if (double_tmp[0] && double_tmp[1] && double_tmp[2])
-            {
-                cub->fc.ceiling_c.r = ft_atoi(double_tmp[0]);
-                cub->fc.ceiling_c.g = ft_atoi(double_tmp[1]);
-                cub->fc.ceiling_c.b = ft_atoi(double_tmp[2]);
-            }
-            free(tmp);
-            free(double_tmp[0]);
-            free(double_tmp[1]);
-            free(double_tmp[2]);
-            free(double_tmp);
+            rbg_line(&cub->fc.ceiling_c,line);
             i++;
         }
         if (line)
             free(line);
         line = get_next_line(fd);
     }
-    // close(fd);
 }
 
 void validate_map_line(char *line)
