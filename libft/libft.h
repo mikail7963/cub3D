@@ -6,7 +6,7 @@
 /*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 18:34:46 by atursun           #+#    #+#             */
-/*   Updated: 2025/06/30 13:33:09 by atursun          ###   ########.fr       */
+/*   Updated: 2025/06/30 16:15:32 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 1
 # endif
 
 char	*get_next_line(int fd);

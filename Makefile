@@ -5,11 +5,11 @@ CFLAGS = -Wall -Wextra -Werror -g
 MLX_FLAGS = -lm -lbsd -lmlx -lXext -lX11
 
 LIBFT_PATH = libft/
-MLX_PATH = minilibx-linux/
+MLX_PATH = mlx/
 LIBFT = $(LIBFT_PATH)libft.a
 MLX = $(MLX_PATH)libmlx.a
 
-SRC = main.c
+SRC = main.c read_file.c read_texture.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

@@ -41,7 +41,7 @@ char	*ft_pull_line(char *leftover)
 	char	*res_begin_adrs;
 
 	idx = 0;
-	if (!leftover[idx])
+	if (!leftover || !leftover[idx])
 		return (NULL);
 	while (leftover[idx] != '\0' && leftover[idx] != '\n')
 		idx++;

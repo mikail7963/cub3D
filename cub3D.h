@@ -8,7 +8,7 @@
 
 #include "libft/libft.h"
 #include <fcntl.h>
-#include "minilibx-linux/mlx.h"
+#include "mlx/mlx.h"
 
 
 #include <stdio.h>  // sil
@@ -53,6 +53,11 @@ typedef struct s_cub
 
 }   t_cub;    
 
+void read_texture(t_cub *cub, int fd);
+int check_texture(t_cub *cub);
+void open_file(t_cub *cub, char *file);
+int check_extension(char *file, char *ext);
+void	check_map(t_cub *cub);
 
 
 
