@@ -51,6 +51,12 @@ void	init_cub(t_cub *cub, char *file)
 	cub->player.diry = 0;
 	cub->planeX = 0.66;
 	cub->planeY = 0;
+	cub->tex_data.bits_per_pixel = 0;
+	cub->tex_data.endian = 0;
+	cub->tex_data.size_line = 0;
+	cub->tex_data.tex_height = 0;
+	cub->tex_data.tex_width = 0;
+	cub->tex_data.texture_data = 0;
 }
 
 int main(int argc, char **argv)

@@ -1,29 +1,31 @@
 #include "cub3D.h"
 
-void my_mlx_pixel_put(void *image, int x, int y, int color)
+void my_mlx_pixel_put(t_cub *cub, int x, int y, int color)
 {
     if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
         return;
 
-    int     *dst;
-    int     bits_per_pixel;
-    int     size_line;
-    int     endian;
-
-    dst = (int *)mlx_get_data_addr(image, &bits_per_pixel, &size_line, &endian);
-    dst += (y * size_line + x * (bits_per_pixel / 8));
+    char *dst;
+    dst = cub->mlx.win_data;  // Window buffer kullan
+    dst += (y * cub->mlx.win_size_line + x * (cub->mlx.win_bpp / 8));
     *(unsigned int *)dst = color;
+}
+
+void render_picture(t_cub *cub)
+{
+    cub->mlx.tex_image = mlx_xpm_file_to_image(cub->mlx.mlx, cub->texture.north, &cub->tex_data.tex_width, &cub->tex_data.tex_height);
+    cub->tex_data.texture_data = mlx_get_data_addr(cub->mlx.tex_image, &cub->tex_data.bits_per_pixel, &cub->tex_data.size_line, &cub->tex_data.endian);
 }
 
 void render_map(t_cub *cub)
 {
-    char    *texture_data;
-    int     bits_per_pixel;
-    int     size_line;
-    int     endian;
-    int     tex_width;
-    int     tex_height;
-
+    render_picture(cub);
+    
+    // Window için image buffer oluştur
+    cub->mlx.win_image = mlx_new_image(cub->mlx.mlx, WIDTH, HEIGHT);
+    cub->mlx.win_data = mlx_get_data_addr(cub->mlx.win_image, 
+        &cub->mlx.win_bpp, &cub->mlx.win_size_line, &cub->mlx.win_endian);
+    
     for (int x = 0; x < WIDTH; x++) 
     {
         // Kamera düzlemi ve ışın yönü hesaplamaları
@@ -80,12 +82,10 @@ void render_map(t_cub *cub)
         int lineHeight = (int)(HEIGHT / perpWallDist);
         int drawStart = -lineHeight / 2 + HEIGHT / 2;
         int drawEnd = lineHeight / 2 + HEIGHT / 2;
-        if (drawStart < 0) drawStart = 0;
-        if (drawEnd >= HEIGHT) drawEnd = HEIGHT - 1;
-
-        // Geçici: .xpm dosyasını her seferinde yükle (çok yavaş!)
-        cub->mlx.image = mlx_xpm_file_to_image(cub->mlx.mlx, cub->texture.north, &tex_width, &tex_height);
-        texture_data = mlx_get_data_addr(cub->mlx.image, &bits_per_pixel, &size_line, &endian);
+        if (drawStart < 0) 
+            drawStart = 0;
+        if (drawEnd >= HEIGHT) 
+            drawEnd = HEIGHT - 1;
 
         double wallX;
         if (side == 0)
@@ -94,19 +94,23 @@ void render_map(t_cub *cub)
             wallX = cub->player.posx + perpWallDist * rayDirX;
         wallX -= floor(wallX);
 
-        int tex_x = (int)(wallX * (double)tex_width);
-        if (side == 0 && rayDirX > 0) tex_x = tex_width - tex_x - 1;
-        if (side == 1 && rayDirY < 0) tex_x = tex_width - tex_x - 1;
+        int tex_x = (int)(wallX * (double)cub->tex_data.tex_width);
+        
+        // X eksenini düzelt - bu satırları değiştir:
+        if (side == 0 && rayDirX < 0) tex_x = cub->tex_data.tex_width - tex_x - 1;
+        if (side == 1 && rayDirY > 0) tex_x = cub->tex_data.tex_width - tex_x - 1;
 
-        double step = 1.0 * tex_height / lineHeight;
+        double step = 1.0 * cub->tex_data.tex_height / lineHeight;
         double tex_pos = (drawStart - HEIGHT / 2 + lineHeight / 2) * step;
 
-        for (int y = drawStart; y < drawEnd; y++) {
-            int tex_y = (int)tex_pos & (tex_height - 1);
+        for (int y = drawStart; y < drawEnd; y++)
+        {
+            int tex_y = (int)tex_pos & (cub->tex_data.tex_height - 1);
             tex_pos += step;
-            int color = *(unsigned int *)(texture_data + (tex_y * size_line + tex_x * (bits_per_pixel / 8)));
-            my_mlx_pixel_put(&cub->mlx.image, x, y, color);
+            int color = *(unsigned int *)(cub->tex_data.texture_data + (tex_y * cub->tex_data.size_line + tex_x * (cub->tex_data.bits_per_pixel / 8)));
+            my_mlx_pixel_put(cub, x, y, color);
         }
     }
-    mlx_put_image_to_window(cub->mlx.mlx,cub->mlx.win,cub->mlx.image,0,0);
+    // Window image'ı göster
+    mlx_put_image_to_window(cub->mlx.mlx, cub->mlx.win, cub->mlx.win_image, 0, 0);
 }
