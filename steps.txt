@@ -6,8 +6,6 @@ Bu proje, Raycasting adı verilen bir grafik tekniğini kullanarak,
 labirent benzeri bir ortamda birinci şahıs bakış açısıyla gezilebilecek 
 bir 3D görsel alan oluşturmanı sağlar.
 
-proje yaparken MD frks yap
-
 
 
 
@@ -29,14 +27,12 @@ cub3D Adımlar
 -------------
 
 3. Texture ve Renk İşleme
-RGB değer kontrolü: Renk değerlerinin 0-255 arasında olduğunu kontrol eder
 RGB'den HEX'e dönüştürme: RGB değerlerini hexadecimal formata çevirir
-Texture dosya kontrolü: Tüm texture dosyalarının mevcut olduğunu kontrol eder
-Zorunlu texture kontrolü: NO, SO, WE, EA texture'larının hepsinin tanımlı olduğunu kontrol eder
 
 6. Oyun Haritası Oluşturma
 Harita boyutu hesaplama: En geniş satırı bulur ve harita genişliğini belirler
 Bellek tahsisi: Harita için uygun boyutta bellek ayırır
 Harita doldurma: Dosyadan okunan veriyi oyun haritası formatına dönüştürür
 Boş alanları doldurma: Kısa satırları boşluk karakteri ile tamamlar
+
 */

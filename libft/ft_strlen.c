@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:56:17 by atursun           #+#    #+#             */
-/*   Updated: 2024/10/18 10:20:46 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/01 15:09:33 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

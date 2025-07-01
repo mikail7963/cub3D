@@ -6,87 +6,69 @@
 /*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:35:00 by atursun           #+#    #+#             */
-/*   Updated: 2025/06/30 16:38:19 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/01 15:22:46 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void rbg_line(t_rgb *rgb, char *line)
-{
-    char *tmp;
-    char **double_tmp;
-
-    tmp = ft_strdup(line + 2);
-    double_tmp = ft_split(tmp, ',');
-    if (double_tmp[0] && double_tmp[1] && double_tmp[2])
-	{
-        rgb->r = ft_atoi(double_tmp[0]);
-        rgb->g = ft_atoi(double_tmp[1]);
-        rgb->b = ft_atoi(double_tmp[2]);
-    }
-    free(tmp);
-    free(double_tmp[0]);
-    free(double_tmp[1]);
-    free(double_tmp[2]);
-    free(double_tmp);
-}
-
-
-void read_fc_rgb(t_cub *cub, int fd)
-{
-    char *line = get_next_line(fd);
-	int i = 0;
-    while (line != NULL && i != 2)
-    {
-		cub->map_index++;
-        if (line[0] == 'F' && line[1] == ' ')
-        {
-            rbg_line(&cub->fc.floor_c, line);
-            i++;
-        }
-        if (line[0] == 'C' && line[1] == ' ')
-        {
-            rbg_line(&cub->fc.ceiling_c,line);
-            i++;
-        }
-        if (line)
-            free(line);
-        line = get_next_line(fd);
-    }
-}
-
 void validate_map_line(char *line)
 {
-    int has_content = 0;
+    int     has_content;
+    int     i;    
 
-    int i = 0;
+    i = 0;
+    has_content = 0;;
     while (line[i])
     {
     
         if (!(line[i] == 'S' || line[i] == 'N' || line[i] == 'E' || line[i] == 'W'
             || line[i] == '0' || line[i] == '1' || line[i] == '\n' || line[i] == '\t' || line[i] == ' '))
-        {
-            ft_putendl_fd("Error: unknown character", 1);
-            exit(EXIT_FAILURE);
-        }
+            error_msg("Error: unknown character");
         i++;
     }
     if ((line[0] == ' ' || line[0] == '\t' || line[0] == '\n') && !ft_strchr(line, '1'))
             has_content = 1;
     if (has_content == 1)
+        error_msg("Error: Empty or whitespace-only line in map");
+}
+
+void set_coor_and_pos(t_cub *cub, char *line, int i)
+{
+    int j;
+    
+    if (ft_strchr(line, 'N') || ft_strchr(line, 'S')
+        || ft_strchr(line, 'W') || ft_strchr(line, 'E'))
     {
-        ft_putendl_fd("Error: Empty or whitespace-only line in map", 1);
-        exit(EXIT_FAILURE);
+        j = 0;
+        cub->player.posy = (double)i + 0.5; // double sil ve + 0.5 kaldır farkı gör.
+        while (line[j])
+        {
+            if (line[j] == 'N' || line[j] == 'S'
+                || line[j] == 'W' || line[j] == 'E')
+                {
+                    cub->is_player = 1;
+                    cub->player.posx = (double)j + 0.5;
+                }
+            j++;
+        }
+        if (ft_strchr(line, 'N'))
+            cub->player.diry = -1;
+        if (ft_strchr(line, 'S'))
+            cub->player.diry = 1;
+        if (ft_strchr(line, 'E'))
+            cub->player.dirx = 1;
+        if (ft_strchr(line, 'W'))
+            cub->player.dirx = -1;
     }
 }
 
 void read_map(t_cub *cub, int fd)
 {
-    int i;
-    char *tmp = get_next_line(fd);
-
+    int     i;
+    char    *tmp;
     
+    tmp = get_next_line(fd);
     while (tmp)
     {
         if (!ft_strchr(tmp, '1'))
@@ -95,48 +77,48 @@ void read_map(t_cub *cub, int fd)
             tmp = get_next_line(fd);
             continue;
         }
-        break;
+        break ;
     }
     i = 0;
-    int map_start_i = cub->len_of_file - cub->map_index;
-    cub->map.map = malloc(sizeof(char *) * (map_start_i + 3));
+    cub->map.map = malloc(sizeof(char *) * (cub->len_of_file - cub->map_index + 3));
     while (tmp != NULL && tmp[0] != '\0')
     {
-        validate_map_line(tmp); // Validate each line of the map
-        if (ft_strchr(tmp, 'N') || ft_strchr(tmp, 'S') ||
-            ft_strchr(tmp, 'W') || ft_strchr(tmp, 'E'))
-            cub->is_player++;
+        validate_map_line(tmp);
+        set_coor_and_pos(cub, tmp, i);
         if (ft_strchr(tmp, '1'))
             cub->map.map[i++] = ft_strdup(tmp);
         free(tmp);
         tmp = get_next_line(fd);
     }
     if (cub->is_player != 1)
-    {
-        ft_putendl_fd("Error: There are Multiplayer Or palyer number is 0", 1);
-        exit(EXIT_FAILURE);
-    }
+        error_msg("Error: There are Multiplayer Or palyer number is 0");
     cub->map.map[i] = NULL;
     close(fd);
 }
 
 void read_file(t_cub *cub, char *file)
 {
-    int fd = open(file, O_RDONLY);
+    int fd;
+    int fd2;
+
+    fd = open(file, O_RDONLY);
 	read_texture(cub, fd);
-    int fd2 = open(file, O_RDONLY);
+    fd2 = open(file, O_RDONLY);
 	read_fc_rgb(cub, fd2);
 	read_map(cub, fd);
 }
 
 void open_file(t_cub *cub, char *file)
 {
-	int counter = 0;
-	int fd = open(file, O_RDONLY);
+	int     counter;
+    int     fd;
+    char    *line;
+
+    counter = 0;
+	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return ;
-	
-	char *line = get_next_line(fd);
+	line = get_next_line(fd);
 	while (line != NULL)
 	{
 		counter++;
