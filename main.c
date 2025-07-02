@@ -16,21 +16,6 @@ int check_extension(char *file, char *ext)
 	return (0);
 }
 
-void print_map(t_cub *cub)
-{
-	ft_putendl_fd(cub->texture.north, 1);
-	ft_putendl_fd(cub->texture.east, 1);
-	ft_putendl_fd(cub->texture.south, 1);
-	ft_putendl_fd(cub->texture.west, 1);
-
-	printf("%d %d %d\n", cub->fc.ceiling_c.r, cub->fc.ceiling_c.g, cub->fc.ceiling_c.b);
-	printf("%d %d %d\n", cub->fc.floor_c.r, cub->fc.floor_c.g, cub->fc.floor_c.b);
-
-	int i = 0;
-	while (cub->map.map[i])
-		ft_putstr_fd(cub->map.map[i++],1);
-}
-
 void	init_cub(t_cub *cub, char *file)
 {
 	(void)file;
@@ -57,6 +42,7 @@ void	init_cub(t_cub *cub, char *file)
 	cub->tex_data.tex_height = 0;
 	cub->tex_data.tex_width = 0;
 	cub->tex_data.texture_data = 0;
+	init_movement_state(cub);
 }
 
 int main(int argc, char **argv)
@@ -68,10 +54,13 @@ int main(int argc, char **argv)
 	cub = malloc(sizeof(t_cub));
 	init_cub(cub, argv[1]);
 	open_file(cub, argv[1]);
-	print_map(cub);
 
 	cub->mlx.mlx = mlx_init();
 	cub->mlx.win = mlx_new_window(cub->mlx.mlx, WIDTH, HEIGHT, "Cub3D");
+	
 	render_map(cub);
+	
+	setup_hooks(cub);
+	
 	mlx_loop(cub->mlx.mlx);
 }

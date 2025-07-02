@@ -10,6 +10,17 @@
 
 #define WIDTH 800
 #define HEIGHT 600
+# define MOVE_SPEED 0.05
+# define ROT_SPEED 0.03
+
+// hareket icin key kodlari
+# define KEY_W 119
+# define KEY_A 97 
+# define KEY_S 115
+# define KEY_D 100
+# define KEY_LEFT 65361
+# define KEY_RIGHT 65363
+# define KEY_ESC 65307
 
 typedef struct s_texture
 {
@@ -42,8 +53,8 @@ typedef struct s_map
 
 typedef struct s_player 
 {
-	int dirx;
-	int diry;
+	double dirx;
+	double diry;
 	double posx;
 	double posy;
 }   t_player;
@@ -84,6 +95,14 @@ typedef struct s_cub
 	t_player   player;
 	t_mlx       mlx;
 	t_tex_data	tex_data;
+
+	// hareket durumlari
+    int move_forward;
+    int move_backward;
+    int move_left;
+    int move_right;
+    int rotate_left;
+    int rotate_right;
 }   t_cub;    
 
 void read_texture(t_cub *cub, int fd);
@@ -94,6 +113,16 @@ void	check_map(t_cub *cub);
 void    render_map(t_cub *cub);
 void	error_msg(char *msg);
 void read_fc_rgb(t_cub *cub, int fd);
+
+
+int game_loop(t_cub *cub);
+void init_movement_state(t_cub *cub);
+void setup_hooks(t_cub *cub);
+void move_player(t_cub *cub);
+
+int handle_keypress(int key, t_cub *cub);
+int handle_keyrelease(int key, t_cub *cub);
+int handle_close(t_cub *cub);
 
 
 #endif
