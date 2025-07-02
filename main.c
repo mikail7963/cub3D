@@ -1,14 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
+/*   Updated: 2025/07/02 16:16:15 by mikkayma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
-void	error_msg(char *msg)
+void	error_msg(char *msg, t_cub *cub, int is_free)
 {
-	ft_putendl_fd(msg, 1);
+	ft_putendl_fd("Error",2);
+	ft_putendl_fd(msg, 2);
+	//if (is_free >= 3)
+	//	free_map(cub);
+	if (is_free >= 2)
+		free_texture(cub->texture);
+	if (is_free >= 1)
+		free(cub);
 	exit(EXIT_FAILURE);
 }
 
-int check_extension(char *file, char *ext)
+int	check_extension(char *file, char *ext)
 {
-	char *res;
+	char	*res;
 
 	res = ft_strrchr(file, '.');
 	if (!res || ft_strncmp(res, ext, 4) != 0 || ft_strlen(file) <= 4)
@@ -16,9 +35,8 @@ int check_extension(char *file, char *ext)
 	return (0);
 }
 
-void	init_cub(t_cub *cub, char *file)
+void	init_cub(t_cub *cub)
 {
-	(void)file;
 	cub->texture.north = NULL;
 	cub->texture.east = NULL;
 	cub->texture.west = NULL;
@@ -34,8 +52,8 @@ void	init_cub(t_cub *cub, char *file)
 	cub->fc.floor_c.b = -1;
 	cub->player.dirx = 0;
 	cub->player.diry = 0;
-	cub->planeX = 0.66;
-	cub->planeY = 0;
+	cub->plane_x = 0;
+	cub->plane_y = 0;
 	cub->tex_data.bits_per_pixel = 0;
 	cub->tex_data.endian = 0;
 	cub->tex_data.size_line = 0;
@@ -45,22 +63,21 @@ void	init_cub(t_cub *cub, char *file)
 	init_movement_state(cub);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_cub *cub;
-	
-	if (argc != 2 || check_extension(argv[1], ".cub") == 1)
-		return (0);
-	cub = malloc(sizeof(t_cub));
-	init_cub(cub, argv[1]);
-	open_file(cub, argv[1]);
+	t_cub	*cub;
 
+	if (argc != 2 || check_extension(argv[1], ".cub") == 1)
+		return (1);
+	cub = malloc(sizeof(t_cub));
+	init_cub(cub);
+	open_file(cub, argv[1]);
+	
 	cub->mlx.mlx = mlx_init();
 	cub->mlx.win = mlx_new_window(cub->mlx.mlx, WIDTH, HEIGHT, "Cub3D");
-	
+	render_picture(cub);
 	render_map(cub);
-	
+
 	setup_hooks(cub);
-	
 	mlx_loop(cub->mlx.mlx);
 }

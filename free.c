@@ -1,25 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/07 14:56:17 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/02 14:14:37 by mikkayma         ###   ########.fr       */
+/*   Created: 2025/07/02 12:33:28 by mikkayma          #+#    #+#             */
+/*   Updated: 2025/07/02 16:24:00 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3D.h"
 
-size_t	ft_strlen(const char *str)
+void	free_texture(t_texture texture)
 {
-	size_t	counter;
+	if (texture.north)
+		free(texture.north);
+	if (texture.east)
+		free(texture.east);
+	if (texture.south)
+		free(texture.south);
+	if (texture.west)
+		free(texture.west);
+}
 
-	if (!str)
-		return (0);
-	counter = 0;
-	while (*str++)
-		counter++;
-	return (counter);
+void free_map(t_cub *cub)
+{
+	int i;
+
+	i = 0;
+	while (cub->map.map[i])
+	{
+		free(cub->map.map[i]);
+		i++;
+	}
+	free(cub->map.map);
 }

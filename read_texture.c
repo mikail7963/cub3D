@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   read_texture.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:36:29 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/01 15:22:28 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/02 13:36:55 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void read_texture(t_cub *cub, int fd)
+void	read_texture(t_cub *cub, int fd)
 {
 	char	*line;
 	int		i;
-	
+
 	i = 0;
 	line = get_next_line(fd);
 	while (line != NULL && i != 4)
@@ -34,45 +34,44 @@ void read_texture(t_cub *cub, int fd)
 		line = get_next_line(fd);
 		cub->map_index++;
 	}
-	if (!(cub->texture.north) || !(cub->texture.south) || !(cub->texture.west) || !(cub->texture.east))
-		error_msg("Error: Some of the texture packs is missing");
+	if (!(cub->texture.north) || !(cub->texture.south)
+		|| !(cub->texture.west) || !(cub->texture.east))
+		error_msg("Error: Some of the texture packs is missing", cub, 2);
 	close(fd);
 }
 
 void	check_is_there_texture_file(t_cub *cub)
 {
-	int fd1;
-	int fd2;
-	int fd3;
-	int fd4;
+	int	fd1;
+	int	fd2;
+	int	fd3;
+	int	fd4;
 
 	fd1 = open(cub->texture.east, O_RDONLY);
 	fd2 = open(cub->texture.north, O_RDONLY);
 	fd3 = open(cub->texture.south, O_RDONLY);
 	fd4 = open(cub->texture.west, O_RDONLY);
-
 	if (fd1 == -1 || fd2 == -1 || fd3 == -1 || fd4 == -1)
 	{
-    	ft_putendl_fd("Error: wrong texture path", 1);
-    	exit(EXIT_FAILURE);
-    }
+		ft_putendl_fd("Error: wrong texture path", 1);
+		exit(EXIT_FAILURE);
+	}
 	close(fd1);
 	close(fd2);
 	close(fd3);
 	close(fd4);
 }
 
-
-int check_texture(t_cub *cub)
+int	check_texture(t_cub *cub)
 {
 	if (check_extension(cub->texture.east, ".xpm"))
-		return (1);
+		error_msg("wall file extensions are not valid", cub, 3);
 	if (check_extension(cub->texture.north, ".xpm"))
-		return (1);
+		error_msg("wall file extensions are not valid", cub, 3);
 	if (check_extension(cub->texture.west, ".xpm"))
-		return (1);
+		error_msg("wall file extensions are not valid", cub, 3);
 	if (check_extension(cub->texture.south, ".xpm"))
-		return (1);
+		error_msg("wall file extensions are not valid", cub, 3);
 	check_is_there_texture_file(cub);
 	return (0);
 }
