@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/02 16:16:15 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:05:59 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	error_msg(char *msg, t_cub *cub, int is_free)
 {
 	ft_putendl_fd("Error",2);
 	ft_putendl_fd(msg, 2);
-	//if (is_free >= 3)
-	//	free_map(cub);
+	if (is_free >= 3)
+		free_map(cub);
 	if (is_free >= 2)
 		free_texture(cub->texture);
 	if (is_free >= 1)
@@ -72,7 +72,9 @@ int	main(int argc, char **argv)
 	cub = malloc(sizeof(t_cub));
 	init_cub(cub);
 	open_file(cub, argv[1]);
-	
+	for (int i = 0; cub->map.map[i]; i++)
+		ft_putstr_fd(cub->map.map[i], 1);
+
 	cub->mlx.mlx = mlx_init();
 	cub->mlx.win = mlx_new_window(cub->mlx.mlx, WIDTH, HEIGHT, "Cub3D");
 	render_picture(cub);

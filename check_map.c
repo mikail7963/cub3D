@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:55:10 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/02 16:54:01 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:02:59 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void	check_map(t_cub *cub)
 					cub->map.map[i][j] != ' ' && cub->map.map[i][j] != '\t')
 					{
 						ft_putchar_fd(cub->map.map[i][j], 1);
-						printf("\ni:%d   j:%d\n",i  , j);
 						error_msg("Map line does not start and end with '1", cub, 3);
 					}
 				j++;

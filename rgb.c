@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:37:13 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/02 13:38:10 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:14:40 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,5 @@ void	read_fc_rgb(t_cub *cub, int fd)
 		error_msg("missing floor or ceiling color", cub, 2);
 	cub->fc.ceiling_c.colour = rgb_to_colour(cub->fc.ceiling_c.r, cub->fc.ceiling_c.g, cub->fc.ceiling_c.b);
 	cub->fc.floor_c.colour = rgb_to_colour(cub->fc.floor_c.r, cub->fc.floor_c.g, cub->fc.floor_c.b);
+	close(fd);
 }
