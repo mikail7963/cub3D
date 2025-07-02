@@ -1,6 +1,4 @@
 
-
-
 #include "cub3D.h"
 
 void check_map_line_start_end(char *line, int line_num)
