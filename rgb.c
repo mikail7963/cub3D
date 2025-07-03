@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rgb.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:37:13 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/03 15:57:39 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/03 19:25:07 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ void	check_rgb_line(char *line, t_cub *cub)
 	}
 }
 
-int len_of_double_tmp(char **double_ptr)
+int	len_of_double_tmp(char **double_ptr)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (double_ptr[i])
 		i++;
@@ -111,7 +111,7 @@ void	read_fc_rgb(t_cub *cub, int fd)
 		}
 		if (line[j] == 'C' && line[j + 1] == ' ')
 		{
-			rbg_line(&cub->fc.ceiling_c,line, cub);
+			rbg_line(&cub->fc.ceiling_c, line, cub);
 			i++;
 		}
 		if (line)

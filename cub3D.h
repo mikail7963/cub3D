@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/03 16:27:07 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/03 19:12:42 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define WIDTH 800
 # define HEIGHT 600
 # define MOVE_SPEED 0.02
-# define ROT_SPEED 0.01
+# define ROT_SPEED 0.02
 
 // hareket icin key kodlari
 # define KEY_W 119

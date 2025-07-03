@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:33:28 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/03 14:15:22 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/03 19:16:15 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	free_texture(t_texture texture)
 		free(texture.west);
 }
 
-void free_map(t_cub *cub)
+void	free_map(t_cub *cub)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cub->map.map[i])

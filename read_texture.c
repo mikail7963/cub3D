@@ -3,25 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   read_texture.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:36:29 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/03 16:48:51 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/03 19:24:14 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-
-
 void	read_texture(t_cub *cub, int fd)
 {
 	char	*line;
+	int		j;
 	int		i;
 
 	i = 0;
 	line = get_next_line(fd);
-	int j = 0;
+	j = 0;
 	while (line != NULL)
 	{
 		while (line[j] == ' ' || line[j] == '\t')

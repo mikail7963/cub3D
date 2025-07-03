@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:35:00 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/03 16:39:59 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/03 19:22:56 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,20 @@ void	validate_map_line(char *line, t_cub *cub)
 	while (line[i])
 	{
 		if (!(line[i] == '0' || line[i] == '1' || is_player(line[i])
-		|| line[i] == '\n' || line[i] == '\t' || line[i] == ' '))
-			error_msg(": unknown character", cub, 2);
+			|| line[i] == '\n' || line[i] == '\t' || line[i] == ' '))
+		{
+			free(line);
+			error_msg(": unknown character", cub, 3);
+		}
 		i++;
 	}
 	if ((line[0] == ' ' || line[0] == '\t' || line[0] == '\n') && !ft_strchr(line, '1'))
 		has_content = 1;
 	if (has_content == 1)
-		error_msg(": Empty or whitespace-only line in map", cub, 2);
+	{
+		free(line);
+		error_msg(": Empty or whitespace-only line in map", cub, 3);
+	}
 }
 
 void	set_coor_and_pos(t_cub *cub, char *line, int i)
@@ -47,7 +53,7 @@ void	set_coor_and_pos(t_cub *cub, char *line, int i)
 		|| ft_strchr(line, 'W') || ft_strchr(line, 'E'))
 	{
 		j = 0;
-		cub->player.posy = (double)i + 0.5; // double sil ve + 0.5 kaldır farkı gör.
+		cub->player.posy = (double)i + 0.5; // double sil ve + 0.5 kaldır farkı gör
 		while (line[j])
 		{
 			if (is_player(line[j]))
@@ -82,17 +88,19 @@ void	set_coor_and_pos(t_cub *cub, char *line, int i)
 
 int	map_reel_lenght(char *file, t_cub *cub)
 {
-	int fd;
-	char *line;
-	int len;
+	int		fd;
+	char	*line;
+	int		len;
 
 	len = 0;
 	fd = open(file, O_RDONLY);
 	line = get_next_line(fd);
 	while (line)
 	{
-		if (ft_strchr(line, '1') && !ft_strchr(line, 'F') && !ft_strchr(line, 'C')
-			 && !ft_strchr(line, 'S') && !ft_strchr(line, 'W') && !ft_strchr(line, 'N') && !ft_strchr(line, 'E'))
+		if (ft_strchr(line, '1') && !ft_strchr(line, 'F')
+			&& !ft_strchr(line, 'C') && !ft_strchr(line, 'S')
+			&& !ft_strchr(line, 'W') && !ft_strchr(line, 'N')
+			&& !ft_strchr(line, 'E'))
 			len++;
 		free(line);
 		line = get_next_line(fd);
@@ -111,22 +119,23 @@ void	read_map(t_cub *cub, char *file)
 	int		fd;
 	int		map_start;
 	int		map_lengt;
-	
-	map_lengt = map_reel_lenght(file, cub);		
+
+	map_lengt = map_reel_lenght(file, cub);
 	map_start = 0;
 	fd = open(file, O_RDONLY);
 	tmp = get_next_line(fd);
 	while (tmp)
 	{
 		if (ft_strchr(tmp, '1') && !ft_strchr(tmp, 'F') && !ft_strchr(tmp, 'C')
-		&& !ft_strnstr(tmp, "SO", ft_strlen(tmp)) && !ft_strnstr(tmp, "WE", ft_strlen(tmp)) 
-		&& !ft_strnstr(tmp, "NO", ft_strlen(tmp)) && !ft_strnstr(tmp, "EA", ft_strlen(tmp)))
-		break ;
+			&& !ft_strnstr(tmp, "SO", ft_strlen(tmp)) && !ft_strnstr(tmp, "WE", ft_strlen(tmp))
+			&& !ft_strnstr(tmp, "NO", ft_strlen(tmp)) && !ft_strnstr(tmp, "EA", ft_strlen(tmp)))
+			break ;
 		map_start++;
 		free(tmp);
 		tmp = get_next_line(fd);
 	}
-	if (ft_strchr(tmp, 'W') || ft_strchr(tmp, 'E')|| ft_strchr(tmp, 'N')|| ft_strchr(tmp, 'S'))
+	if (ft_strchr(tmp, 'W') || ft_strchr(tmp, 'E')
+		|| ft_strchr(tmp, 'N') || ft_strchr(tmp, 'S'))
 		error_msg("player on the wall", cub, 2);
 	i = 0;
 	cub->map.map = malloc(sizeof(char *) * map_lengt + 1);
@@ -149,7 +158,7 @@ void	read_map(t_cub *cub, char *file)
 		while (tmp[i])
 		{
 			if (tmp[i] != '\0' && tmp[i] != ' ' && tmp[i] != '\t' && tmp[i] != '\n')
-			error_msg("wrong map design", cub, 3);
+				error_msg("wrong map design", cub, 3);
 			i++;
 		}
 		free(tmp);

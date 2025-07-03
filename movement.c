@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   movement.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/03 19:18:18 by mikkayma          #+#    #+#             */
+/*   Updated: 2025/07/03 19:18:18 by mikkayma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 void	move_forward(t_cub *cub, double new_x, double new_y)
@@ -40,11 +52,11 @@ void	move_right(t_cub *cub, double new_x, double new_y)
 		cub->player.posy = new_y;
 }
 
-void move_player(t_cub *cub)
+void	move_player(t_cub *cub)
 {
-	double new_x;
-	double new_y;
-	
+	double	new_x;
+	double	new_y;
+
 	new_x = 0;
 	new_y = 0;
 	if (cub->move_forward)
@@ -56,7 +68,7 @@ void move_player(t_cub *cub)
 	if (cub->move_right)
 		move_right(cub, new_x, new_y);
 	if (cub->rotate_left)
-        rotate_player(cub, -ROT_SPEED);
-    if (cub->rotate_right)
-        rotate_player(cub, ROT_SPEED);   
+		rotate_player(cub, -ROT_SPEED);
+	if (cub->rotate_right)
+		rotate_player(cub, ROT_SPEED);
 }

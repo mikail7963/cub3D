@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/03 14:32:25 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/03 19:18:05 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,10 @@ int	main(int argc, char **argv)
 {
 	t_cub	*cub;
 
-	if (argc != 2 || check_extension(argv[1], ".cub") == 1)
-		return (1);
+	if (argc != 2)
+		error_msg("too many arguments", NULL, 0);
+	if (check_extension(argv[1], ".cub") == 1)
+		error_msg("wrong map extansion", NULL, 0);
 	cub = malloc(sizeof(t_cub));
 	init_cub(cub);
 	open_file(cub, argv[1]);
@@ -76,7 +78,6 @@ int	main(int argc, char **argv)
 	cub->mlx.win = mlx_new_window(cub->mlx.mlx, WIDTH, HEIGHT, "Cub3D");
 	render_picture(cub);
 	render_map(cub);
-
 	setup_hooks(cub);
 	mlx_loop(cub->mlx.mlx);
 }

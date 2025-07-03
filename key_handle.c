@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   key_handle.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/03 19:17:17 by mikkayma          #+#    #+#             */
+/*   Updated: 2025/07/03 19:17:17 by mikkayma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
-// Bir tuşa basıldığında oyuncunun hareket durumunu günceller
-int handle_keypress(int key, t_cub *cub)
+int	handle_keypress(int key, t_cub *cub)
 {
 	if (key == KEY_ESC)
 		handle_close(cub);
@@ -20,8 +31,7 @@ int handle_keypress(int key, t_cub *cub)
 	return (0);
 }
 
-// Bir tuş bırakıldığında oyuncunun hareket durumunu sıfırlar.
-int handle_keyrelease(int key, t_cub *cub)
+int	handle_keyrelease(int key, t_cub *cub)
 {
 	if (key == KEY_W)
 		cub->move_forward = 0;
@@ -38,11 +48,18 @@ int handle_keyrelease(int key, t_cub *cub)
 	return (0);
 }
 
-// Oyunu kapatır ve tüm kaynakları free'ler
-int handle_close(t_cub *cub)
+int	handle_close(t_cub *cub)
 {
 	free_map(cub);
 	free_texture(cub->texture);
+	if (cub->north.image)
+		mlx_destroy_image(cub->mlx.mlx, cub->north.image);
+	if (cub->east.image)
+		mlx_destroy_image(cub->mlx.mlx, cub->east.image);
+	if (cub->west.image)
+		mlx_destroy_image(cub->mlx.mlx, cub->west.image);
+	if (cub->south.image)
+		mlx_destroy_image(cub->mlx.mlx, cub->south.image);
 	if (cub->mlx.win_data.image)
 		mlx_destroy_image(cub->mlx.mlx, cub->mlx.win_data.image);
 	if (cub->mlx.tex_image)
