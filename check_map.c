@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:55:10 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/02 18:02:59 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:29:00 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,19 @@
 void	check_map_line_start_end(char *line, t_cub *cub)
 {
     int	i;
-    int	in_block;
-    int	block_start;
 
     i = 0;
-    in_block = 0;
-    while (line[i])
-    {
-        if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
-        {
-            if (!in_block)
-            {
-                block_start = i;
-                in_block = 1;
-                if (line[i] != '1')
-                    error_msg("Map block does not start with '1'", cub, 3);
-            }
-        }
-        else if (in_block)  // Blok bitti
-        {
-            if (line[i - 1] != '1')  // Blok '1' ile bitmeli
-                error_msg("Map block does not end with '1'", cub, 3);
-            in_block = 0;
-        }
+    // İlk karakter kontrolü
+    while (line[i] == ' ' || line[i] == '\t')
         i++;
-    }
+    if (line[i] != '1')
+        error_msg("Map block does not start with '1'", cub, 3);
+
     // Son karakter kontrolü
-    if (in_block && i > 0 && line[i - 1] != '1' && line[i - 1] != '\n')
+    i = ft_strlen(line) - 1;
+    while (i >= 0 && (line[i] == ' ' || line[i] == '\t' || line[i] == '\n'))
+        i--;
+    if (i >= 0 && line[i] != '1')
         error_msg("Map block does not end with '1'", cub, 3);
 }
 

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   read_texture.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:36:29 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/02 13:36:55 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:48:51 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
+
+
 
 void	read_texture(t_cub *cub, int fd)
 {
@@ -19,24 +21,30 @@ void	read_texture(t_cub *cub, int fd)
 
 	i = 0;
 	line = get_next_line(fd);
-	while (line != NULL && i != 4)
+	int j = 0;
+	while (line != NULL)
 	{
+		while (line[j] == ' ' || line[j] == '\t')
+			j++;
 		line[ft_strlen(line) - 1] = '\0';
-		if (line[0] == 'N' && line[1] == 'O' && ++i)
+		if (line[j] == 'N' && line[j + 1] == 'O' && ++i)
 			cub->texture.north = ft_strtrim(line, "NO ");
-		else if (line[0] == 'S' && line[1] == 'O' && ++i)
+		else if (line[j] == 'S' && line[j + 1] == 'O' && ++i)
 			cub->texture.south = ft_strtrim(line, "SO ");
-		else if (line[0] == 'W' && line[1] == 'E' && ++i)
+		else if (line[j] == 'W' && line[j + 1] == 'E' && ++i)
 			cub->texture.west = ft_strtrim(line, "WE ");
-		else if (line[0] == 'E' && line[1] == 'A' && ++i)
+		else if (line[j] == 'E' && line[j + 1] == 'A' && ++i)
 			cub->texture.east = ft_strtrim(line, "EA ");
 		free(line);
 		line = get_next_line(fd);
 		cub->map_index++;
+		j = 0;
 	}
+	if (i > 4)
+		error_msg("Some of the texture packs is too", cub, 2);
 	if (!(cub->texture.north) || !(cub->texture.south)
 		|| !(cub->texture.west) || !(cub->texture.east))
-		error_msg("Error: Some of the texture packs is missing", cub, 2);
+		error_msg("Some of the texture packs is missing", cub, 2);
 	close(fd);
 }
 
@@ -53,7 +61,7 @@ void	check_is_there_texture_file(t_cub *cub)
 	fd4 = open(cub->texture.west, O_RDONLY);
 	if (fd1 == -1 || fd2 == -1 || fd3 == -1 || fd4 == -1)
 	{
-		ft_putendl_fd("Error: wrong texture path", 1);
+		ft_putendl_fd("wrong texture path", 1);
 		exit(EXIT_FAILURE);
 	}
 	close(fd1);

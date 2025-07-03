@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/02 16:11:04 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:27:07 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 
 # define WIDTH 800
 # define HEIGHT 600
-# define MOVE_SPEED 0.05
-# define ROT_SPEED 0.03
+# define MOVE_SPEED 0.02
+# define ROT_SPEED 0.01
 
 // hareket icin key kodlari
 # define KEY_W 119
@@ -68,20 +68,9 @@ typedef struct s_player
 	double	posy;
 }	t_player;
 
-typedef struct s_mlx
-{
-	void	*mlx;
-	void	*win;
-	void	*tex_image;
-	void	*win_image;
-	char	*win_data;
-	int		win_bpp;
-	int		win_size_line;
-	int		win_endian;
-}	t_mlx;
-
 typedef struct s_tex_data
 {
+	void	*image;
 	char	*texture_data;
 	int		bits_per_pixel;
 	int		size_line;
@@ -89,6 +78,15 @@ typedef struct s_tex_data
 	int		tex_width;
 	int		tex_height;
 }	t_tex_data;
+
+typedef struct s_mlx
+{
+	void	*mlx;
+	void	*win;
+	void	*tex_image;
+	t_tex_data win_data;
+}	t_mlx;
+
 
 typedef struct s_cub
 {
@@ -103,6 +101,10 @@ typedef struct s_cub
 	t_player	player;
 	t_mlx		mlx;
 	t_tex_data	tex_data;
+	t_tex_data	north;
+	t_tex_data	west;
+	t_tex_data	south;
+	t_tex_data	east;
 
 	// hareket durumlari
     int move_forward;
@@ -133,5 +135,7 @@ int		handle_keypress(int key, t_cub *cub);
 int		handle_keyrelease(int key, t_cub *cub);
 int		handle_close(t_cub *cub);
 void	render_picture(t_cub *cub);
+int is_valid_position(t_cub *cub, double x, double y);
+void rotate_player(t_cub *cub, double angle);
 
 #endif

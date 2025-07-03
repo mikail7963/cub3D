@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:35:00 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/02 18:29:00 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:39:59 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ void	validate_map_line(char *line, t_cub *cub)
 	while (line[i])
 	{
 		if (!(line[i] == '0' || line[i] == '1' || is_player(line[i])
-				|| line[i] == '\n' || line[i] == '\t' || line[i] == ' '))
-					error_msg(":unknown character", cub, 2);
+		|| line[i] == '\n' || line[i] == '\t' || line[i] == ' '))
+			error_msg(": unknown character", cub, 2);
 		i++;
 	}
 	if ((line[0] == ' ' || line[0] == '\t' || line[0] == '\n') && !ft_strchr(line, '1'))
 		has_content = 1;
 	if (has_content == 1)
-		error_msg("Empty or whitespace-only line in map", cub, 2);
+		error_msg(": Empty or whitespace-only line in map", cub, 2);
 }
 
 void	set_coor_and_pos(t_cub *cub, char *line, int i)
@@ -52,7 +52,7 @@ void	set_coor_and_pos(t_cub *cub, char *line, int i)
 		{
 			if (is_player(line[j]))
 			{
-				cub->is_player = 1;
+				cub->is_player++;
 				cub->player.posx = (double)j + 0.5;
 			}
 			j++;
@@ -80,7 +80,7 @@ void	set_coor_and_pos(t_cub *cub, char *line, int i)
 	}
 }
 
-int	map_reel_lenght(char *file)
+int	map_reel_lenght(char *file, t_cub *cub)
 {
 	int fd;
 	char *line;
@@ -91,15 +91,18 @@ int	map_reel_lenght(char *file)
 	line = get_next_line(fd);
 	while (line)
 	{
-		if (ft_strchr(line, '1'))
+		if (ft_strchr(line, '1') && !ft_strchr(line, 'F') && !ft_strchr(line, 'C')
+			 && !ft_strchr(line, 'S') && !ft_strchr(line, 'W') && !ft_strchr(line, 'N') && !ft_strchr(line, 'E'))
 			len++;
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
+	if (len == 0)
+		error_msg("there is not map", cub, 2);
+	len++;
 	return (len);
 }
-
 
 void	read_map(t_cub *cub, char *file)
 {
@@ -109,20 +112,23 @@ void	read_map(t_cub *cub, char *file)
 	int		map_start;
 	int		map_lengt;
 	
-	map_lengt = map_reel_lenght(file);
+	map_lengt = map_reel_lenght(file, cub);		
 	map_start = 0;
 	fd = open(file, O_RDONLY);
 	tmp = get_next_line(fd);
 	while (tmp)
 	{
-		if (ft_strchr(tmp, '1') && !ft_strchr(tmp, 'F') && !ft_strchr(tmp, 'C'))
-			break ;
+		if (ft_strchr(tmp, '1') && !ft_strchr(tmp, 'F') && !ft_strchr(tmp, 'C')
+		&& !ft_strnstr(tmp, "SO", ft_strlen(tmp)) && !ft_strnstr(tmp, "WE", ft_strlen(tmp)) 
+		&& !ft_strnstr(tmp, "NO", ft_strlen(tmp)) && !ft_strnstr(tmp, "EA", ft_strlen(tmp)))
+		break ;
 		map_start++;
 		free(tmp);
 		tmp = get_next_line(fd);
 	}
+	if (ft_strchr(tmp, 'W') || ft_strchr(tmp, 'E')|| ft_strchr(tmp, 'N')|| ft_strchr(tmp, 'S'))
+		error_msg("player on the wall", cub, 2);
 	i = 0;
-	printf("%d\n", map_lengt);
 	cub->map.map = malloc(sizeof(char *) * map_lengt + 1);
 	while (tmp != NULL && tmp[0] != '\0')
 	{
@@ -137,10 +143,21 @@ void	read_map(t_cub *cub, char *file)
 		i++;
 	}
 	cub->map.map[i] = NULL;
-	if (cub->is_player != 1)
-		error_msg("There are Multiplayer Or palyer number is 0", cub, 3);
-	cub->map.map[i] = NULL;
+	while (tmp != NULL)
+	{
+		i = 0;
+		while (tmp[i])
+		{
+			if (tmp[i] != '\0' && tmp[i] != ' ' && tmp[i] != '\t' && tmp[i] != '\n')
+			error_msg("wrong map design", cub, 3);
+			i++;
+		}
+		free(tmp);
+		tmp = get_next_line(fd);
+	}
 	close(fd);
+	if (cub->is_player != 1)
+		error_msg("There are Multiplayer or player number is 0", cub, 3);
 }
 
 void	read_file(t_cub *cub, char *file)
@@ -166,6 +183,8 @@ void	open_file(t_cub *cub, char *file)
 	if (fd == -1)
 		error_msg("can not open file", cub, 2);
 	line = get_next_line(fd);
+	if (!line)
+		error_msg("file is empty", cub, 2);
 	while (line != NULL)
 	{
 		counter++;

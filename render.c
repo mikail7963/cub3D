@@ -11,9 +11,9 @@ void my_mlx_pixel_put(t_cub *cub, int x, int y, int color)
 		return;
 
 	char *dst;
-	dst = cub->mlx.win_data;  // Window buffer'ına erişim
+	dst = cub->mlx.win_data.texture_data;  // Window buffer'ına erişim
 	// Pixel'in buffer'daki adresini hesapla (y * satır genişliği + x * pixel boyutu)
-	dst += (y * cub->mlx.win_size_line + x * (cub->mlx.win_bpp / 8));
+	dst += (y * cub->mlx.win_data.size_line + x * (cub->mlx.win_data.bits_per_pixel / 8));
 	// Renk değerini buffer'a yaz
 	*(unsigned int *)dst = color;
 }
@@ -24,16 +24,43 @@ void my_mlx_pixel_put(t_cub *cub, int x, int y, int color)
  */
 void render_picture(t_cub *cub)
 {
-	// Texture image'ını XPM dosyasından oluştur
-	cub->mlx.tex_image = mlx_xpm_file_to_image(cub->mlx.mlx, cub->texture.north, &cub->tex_data.tex_width, &cub->tex_data.tex_height);
-	// Texture data buffer'ına erişim al
-	cub->tex_data.texture_data = mlx_get_data_addr(cub->mlx.tex_image, &cub->tex_data.bits_per_pixel, &cub->tex_data.size_line, &cub->tex_data.endian);
+    // Her yön için texture dosyasını yükle
+    cub->north.image = mlx_xpm_file_to_image(cub->mlx.mlx, cub->texture.north, &cub->north.tex_width, &cub->north.tex_height);
+	if (!cub->north.image)
+	{
+    	error_msg("Texture yüklenemedi: North", cub, 1);
+	}
 
-	cub->mlx.win_image = mlx_new_image(cub->mlx.mlx, WIDTH, HEIGHT);
-	cub->mlx.win_data = mlx_get_data_addr(cub->mlx.win_image, 
-	&cub->mlx.win_bpp, &cub->mlx.win_size_line, &cub->mlx.win_endian);
+    cub->north.texture_data = mlx_get_data_addr(cub->north.image, &cub->north.bits_per_pixel, &cub->north.size_line, &cub->north.endian);
 
+    cub->south.image= mlx_xpm_file_to_image(cub->mlx.mlx, cub->texture.south, &cub->south.tex_width, &cub->south.tex_height);
+	if (!cub->south.image)
+    	error_msg("Texture yüklenemedi: south", cub, 1);
 
+    cub->south.texture_data= mlx_get_data_addr(cub->south.image, &cub->south.bits_per_pixel , &cub->south.size_line, &cub->south.endian);
+
+    cub->east.image= mlx_xpm_file_to_image(cub->mlx.mlx, cub->texture.east, &cub->east.tex_width, &cub->east.tex_height);
+    if (!cub->east.image)
+	{
+    	error_msg("Texture yüklenemedi: east", cub, 1);
+	}
+
+	cub->east.texture_data= mlx_get_data_addr(cub->east.image, &cub->east.bits_per_pixel, &cub->east.size_line, &cub->east.endian);
+
+    
+	cub->west.image= mlx_xpm_file_to_image(cub->mlx.mlx, cub->texture.west, &cub->west.tex_width, &cub->west.tex_height);
+	
+    if (!cub->west.image)
+	{
+    	error_msg("Texture yüklenemedi: West", cub, 1);
+	}
+
+	cub->west.texture_data= mlx_get_data_addr(cub->west.image, &cub->west.bits_per_pixel, &cub->west.size_line, &cub->west.endian);
+
+    // Window image oluştur
+    
+	cub->mlx.win_data.image = mlx_new_image(cub->mlx.mlx, WIDTH, HEIGHT);
+	cub->mlx.win_data.texture_data= mlx_get_data_addr(cub->mlx.win_data.image, &cub->mlx.win_data.bits_per_pixel, &cub->mlx.win_data.size_line, &cub->mlx.win_data.endian);
 }
 
 /*
@@ -51,6 +78,8 @@ void render_map(t_cub *cub)
 	x = 0;
 	y = 0;
 
+	// if (!(cub->move_backward || cub->move_forward || cub->move_left || cub->move_right || cub->rotate_left || cub->rotate_right))
+	// 	return;
 	int total_pixels = WIDTH * HEIGHT;
     int i = 0;
     while (i < total_pixels)
@@ -78,18 +107,32 @@ void render_map(t_cub *cub)
 
 		// ===================== DDA ALGORİTMASI =====================
 		// Her adımda ne kadar uzaklık artacağını hesapla
-		double deltaDistX = fabs(1 / rayDirX);
-		double deltaDistY = fabs(1 / rayDirY);
+		double deltaDistX; 
+		double deltaDistY;
+		if (rayDirX != 0)
+			deltaDistX = fabs(1 / rayDirX);
+		else
+		{
+			deltaDistX =  1e30;
+		}
+		if (rayDirY != 0)
+		deltaDistY = fabs(1 / rayDirY);
+		else
+		{
+			deltaDistY = 1e30;
+		}
 
 		// Adım yönü ve ilk sınıra uzaklık hesaplaması
 		int stepX, stepY;
 		double sideDistX, sideDistY;
 
 		// X yönünde adım hesaplaması
-		if (rayDirX < 0) {
+		if (rayDirX < 0) 
+		{
 			stepX = -1; // Sol tarafa git
 			sideDistX = (cub->player.posx - mapX) * deltaDistX; // Mevcut kareden sol sınıra uzaklık
-		} else {
+		} else 
+		{
 			stepX = 1; // Sağ tarafa git
 			sideDistX = (mapX + 1.0 - cub->player.posx) * deltaDistX; // Mevcut kareden sağ sınıra uzaklık
 		}
@@ -107,8 +150,9 @@ void render_map(t_cub *cub)
 		// Duvar bulana kadar adım at
 		int hit = 0; // Duvar bulundu mu?
 		int side; // Hangi taraftan vuruldu (0=X taraf, 1=Y taraf)
-		while (hit == 0) {
-			// En yakın grid çizgisine doğru adım at
+		
+		while (hit == 0)
+		{
 			if (sideDistX < sideDistY)
 			{
 				sideDistX += deltaDistX; // X yönünde bir adım daha
@@ -156,28 +200,46 @@ void render_map(t_cub *cub)
 		wallX -= floor(wallX); // Sadece ondalık kısmı al (0-1 arası)
 
 		// Texture'daki X koordinatını hesapla
-		int tex_x = (int)(wallX * (double)cub->tex_data.tex_width);
 		
+		t_tex_data *selected_texture;
+		if (side == 0 && rayDirX > 0)
+			selected_texture = &cub->east; // Doğu yönü
+		else if (side == 0 && rayDirX < 0)
+			selected_texture = &cub->west; // Batı yönü
+		else if (side == 1 && rayDirY > 0)
+			selected_texture = &cub->south; // Güney yönü
+		else
+			selected_texture = &cub->north; // Kuzey yönü
 		// Texture'ın yönünü düzelt (ters görünmeyi engelle)
-		if (side == 0 && rayDirX < 0) tex_x = cub->tex_data.tex_width - tex_x - 1;
-		if (side == 1 && rayDirY > 0) tex_x = cub->tex_data.tex_width - tex_x - 1;
+		int tex_x = (int)(wallX * (double)selected_texture->tex_width);
+		if (side == 0 && rayDirX < 0) 
+			tex_x = selected_texture->tex_width - tex_x - 1;
+		if (side == 1 && rayDirY > 0) 
+			tex_x = selected_texture->tex_width - tex_x - 1;
 
 		// Texture'ın Y koordinatı için adım miktarını hesapla
-		double step = 1.0 * cub->tex_data.tex_height / lineHeight;
+		double step = 1.0 * selected_texture->tex_height / lineHeight;
 		double tex_pos = (drawStart - HEIGHT / 2 + lineHeight / 2) * step;
 
+		// ===================== TEXTURE SEÇİMİ =====================
+        // Duvarın hangi yöne çarptığını kontrol et ve doğru texture'ı seç
+		if (!selected_texture || !selected_texture->texture_data)
+		{
+			error_msg("Geçersiz texture seçimi!", cub, 1);
+			return;
+		}
+			
 		// ===================== TEXTURE ÇİZİMİ =====================
-		// Duvarın her pixel'i için texture'dan renk al ve çiz
 		y = drawStart;
 		while (y < drawEnd)
 		{
 			// Texture'ın Y koordinatını hesapla
-			int tex_y = (int)tex_pos & (cub->tex_data.tex_height - 1);
+			int tex_y = (int)tex_pos & (selected_texture->tex_height - 1);
 			tex_pos += step; // Bir sonraki pixel için Y koordinatını artır
 			
 			// Texture'dan renk değerini al
-			int color = *(unsigned int *)(cub->tex_data.texture_data + 
-				(tex_y * cub->tex_data.size_line + tex_x * (cub->tex_data.bits_per_pixel / 8)));
+            int color = *(unsigned int *)(selected_texture->texture_data + 
+                (tex_y * selected_texture->size_line + tex_x * (selected_texture->bits_per_pixel / 8)));
 			
 			// Pixel'i ekrana çiz
 			my_mlx_pixel_put(cub, x, y, color);
@@ -187,6 +249,6 @@ void render_map(t_cub *cub)
 	}
 	// ===================== EKRANA GÖSTER =====================
 	// Tamamlanan image'ı window'a yerleştir
-	mlx_put_image_to_window(cub->mlx.mlx, cub->mlx.win, cub->mlx.win_image, 0, 0);
+	mlx_put_image_to_window(cub->mlx.mlx, cub->mlx.win, cub->mlx.win_data.image, 0, 0);
 
 }
