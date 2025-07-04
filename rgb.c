@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rgb.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:37:13 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/03 19:25:07 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:10:52 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,19 @@ void	check_rgb_line(char *line, t_cub *cub)
 {
 	int	i;
 
-	i = 0;
-	while (line[i] == ' ' || line[i] == '\t')
-		i++;
+	i = skip_whitespaces(line, 0);
 	if (line[i] == 'F' || line[i] == 'C')
 	{
 		i++;
-		while (line[i] == ' ' || line[i] == '\t')
-			i++;
+		i = skip_whitespaces(line, i);
 	}
 	while (line[i])
 	{
-		while (line[i] == ' ' || line[i] == '\t')
-			i++;
+		i = skip_whitespaces(line, i);
 		if (line[i] == ',')
 		{
 			i++;
-			while (line[i] == ' ' || line[i] == '\t')
-				i++;
+			i = skip_whitespaces(line, i);
 			if (line[i] == '\n')
 				error_msg("rgb is not valid", cub, 2);
 		}
@@ -104,23 +99,17 @@ void	read_fc_rgb(t_cub *cub, int fd)
 		while (line[j] == ' ' || line[j] == '\t')
 			j++;
 		cub->map_index++;
-		if (line[j] == 'F' && line[j + 1] == ' ')
-		{
+		if (line[j] == 'F' && line[j + 1] == ' ' && ++i)
 			rbg_line(&cub->fc.floor_c, line, cub);
-			i++;
-		}
-		if (line[j] == 'C' && line[j + 1] == ' ')
-		{
+		if (line[j] == 'C' && line[j + 1] == ' ' && ++i)
 			rbg_line(&cub->fc.ceiling_c, line, cub);
-			i++;
-		}
-		if (line)
-			free(line);
+		free(line);
 		line = get_next_line(fd);
 	}
 	if (i != 2)
 		error_msg("missing floor or ceiling color", cub, 2);
-	cub->fc.ceiling_c.colour = rgb_to_colour(cub->fc.ceiling_c.r, cub->fc.ceiling_c.g, cub->fc.ceiling_c.b);
-	cub->fc.floor_c.colour = rgb_to_colour(cub->fc.floor_c.r, cub->fc.floor_c.g, cub->fc.floor_c.b);
-	close(fd);
+	cub->fc.ceiling_c.colour = rgb_to_colour(cub->fc.ceiling_c.r, \
+		cub->fc.ceiling_c.g, cub->fc.ceiling_c.b);
+	cub->fc.floor_c.colour = rgb_to_colour(cub->fc.floor_c.r, \
+		cub->fc.floor_c.g, cub->fc.floor_c.b);
 }

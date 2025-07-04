@@ -3,132 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:35:00 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/03 19:22:56 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:11:05 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
+#include <stdio.h>
 
-int	is_player(char p)
+void	read_xpm_after_map(t_cub *cub, char *tmp, int fd)
 {
-	if (p == 'N' || p == 'S' || p == 'E' || p == 'W')
-		return (1);
-	return (0);
-}
-
-void	validate_map_line(char *line, t_cub *cub)
-{
-	int	has_content;
 	int	i;
 
-	i = 0;
-	has_content = 0;
-	while (line[i])
+	if (cub->is_player == 0)
+		error_msg("player is missing", cub, 3);
+	while (tmp != NULL)
 	{
-		if (!(line[i] == '0' || line[i] == '1' || is_player(line[i])
-			|| line[i] == '\n' || line[i] == '\t' || line[i] == ' '))
+		i = 0;
+		while (tmp[i])
 		{
-			free(line);
-			error_msg(": unknown character", cub, 3);
+			if (tmp[i] != '\0' && tmp[i] != ' '
+				&& tmp[i] != '\t' && tmp[i] != '\n')
+				error_msg("wrong map design", cub, 3);
+			i++;
 		}
-		i++;
-	}
-	if ((line[0] == ' ' || line[0] == '\t' || line[0] == '\n') && !ft_strchr(line, '1'))
-		has_content = 1;
-	if (has_content == 1)
-	{
-		free(line);
-		error_msg(": Empty or whitespace-only line in map", cub, 3);
-	}
-}
-
-void	set_coor_and_pos(t_cub *cub, char *line, int i)
-{
-	int	j;
-
-	if (ft_strchr(line, 'N') || ft_strchr(line, 'S')
-		|| ft_strchr(line, 'W') || ft_strchr(line, 'E'))
-	{
-		j = 0;
-		cub->player.posy = (double)i + 0.5; // double sil ve + 0.5 kaldır farkı gör
-		while (line[j])
-		{
-			if (is_player(line[j]))
-			{
-				cub->is_player++;
-				cub->player.posx = (double)j + 0.5;
-			}
-			j++;
-		}
-		if (ft_strchr(line, 'N'))
-		{
-			cub->player.diry = -1;
-			cub->plane_x = 0.66;
-		}
-		if (ft_strchr(line, 'S'))
-		{
-			cub->plane_x = -0.66;
-			cub->player.diry = 1;
-		}
-		if (ft_strchr(line, 'E'))
-		{
-			cub->player.dirx = 1;
-			cub->plane_y = 0.66;
-		}
-		if (ft_strchr(line, 'W'))
-		{
-			cub->player.dirx = -1;
-			cub->plane_y = -0.66;
-		}
-	}
-}
-
-int	map_reel_lenght(char *file, t_cub *cub)
-{
-	int		fd;
-	char	*line;
-	int		len;
-
-	len = 0;
-	fd = open(file, O_RDONLY);
-	line = get_next_line(fd);
-	while (line)
-	{
-		if (ft_strchr(line, '1') && !ft_strchr(line, 'F')
-			&& !ft_strchr(line, 'C') && !ft_strchr(line, 'S')
-			&& !ft_strchr(line, 'W') && !ft_strchr(line, 'N')
-			&& !ft_strchr(line, 'E'))
-			len++;
-		free(line);
-		line = get_next_line(fd);
+		free(tmp);
+		tmp = get_next_line(fd);
 	}
 	close(fd);
-	if (len == 0)
-		error_msg("there is not map", cub, 2);
-	len++;
-	return (len);
 }
 
-void	read_map(t_cub *cub, char *file)
+char	*read_xpm_until_map(t_cub *cub, int fd)
 {
-	int		i;
 	char	*tmp;
-	int		fd;
 	int		map_start;
-	int		map_lengt;
 
-	map_lengt = map_reel_lenght(file, cub);
 	map_start = 0;
-	fd = open(file, O_RDONLY);
 	tmp = get_next_line(fd);
 	while (tmp)
 	{
-		if (ft_strchr(tmp, '1') && !ft_strchr(tmp, 'F') && !ft_strchr(tmp, 'C')
-			&& !ft_strnstr(tmp, "SO", ft_strlen(tmp)) && !ft_strnstr(tmp, "WE", ft_strlen(tmp))
-			&& !ft_strnstr(tmp, "NO", ft_strlen(tmp)) && !ft_strnstr(tmp, "EA", ft_strlen(tmp)))
+		if (ft_strchr(tmp, '1')
+			&& !ft_strchr(tmp, 'F')
+			&& !ft_strchr(tmp, 'C')
+			&& !ft_strnstr(tmp, "SO", ft_strlen(tmp))
+			&& !ft_strnstr(tmp, "WE", ft_strlen(tmp))
+			&& !ft_strnstr(tmp, "NO", ft_strlen(tmp))
+			&& !ft_strnstr(tmp, "EA", ft_strlen(tmp)))
 			break ;
 		map_start++;
 		free(tmp);
@@ -137,7 +59,20 @@ void	read_map(t_cub *cub, char *file)
 	if (ft_strchr(tmp, 'W') || ft_strchr(tmp, 'E')
 		|| ft_strchr(tmp, 'N') || ft_strchr(tmp, 'S'))
 		error_msg("player on the wall", cub, 2);
+	return (tmp);
+}
+
+void	read_map(t_cub *cub, char *file)
+{
+	char	*tmp;
+	int		fd;
+	int		i;
+	int		map_lengt;
+
 	i = 0;
+	fd = open(file, O_RDONLY);
+	tmp = read_xpm_until_map(cub, fd);
+	map_lengt = map_reel_lenght(file, cub);
 	cub->map.map = malloc(sizeof(char *) * map_lengt + 1);
 	while (tmp != NULL && tmp[0] != '\0')
 	{
@@ -152,21 +87,7 @@ void	read_map(t_cub *cub, char *file)
 		i++;
 	}
 	cub->map.map[i] = NULL;
-	while (tmp != NULL)
-	{
-		i = 0;
-		while (tmp[i])
-		{
-			if (tmp[i] != '\0' && tmp[i] != ' ' && tmp[i] != '\t' && tmp[i] != '\n')
-				error_msg("wrong map design", cub, 3);
-			i++;
-		}
-		free(tmp);
-		tmp = get_next_line(fd);
-	}
-	close(fd);
-	if (cub->is_player != 1)
-		error_msg("There are Multiplayer or player number is 0", cub, 3);
+	read_xpm_after_map(cub, tmp, fd);
 }
 
 void	read_file(t_cub *cub, char *file)
@@ -175,9 +96,10 @@ void	read_file(t_cub *cub, char *file)
 	int	fd2;
 
 	fd = open(file, O_RDONLY);
-	read_texture(cub, fd);
+	read_texture(cub, fd, 0, 0);
 	fd2 = open(file, O_RDONLY);
 	read_fc_rgb(cub, fd2);
+	close(fd2);
 	read_map(cub, file);
 }
 
@@ -203,6 +125,7 @@ void	open_file(t_cub *cub, char *file)
 	cub->len_of_file = counter;
 	close(fd);
 	read_file(cub, file);
-	check_texture(cub);
+	check_texture(cub, 0);
 	check_map(cub);
+	// check_map_around_wall(cub);
 }

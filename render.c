@@ -63,190 +63,164 @@ void render_picture(t_cub *cub)
 	cub->mlx.win_data.texture_data= mlx_get_data_addr(cub->mlx.win_data.image, &cub->mlx.win_data.bits_per_pixel, &cub->mlx.win_data.size_line, &cub->mlx.win_data.endian);
 }
 
-/*
- * Ana render fonksiyonu - Raycasting ile 3D sahne oluşturur
- * 1. Texture'ları yükler
- * 2. Her pixel sütunu için ray cast yapar
- * 3. Duvarları tespit eder ve texture ile renklendirir
- */
-void render_map(t_cub *cub)
+void	painting_sky_and_ground(t_cub *cub)
 {
-	// Texture dosyasını yükle
+	int	total_pixels;
+	int	i;
 	int x;
 	int y;
 
-	x = 0;
-	y = 0;
-
-	// if (!(cub->move_backward || cub->move_forward || cub->move_left || cub->move_right || cub->rotate_left || cub->rotate_right))
-	// 	return;
-	int total_pixels = WIDTH * HEIGHT;
-    int i = 0;
+    i = 0;
+	total_pixels = WIDTH * HEIGHT;
     while (i < total_pixels)
     {
-        int x = i % WIDTH;
-        int y = i / WIDTH;
+        x = i % WIDTH;
+        y = i / WIDTH;
         if (y < HEIGHT / 2)
             my_mlx_pixel_put(cub, x, y, cub->fc.ceiling_c.colour);
         else
             my_mlx_pixel_put(cub, x, y, cub->fc.floor_c.colour);
         i++;
     }
-	// Ekranın her x koordinatı için ray cast yap
-	while (x < WIDTH)
-	{
-		// ===================== RAY CASTING SETUP =====================
-		// Kamera düzlemi ve ışın yönü hesaplamaları
-		double cameraX = 2 * x / (double)WIDTH - 1; // -1 ile 1 arasında normalize et
-		double rayDirX = cub->player.dirx + cub->plane_x * cameraX; // Işın X yönü
-		double rayDirY = cub->player.diry + cub->plane_y * cameraX; // Işın Y yönü
+}
 
-		// Oyuncunun bulunduğu harita karesi
-		int mapX = (int)cub->player.posx;
-		int mapY = (int)cub->player.posy;
+// ===================== RAY CASTING SETUP =====================
+void setup_ray(t_cub *cub, t_render *render, int x)
+{
+    render->rayDirX = cub->player.dirx + cub->plane_x * (2 * x / (double)WIDTH - 1);
+    render->rayDirY = cub->player.diry + cub->plane_y * (2 * x / (double)WIDTH - 1);
+    render->mapX = (int)cub->player.posx;
+    render->mapY = (int)cub->player.posy;
+    render->deltaDistX = (render->rayDirX != 0) ? fabs(1 / render->rayDirX) : 1e30;
+    render->deltaDistY = (render->rayDirY != 0) ? fabs(1 / render->rayDirY) : 1e30;
+    render->hit = 0;
+}
 
-		// ===================== DDA ALGORİTMASI =====================
-		// Her adımda ne kadar uzaklık artacağını hesapla
-		double deltaDistX; 
-		double deltaDistY;
-		if (rayDirX != 0)
-			deltaDistX = fabs(1 / rayDirX);
-		else
-		{
-			deltaDistX =  1e30;
-		}
-		if (rayDirY != 0)
-		deltaDistY = fabs(1 / rayDirY);
-		else
-		{
-			deltaDistY = 1e30;
-		}
+// ===================== STEP AND SIDE DISTANCE =====================
+void calculate_step_and_side_dist(t_cub *cub, t_render *render)
+{
+    if (render->rayDirX < 0)
+    {
+        render->stepX = -1;
+        render->sideDistX = (cub->player.posx - render->mapX) * render->deltaDistX;
+    }
+    else
+    {
+        render->stepX = 1;
+        render->sideDistX = (render->mapX + 1.0 - cub->player.posx) * render->deltaDistX;
+    }
+    if (render->rayDirY < 0)
+    {
+        render->stepY = -1;
+        render->sideDistY = (cub->player.posy - render->mapY) * render->deltaDistY;
+    }
+    else
+    {
+        render->stepY = 1;
+        render->sideDistY = (render->mapY + 1.0 - cub->player.posy) * render->deltaDistY;
+    }
+}
 
-		// Adım yönü ve ilk sınıra uzaklık hesaplaması
-		int stepX, stepY;
-		double sideDistX, sideDistY;
+// ===================== DDA ALGORITHM =====================
+void perform_dda(t_cub *cub, t_render *render)
+{
+    while (render->hit == 0)
+    {
+        if (render->sideDistX < render->sideDistY)
+        {
+            render->sideDistX += render->deltaDistX;
+            render->mapX += render->stepX;
+            render->side = 0;
+        }
+        else
+        {
+            render->sideDistY += render->deltaDistY;
+            render->mapY += render->stepY;
+            render->side = 1;
+        }
+        if (cub->map.map[render->mapY][render->mapX] == '1')
+            render->hit = 1;
+    }
+}
 
-		// X yönünde adım hesaplaması
-		if (rayDirX < 0) 
-		{
-			stepX = -1; // Sol tarafa git
-			sideDistX = (cub->player.posx - mapX) * deltaDistX; // Mevcut kareden sol sınıra uzaklık
-		} else 
-		{
-			stepX = 1; // Sağ tarafa git
-			sideDistX = (mapX + 1.0 - cub->player.posx) * deltaDistX; // Mevcut kareden sağ sınıra uzaklık
-		}
+// ===================== WALL DISTANCE AND HEIGHT =====================
+void calculate_wall_distance_and_height(t_cub *cub, t_render *render)
+{
+    if (render->side == 0)
+        render->perpWallDist = (render->mapX - cub->player.posx + (1 - render->stepX) / 2) / render->rayDirX;
+    else
+        render->perpWallDist = (render->mapY - cub->player.posy + (1 - render->stepY) / 2) / render->rayDirY;
 
-		// Y yönünde adım hesaplaması
-		if (rayDirY < 0) {
-			stepY = -1; // Yukarı git
-			sideDistY = (cub->player.posy - mapY) * deltaDistY; // Mevcut kareden üst sınıra uzaklık
-		} else {
-			stepY = 1; // Aşağı git
-			sideDistY = (mapY + 1.0 - cub->player.posy) * deltaDistY; // Mevcut kareden alt sınıra uzaklık
-		}
+    render->lineHeight = (int)(HEIGHT / render->perpWallDist);
+    render->drawStart = -render->lineHeight / 2 + HEIGHT / 2;
+    render->drawEnd = render->lineHeight / 2 + HEIGHT / 2;
 
-		// ===================== DUVAR ARAMA DÖNGÜSÜ =====================
-		// Duvar bulana kadar adım at
-		int hit = 0; // Duvar bulundu mu?
-		int side; // Hangi taraftan vuruldu (0=X taraf, 1=Y taraf)
-		
-		while (hit == 0)
-		{
-			if (sideDistX < sideDistY)
-			{
-				sideDistX += deltaDistX; // X yönünde bir adım daha
-				mapX += stepX; // Grid pozisyonunu güncelle
-				side = 0; // X tarafından çarpma
-			} 
-			else 
-			{
-				sideDistY += deltaDistY; // Y yönünde bir adım daha
-				mapY += stepY; // Grid pozisyonunu güncelle
-				side = 1; // Y tarafından çarpma
-			}
-			// Duvar var mı kontrol et
-			if (cub->map.map[mapY][mapX] == '1') 
-				hit = 1;
-		}
+    if (render->drawStart < 0)
+        render->drawStart = 0;
+    if (render->drawEnd >= HEIGHT)
+        render->drawEnd = HEIGHT - 1;
+}
 
-		// ===================== DUVAR UZAKLIĞI HESAPLAMASI =====================
-		// Perspektif düzeltmesi için duvara olan dik uzaklığı hesapla
-		double perpWallDist;
-		if (side == 0)
-			perpWallDist = (mapX - cub->player.posx + (1 - stepX) / 2) / rayDirX;
-		else
-			perpWallDist = (mapY - cub->player.posy + (1 - stepY) / 2) / rayDirY;
+// ===================== TEXTURE SELECTION =====================
+void select_texture(t_cub *cub, t_render *render)
+{
+    if (render->side == 0 && render->rayDirX > 0)
+        render->selected_texture = &cub->east;
+    else if (render->side == 0 && render->rayDirX < 0)
+        render->selected_texture = &cub->west;
+    else if (render->side == 1 && render->rayDirY > 0)
+        render->selected_texture = &cub->south;
+    else
+        render->selected_texture = &cub->north;
+}
 
-		// ===================== DUVAR YÜKSEKLİĞİ HESAPLAMASI =====================
-		// Uzaklığa göre ekrandaki duvar yüksekliğini hesapla
-		int lineHeight = (int)(HEIGHT / perpWallDist);
-		int drawStart = -lineHeight / 2 + HEIGHT / 2; // Duvarın üst kenarı
-		int drawEnd = lineHeight / 2 + HEIGHT / 2; // Duvarın alt kenarı
-		
-		// Ekran sınırları içinde tut
-		if (drawStart < 0) 
-			drawStart = 0;
-		if (drawEnd >= HEIGHT) 
-			drawEnd = HEIGHT - 1;
+// ===================== TEXTURE DRAWING =====================
+void draw_texture(t_cub *cub, t_render *render, int x)
+{
+    double wallX = (render->side == 0) ? cub->player.posy + render->perpWallDist * render->rayDirY
+                                       : cub->player.posx + render->perpWallDist * render->rayDirX;
+    wallX -= floor(wallX);
 
-		// ===================== TEXTURE MAPPING =====================
-		// Duvardaki texture koordinatlarını hesapla
-		double wallX; // Duvarın hangi noktasında çarpıldığını hesapla
-		if (side == 0)
-			wallX = cub->player.posy + perpWallDist * rayDirY;
-		else
-			wallX = cub->player.posx + perpWallDist * rayDirX;
-		wallX -= floor(wallX); // Sadece ondalık kısmı al (0-1 arası)
+    int tex_x = (int)(wallX * (double)render->selected_texture->tex_width);
+    if (render->side == 0 && render->rayDirX < 0)
+        tex_x = render->selected_texture->tex_width - tex_x - 1;
+    if (render->side == 1 && render->rayDirY > 0)
+        tex_x = render->selected_texture->tex_width - tex_x - 1;
 
-		// Texture'daki X koordinatını hesapla
-		
-		t_tex_data *selected_texture;
-		if (side == 0 && rayDirX > 0)
-			selected_texture = &cub->east; // Doğu yönü
-		else if (side == 0 && rayDirX < 0)
-			selected_texture = &cub->west; // Batı yönü
-		else if (side == 1 && rayDirY > 0)
-			selected_texture = &cub->south; // Güney yönü
-		else
-			selected_texture = &cub->north; // Kuzey yönü
-		// Texture'ın yönünü düzelt (ters görünmeyi engelle)
-		int tex_x = (int)(wallX * (double)selected_texture->tex_width);
-		if (side == 0 && rayDirX < 0) 
-			tex_x = selected_texture->tex_width - tex_x - 1;
-		if (side == 1 && rayDirY > 0) 
-			tex_x = selected_texture->tex_width - tex_x - 1;
+    double step = 1.0 * render->selected_texture->tex_height / render->lineHeight;
+    double tex_pos = (render->drawStart - HEIGHT / 2 + render->lineHeight / 2) * step;
 
-		// Texture'ın Y koordinatı için adım miktarını hesapla
-		double step = 1.0 * selected_texture->tex_height / lineHeight;
-		double tex_pos = (drawStart - HEIGHT / 2 + lineHeight / 2) * step;
+    int y = render->drawStart;
+    while (y < render->drawEnd)
+    {
+        int tex_y = (int)tex_pos & (render->selected_texture->tex_height - 1);
+        tex_pos += step;
 
-		// ===================== TEXTURE SEÇİMİ =====================
-        // Duvarın hangi yöne çarptığını kontrol et ve doğru texture'ı seç
-		if (!selected_texture || !selected_texture->texture_data)
-		{
-			error_msg("Geçersiz texture seçimi!", cub, 1);
-			return;
-		}
-			
-		// ===================== TEXTURE ÇİZİMİ =====================
-		y = drawStart;
-		while (y < drawEnd)
-		{
-			// Texture'ın Y koordinatını hesapla
-			int tex_y = (int)tex_pos & (selected_texture->tex_height - 1);
-			tex_pos += step; // Bir sonraki pixel için Y koordinatını artır
-			
-			// Texture'dan renk değerini al
-            int color = *(unsigned int *)(selected_texture->texture_data + 
-                (tex_y * selected_texture->size_line + tex_x * (selected_texture->bits_per_pixel / 8)));
-			
-			// Pixel'i ekrana çiz
-			my_mlx_pixel_put(cub, x, y, color);
-			y++;
-		}
-		x++;
-	}
+        int color = *(unsigned int *)(render->selected_texture->texture_data +
+                                      (tex_y * render->selected_texture->size_line + tex_x * (render->selected_texture->bits_per_pixel / 8)));
+        my_mlx_pixel_put(cub, x, y, color);
+        y++;
+    }
+}
+
+// ===================== MAIN RENDER FUNCTION =====================
+void render_map(t_cub *cub)
+{
+    int x = 0;
+    t_render render;
+
+    painting_sky_and_ground(cub);
+
+    while (x < WIDTH)
+    {
+        setup_ray(cub, &render, x);
+        calculate_step_and_side_dist(cub, &render);
+        perform_dda(cub, &render);
+        calculate_wall_distance_and_height(cub, &render);
+        select_texture(cub, &render);
+        draw_texture(cub, &render, x);
+        x++;
+    }
 	// ===================== EKRANA GÖSTER =====================
 	// Tamamlanan image'ı window'a yerleştir
 	mlx_put_image_to_window(cub->mlx.mlx, cub->mlx.win, cub->mlx.win_data.image, 0, 0);
