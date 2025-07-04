@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/04 17:00:30 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/04 19:20:36 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,20 @@ typedef struct s_cub
 	int			rotate_right;
 }	t_cub;
 
+int		is_player(char p);
+void	flood_fill(char **map_copy, int x, int y, int *error);
+char	**create_map_copy(t_cub *cub);
 void	check_map_around_wall(t_cub *cub);
+int		get_num_lines(char **map);
+
+
+void	painting_sky_and_ground(t_cub *cub);
+void	render_picture(t_cub *cub);
+void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
+void	select_texture(t_cub *cub, t_render *render);
+void	draw_texture(t_cub *cub, t_render *render, int x);
+
+
 void	validate_map_line(char *line, t_cub *cub);
 void	set_coor_and_pos(t_cub *cub, char *line, int i);
 int		map_reel_lenght(char *file, t_cub *cub);
@@ -147,7 +160,7 @@ void	render_map(t_cub *cub);
 void	read_fc_rgb(t_cub *cub, int fd);
 void	error_msg(char *msg, t_cub *cub, int is_free);
 void	free_texture(t_texture texture);
-void	free_map(t_cub *cub);
+void	free_map(char **map);
 int		game_loop(t_cub *cub);
 void	init_movement_state(t_cub *cub);
 void	setup_hooks(t_cub *cub);

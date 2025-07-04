@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:55:10 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/04 16:11:01 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/04 19:29:15 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	check_walls(t_cub *cub)
 		{
 			while (cub->map.map[i][j])
 			{
-				if (cub->map.map[i][j] != '1' && cub->map.map[i][j] != '\n' &&
-					cub->map.map[i][j] != ' ' && cub->map.map[i][j] != '\t')
+				if (cub->map.map[i][j] != '1' && cub->map.map[i][j] != '\n'
+					&& cub->map.map[i][j] != ' ' && cub->map.map[i][j] != '\t')
 				{
 					error_msg("There is no '1 in the first or \
 						last line of the map", cub, 3);
@@ -83,56 +83,5 @@ void	check_map(t_cub *cub)
 		i++;
 	}
 	check_walls(cub);
+	check_map_around_wall(cub);
 }
-
-#include <stdio.h>
-
-// void	check_map_around_wall(t_cub *cub)
-// {
-// 	int		i;
-// 	int		g;
-// 	size_t	len;
-
-// 	i = 0;
-// 	g = 0;
-// 	while (cub->map.map[i])
-// 	{
-// 		len = ft_strlen(cub->map.map[i]);
-// 		if (len == ft_strlen(cub->map.map[i + 1]))
-// 		{
-// 			i++;
-// 			continue;
-// 		}
-// 		if (len > ft_strlen(cub->map.map[i + 1]))
-// 		{
-// 			g = len - ft_strlen(cub->map.map[i + 1]);
-// 			printf("g: %d\n",g);
-// 			while (g >= 0)
-// 			{
-// 				if (cub->map.map[i][len - g] != '1')
-// 				{
-// 					printf("line %s\n",cub->map.map[i]);
-// 					printf("len %lu index %c\n", len , cub->map.map[i][len]);
-// 					error_msg("Map around not wall", cub, 3);
-// 				}
-// 				g--;
-// 			}
-// 		}
-// 		else
-// 		{
-// 			g = len - ft_strlen(cub->map.map[i + 1]);
-// 			printf("g: %d\n",g);
-// 			while (g > 0)
-// 			{
-// 				if (cub->map.map[i + 1][ft_strlen(cub->map.map[i + 1])] != '1')
-// 				{
-// 					printf("line %s\n",cub->map.map[i]);
-// 					printf("len %lu index %c\n", len - 1 - g, cub->map.map[i][len - 1 -g]);
-// 					error_msg("Map around not walll", cub, 3);
-// 				}				
-// 				g--;
-// 			}
-// 		}
-// 		i++;
-// 	}
-// }

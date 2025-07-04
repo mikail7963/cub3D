@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:35:00 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/04 16:11:05 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/04 19:33:12 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ char	*read_xpm_until_map(t_cub *cub, int fd)
 		free(tmp);
 		tmp = get_next_line(fd);
 	}
+	if (!tmp)
+		error_msg("No map", cub, 2);
 	if (ft_strchr(tmp, 'W') || ft_strchr(tmp, 'E')
 		|| ft_strchr(tmp, 'N') || ft_strchr(tmp, 'S'))
 		error_msg("player on the wall", cub, 2);
@@ -127,5 +129,4 @@ void	open_file(t_cub *cub, char *file)
 	read_file(cub, file);
 	check_texture(cub, 0);
 	check_map(cub);
-	// check_map_around_wall(cub);
 }

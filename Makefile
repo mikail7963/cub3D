@@ -10,7 +10,7 @@ LIBFT = $(LIBFT_PATH)libft.a
 MLX = $(MLX_PATH)libmlx.a
 
 SRC = main.c read_file.c read_texture.c render.c rgb.c check_map.c free.c \
-	key_handle.c movement.c game_loop.c rotate_player.c read_file_utils.c
+	key_handle.c movement.c game_loop.c rotate_player.c read_file_utils.c render_texture.c flood_fill.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

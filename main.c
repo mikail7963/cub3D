@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/04 17:01:03 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/04 18:03:55 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	error_msg(char *msg, t_cub *cub, int is_free)
 	ft_putendl_fd("Error", 2);
 	ft_putendl_fd(msg, 2);
 	if (is_free >= 3)
-		free_map(cub);
+		free_map(cub->map.map);
 	if (is_free >= 2)
 		free_texture(cub->texture);
 	if (is_free >= 1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_texture.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:36:29 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/04 14:22:59 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/04 19:36:22 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,20 @@ void	check_is_there_texture_file(t_cub *cub)
 
 int	check_texture(t_cub *cub, int i)
 {
-	if (check_extension(cub->texture.east, ".xpm"))
-		error_msg("wall file extensions are not valid", cub, 3);
-	if (check_extension(cub->texture.north, ".xpm"))
-		error_msg("wall file extensions are not valid", cub, 3);
-	if (check_extension(cub->texture.west, ".xpm"))
-		error_msg("wall file extensions are not valid", cub, 3);
-	if (check_extension(cub->texture.south, ".xpm"))
-		error_msg("wall file extensions are not valid", cub, 3);
-	check_is_there_texture_file(cub);
-	if (i > 4)
-		error_msg("texture file is more than four", cub, 2);
 	if (!(cub->texture.north) || !(cub->texture.south)
 		|| !(cub->texture.west) || !(cub->texture.east))
 		error_msg("Some of the texture packs is missing", cub, 2);
+	if (check_extension(cub->texture.east, ".xpm"))
+		error_msg("wall file extensions are not valid", cub, 2);
+	if (check_extension(cub->texture.north, ".xpm"))
+		error_msg("wall file extensions are not valid", cub, 2);
+	if (check_extension(cub->texture.west, ".xpm"))
+		error_msg("wall file extensions are not valid", cub, 2);
+	if (check_extension(cub->texture.south, ".xpm"))
+		error_msg("wall file extensions are not valid", cub, 2);
+	check_is_there_texture_file(cub);
+	if (i > 4)
+		error_msg("texture file is more than four", cub, 2);
 	return (0);
 }
 

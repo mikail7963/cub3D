@@ -50,7 +50,7 @@ int	handle_keyrelease(int key, t_cub *cub)
 
 int	handle_close(t_cub *cub)
 {
-	free_map(cub);
+	free_map(cub->map.map);
 	free_texture(cub->texture);
 	if (cub->north.image)
 		mlx_destroy_image(cub->mlx.mlx, cub->north.image);
