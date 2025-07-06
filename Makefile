@@ -4,8 +4,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 MLX_FLAGS = -lm -lbsd -lmlx -lXext -lX11
 
-LIBFT_PATH = libft/
-MLX_PATH = mlx/
+LIBFT_PATH = libs/libft/
+MLX_PATH = libs/mlx/
 LIBFT = $(LIBFT_PATH)libft.a
 MLX = $(MLX_PATH)libmlx.a
 

@@ -27,12 +27,20 @@ void	init_movement_state(t_cub *cub)
 	cub->move_right = 0;
 	cub->rotate_left = 0;
 	cub->rotate_right = 0;
+	cub->mouse_rotate_left = 0;
+	cub->mouse_rotate_right = 0;
 }
 
+/*
+mlx_hook: Belirli olaylara (event) karşılık bir callback (geri çağırma) fonksiyonu tanımlar.
+mlx_loop_hook: Her frame'de (her döngüde) sürekli çalışan bir fonksiyon tanımlar.
+*/
 void	setup_hooks(t_cub *cub)
 {
 	mlx_hook(cub->mlx.win, 2, 1L << 0, handle_keypress, cub);
 	mlx_hook(cub->mlx.win, 3, 1L << 1, handle_keyrelease, cub);
+	mlx_hook(cub->mlx.win, 4, 1L << 2, handle_mouse_press, cub);
+	mlx_hook(cub->mlx.win, 5, 1L << 3, handle_mouse_release, cub);
 	mlx_hook(cub->mlx.win, 33, 0L, handle_close, cub);
 	mlx_loop_hook(cub->mlx.mlx, game_loop, cub);
 }

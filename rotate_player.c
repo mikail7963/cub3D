@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   rotate_player.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 10:56:00 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/04 14:12:05 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/06 12:50:58 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-// oyuncunun yeni bir pozisyona geçip geçemeyeceğini kontrol eder.
+/*
+Oyuncunun (x, y) konumunun harita üzerinde geçerli ve yürünebilir (çarpışma olmayan) bir pozisyon olup olmadığını kontrol eder
+
+*/
 int	is_valid_position(t_cub *cub, double x, double y)
 {
 	int	map_x;
@@ -20,12 +23,12 @@ int	is_valid_position(t_cub *cub, double x, double y)
 
 	map_x = (int)x;
 	map_y = (int)y;
-	if (map_x < 0 || map_y < 0)
+	if (map_x < 0 || map_y < 0)		// Eksi koordinatlar geçersizdir. Harita dışına çıkılmış demektir.
 		return (0);
 	// Pozisyonun harita içinde geçerli bir hücre olup olmadığını kontrol eder.
 	if (!cub->map.map[map_y] || !cub->map.map[map_y][map_x])
 		return (0);
-	if (cub->map.map[map_y][map_x] == '1')
+	if (cub->map.map[map_y][map_x] == '1')	// Haritada '1' bir duvarı temsil eder. Yani buraya girilemez. (Duvardan geçemezsin/duvar çarpışması)
 		return (0);
 	return (1);
 }

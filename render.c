@@ -3,16 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:10:14 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/04 17:27:19 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/05 13:08:47 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-// ===================== RAY CASTING SETUP =====================
+/*
+Her ekran sütunu için ışın (ray) oluşturur
+- Kamera düzlemindeki her piksel için ışın yönünü hesaplar
+- Oyuncunun bakış yönü + kamera düzlemi = ışın yönü
+- Başlangıç harita koordinatlarını (mapX, mapY) belirler
+- DeltaDistX/Y: ışının bir harita karesini geçmek için gereken mesafe
+*/
 void	setup_ray(t_cub *cub, t_render *render, int x)
 {
 	render->rayDirX = cub->player.dirx + cub->plane_x * (2 * x / (double)WIDTH - 1);
@@ -30,7 +36,12 @@ void	setup_ray(t_cub *cub, t_render *render, int x)
 	render->hit = 0;
 }
 
-// ===================== STEP AND SIDE DISTANCE =====================
+/*
+DDA algoritması için adım yönünü ve mesafeleri hesaplar
+- stepX/Y: Işının hangi yönde ilerleyeceği (-1 veya +1)
+- sideDistX/Y: Bir sonraki harita çizgisine olan mesafe
+- Pozitif yön: sağ/aşağı, Negatif yön: sol/yukar
+*/
 void	calculate_step_and_side_dist(t_cub *cub, t_render *render)
 {
 	if (render->rayDirX < 0)
@@ -55,7 +66,12 @@ void	calculate_step_and_side_dist(t_cub *cub, t_render *render)
 	}
 }
 
-// ===================== DDA ALGORITHM =====================
+/*
+Digital Differential Analyzer (DDA) - duvarı bulana kadar ışını ilerletir
+- Her adımda X veya Y yönünde ilerler (hangisi daha yakınsa)
+- Harita üzerinde '1' (duvar) bulana kadar devam eder
+- side: hangi taraftan duvara çarptığını belirler (0=X tarafı, 1=Y tarafı)
+*/
 void	perform_dda(t_cub *cub, t_render *render)
 {
 	while (render->hit == 0)
@@ -77,7 +93,12 @@ void	perform_dda(t_cub *cub, t_render *render)
 	}
 }
 
-// ===================== WALL DISTANCE AND HEIGHT =====================
+/*
+Duvar mesafesini ve ekrandaki yüksekliğini hesaplar
+- perpWallDist: Balıkgözü etkisini önlemek için perpendicular mesafe
+- lineHeight: Duvarin ekrandaki pixel yüksekliği
+- drawStart/End: Duvarın çizileceği Y koordinatları
+*/
 void	calculate_wall_distance_and_height(t_cub *cub, t_render *render)
 {
 	if (render->side == 0)
@@ -93,7 +114,16 @@ void	calculate_wall_distance_and_height(t_cub *cub, t_render *render)
 		render->drawEnd = HEIGHT - 1;
 }
 
-// ===================== MAIN RENDER FUNCTION =====================
+/*
+Tüm render sürecini yönetir
+- Gökyüzü ve zemin boyar
+- Her ekran sütunu için (WIDTH boyunca):
+	- Işın oluştur
+	- DDA ile duvar bul
+	- Mesafe ve yükseklik hesapla
+	- Texture seç ve çiz
+- Sonucu ekrana gösterir
+*/
 void	render_map(t_cub *cub)
 {
 	t_render	render;
@@ -111,7 +141,5 @@ void	render_map(t_cub *cub)
 		draw_texture(cub, &render, x);
 		x++;
 	}
-	// ===================== EKRANA GÖSTER =====================
-	// Tamamlanan image'ı window'a yerleştir
 	mlx_put_image_to_window(cub->mlx.mlx, cub->mlx.win, cub->mlx.win_data.image, 0, 0);
 }

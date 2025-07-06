@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_texture.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:25:06 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/04 17:44:07 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/05 13:08:15 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color)
 }
 
 /*
- * Texture dosyasını yükleyen fonksiyon
- * XPM formatındaki texture'ı memory'e yükler
- */
+Tüm texture'ları yükler ve hazırlar
+- 4 yön için XPM dosyalarını yükler (North, South, East, West)
+- Her texture için data pointer'ı alır
+- Ana window image'ını oluşturur
+*/
 void	render_picture(t_cub *cub)
 {
 	// Her yön için texture dosyasını yükle
@@ -58,6 +60,13 @@ void	render_picture(t_cub *cub)
 	cub->mlx.win_data.texture_data = mlx_get_data_addr(cub->mlx.win_data.image, &cub->mlx.win_data.bits_per_pixel, &cub->mlx.win_data.size_line, &cub->mlx.win_data.endian);
 }
 
+/*
+Arkaplan renklerini boyar
+- Tüm ekranı teker teker dolaşır
+- Üst yarı = gökyüzü rengi (ceiling)
+- Alt yarı = zemin rengi (floor)
+- Pixel hesaplama: x = i % WIDTH, y = i / WIDTH
+*/
 void	painting_sky_and_ground(t_cub *cub)
 {
 	int	total_pixels;
@@ -79,7 +88,12 @@ void	painting_sky_and_ground(t_cub *cub)
 	}
 }
 
-// ===================== TEXTURE SELECTION =====================
+/*
+Hangi texture'ın kullanılacağını belirler
+- side = 0: X tarafı duvaru (East/West)
+- side = 1: Y tarafı duvaru (North/South)
+- Işın yönüne göre doğru texture'ı seçer
+*/
 void	select_texture(t_cub *cub, t_render *render)
 {
 	if (render->side == 0 && render->rayDirX > 0)
@@ -92,7 +106,17 @@ void	select_texture(t_cub *cub, t_render *render)
 		render->selected_texture = &cub->north;
 }
 
-// ===================== TEXTURE DRAWING =====================
+/*
+Seçilen texture'ı duvara çizer
+- wall_x hesaplama: Duvarın hangi noktasına çarptığını bulur
+- tex_x hesaplama: Texture'ın X koordinatını belirler
+- Yansıtma kontrolü: Bazı durumlarda texture'ı ters çevirir
+- step hesaplama: Texture'ın Y ekseninde nasıl ölçekleneceği
+- Pixel döngüsü: Her Y koordinatı için:
+	- Texture Y koordinatını hesaplar
+	- Texture'dan renk alır
+	- Ekrana pixel çizer
+*/
 void	draw_texture(t_cub *cub, t_render *render, int x)
 {
 	double	wall_x;

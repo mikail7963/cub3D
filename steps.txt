@@ -7,19 +7,25 @@ labirent benzeri bir ortamda birinci şahıs bakış açısıyla gezilebilecek
 bir 3D görsel alan oluşturmanı sağlar.
 
 
+raycasting:
+Raycasting, bir oyuncunun bakış açısından sahneye doğru ışınlar (ray) göndererek, bu ışınların neyle çarpıştığını (duvar, nesne, vs.) hesaplayan bir algoritmadır.
+- 3D görselliği 2D bir harita üzerinde simüle etmek için kullanılır.
+- Oyuncunun görüş açısına göre duvarları, nesneleri, düşmanları ekrana çizer.
 
+Örnek Senaryo (2D harita üzerinde):
+- Harita: 2 boyutlu karelerden oluşur (duvar = 1, boşluk = 0).
+- Oyuncu: Haritanın bir noktasında durur ve belirli bir yöne bakar.
+- Algoritma: Oyuncunun görüş alanındaki her piksel için bir "ışın" yollar.
+- Işın, ilk olarak hangi duvara çarparsa, o duvar çizilir.
+- Bu işlem tüm ekran için yapılır, böylece 3D bir görünüm elde edilir.
 
+Basit Raycasting Adımları:
+- Oyuncunun pozisyonunu ve yönünü al.
+- Ekrandaki her dikey çizgi için bir ışın gönder.
+- Işın harita üzerinde ilerlerken bir duvara çarpana kadar hareket eder.
+- Duvarın uzaklığına göre ekranın o noktasına bir çubuk (duvar) çizilir.
+- Uzak duvarlar daha kısa çizilir → perspektif efekti oluşur.
 
+Render:
+Render (görüntüleme), bir sahnenin veya verinin işlenip görüntüye dönüştürülmesidir.
 
-
-
-
-/* Adımlar
-- Parsing → Harita ve texture dosyalarını okuma
-- Initialization → MLX ve veri yapılarını başlatma
-- Render temel → Basit görüntü çizimi
-- Raycasting → 3D görüntü algoritması
-- Hareket → Oyuncu kontrolü
-- Texture → Duvar texture'ları
-
-*/

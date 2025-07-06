@@ -71,4 +71,8 @@ void	move_player(t_cub *cub)
 		rotate_player(cub, -ROT_SPEED);
 	if (cub->rotate_right)
 		rotate_player(cub, ROT_SPEED);
+	if (cub->mouse_rotate_left)
+		rotate_player(cub, -ROT_SPEED);
+	if (cub->mouse_rotate_right)
+		rotate_player(cub, ROT_SPEED);
 }

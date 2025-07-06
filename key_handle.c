@@ -48,6 +48,28 @@ int	handle_keyrelease(int key, t_cub *cub)
 	return (0);
 }
 
+int	handle_mouse_press(int button, int x, int y, t_cub *cub)
+{
+	(void)x;
+	(void)y;
+	if (button == MOUSE_LEFT)
+		cub->mouse_rotate_left = 1;
+	if (button == MOUSE_RIGHT)
+		cub->mouse_rotate_right = 1;
+	return (0);
+}
+
+int	handle_mouse_release(int button, int x, int y, t_cub *cub)
+{
+	(void)x;
+	(void)y;
+	if (button == MOUSE_LEFT)
+		cub->mouse_rotate_left = 0;
+	if (button == MOUSE_RIGHT)
+		cub->mouse_rotate_right = 0;
+	return (0);
+}
+
 int	handle_close(t_cub *cub)
 {
 	free_map(cub->map.map);

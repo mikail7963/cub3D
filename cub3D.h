@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/04 19:20:36 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/06 13:20:43 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H 
 
-# include "libft/libft.h"
+# include "libs/libft/libft.h"
+# include "libs/mlx/mlx.h"
 # include <fcntl.h>
-# include "mlx/mlx.h"
 # include <math.h>
 
 # define WIDTH 800
@@ -30,6 +30,12 @@
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
 # define KEY_ESC 65307
+
+# define MOUSE_LEFT 1
+# define MOUSE_RIGHT 3
+
+/*cd /mnt/c/Users/90507/OneDrive/Masaüstü/cub3D*/
+/*export DISPLAY=172.24.64.1:0.0*/
 
 typedef struct s_texture
 {
@@ -129,6 +135,8 @@ typedef struct s_cub
 	int			move_right;
 	int			rotate_left;
 	int			rotate_right;
+	int			mouse_rotate_left;
+	int			mouse_rotate_right;
 }	t_cub;
 
 int		is_player(char p);
@@ -168,6 +176,8 @@ void	move_player(t_cub *cub);
 int		handle_keypress(int key, t_cub *cub);
 int		handle_keyrelease(int key, t_cub *cub);
 int		handle_close(t_cub *cub);
+int		handle_mouse_press(int button, int x, int y, t_cub *cub);
+int		handle_mouse_release(int button, int x, int y, t_cub *cub);
 void	render_picture(t_cub *cub);
 void	rotate_player(t_cub *cub, double angle);
 
