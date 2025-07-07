@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rgb.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:37:13 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/04 14:10:52 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/07 19:09:37 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void	read_fc_rgb(t_cub *cub, int fd)
 		free(line);
 		line = get_next_line(fd);
 	}
+	free(line);
 	if (i != 2)
 		error_msg("missing floor or ceiling color", cub, 2);
 	cub->fc.ceiling_c.colour = rgb_to_colour(cub->fc.ceiling_c.r, \

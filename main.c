@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/07 16:54:31 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/07 19:12:21 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	init_cub(t_cub *cub)
 	cub->tex_data.tex_height = 0;
 	cub->tex_data.tex_width = 0;
 	cub->tex_data.texture_data = 0;
+	cub->map.map = NULL;
 	init_movement_state(cub);
 }
 

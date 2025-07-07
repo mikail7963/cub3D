@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:21:53 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/07 17:29:33 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/07 18:15:29 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	find_true_door(t_cub *cub, int x, int y)
 
 /*
 Oyuncunun baktığı yönde kapı olup olmadığını kontrol eder ve varsa kapıyı açar/kapatır.
-
 */
 void	handle_door(t_cub *cub)
 {
@@ -42,7 +41,7 @@ void	handle_door(t_cub *cub)
 	if (check_y < 0 || check_x < 0 || check_x >= (int)ft_strlen(cub->map.map[check_y]))
 	{
 		i++;
-		return;
+		return ;
 	}
 	if (cub->map.map[check_y][check_x] == 'D')
 	{
@@ -82,7 +81,6 @@ int	door_lenght(t_cub *cub)
 		}
 		y++;
 	}
-	ft_putnbr_fd(door_len, 1);
 	return (door_len);
 }
 

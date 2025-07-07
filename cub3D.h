@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/07 16:54:55 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/07 19:38:37 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,19 @@
 
 /*cd /mnt/c/Users/90507/OneDrive/Masaüstü/cub3D*/
 /*export DISPLAY=172.24.64.1:0.0*/
+
+//typedef struct s_door_sprite
+//{
+//	t_tex_data	door_0;
+//	t_tex_data	door_1;
+//	t_tex_data	door_2;
+//	t_tex_data	door_3;
+//	t_tex_data	door_4;
+//	t_tex_data	door_5;
+//	t_tex_data	door_6;
+//	t_tex_data	door_7;
+//}	t_door_sprite;
+
 
 typedef struct s_texture
 {
