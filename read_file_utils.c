@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 13:03:04 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/04 19:28:43 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/07 13:40:37 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,11 @@ void	validate_map_line(char *line, t_cub *cub)
 		if (!(line[i] == '0' || line[i] == '1' || is_player(line[i])
 				|| line[i] == '\0' || line[i] == '\n' || line[i] == ' '))
 		{
-			ft_putnbr_fd(i, 1);
-			ft_putstr_fd(line, 1);
+			if (BONUS && line[i] == 'D')
+			{
+				i++;
+				continue;
+			}
 			free(line);
 			error_msg("unknown character", cub, 3);
 		}

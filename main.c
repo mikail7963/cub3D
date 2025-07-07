@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/04 18:03:55 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/07 16:54:31 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	main(int argc, char **argv)
 	cub = malloc(sizeof(t_cub));
 	init_cub(cub);
 	open_file(cub, argv[1]);
+	if (BONUS)
+		init_door(cub);
 	cub->mlx.mlx = mlx_init();
 	cub->mlx.win = mlx_new_window(cub->mlx.mlx, WIDTH, HEIGHT, "Cub3D");
 	render_picture(cub);

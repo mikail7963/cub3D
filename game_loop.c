@@ -39,8 +39,11 @@ void	setup_hooks(t_cub *cub)
 {
 	mlx_hook(cub->mlx.win, 2, 1L << 0, handle_keypress, cub);
 	mlx_hook(cub->mlx.win, 3, 1L << 1, handle_keyrelease, cub);
-	mlx_hook(cub->mlx.win, 4, 1L << 2, handle_mouse_press, cub);
-	mlx_hook(cub->mlx.win, 5, 1L << 3, handle_mouse_release, cub);
+	if (BONUS)
+	{
+		mlx_hook(cub->mlx.win, 4, 1L << 2, handle_mouse_press, cub);
+		mlx_hook(cub->mlx.win, 5, 1L << 3, handle_mouse_release, cub);
+	}
 	mlx_hook(cub->mlx.win, 33, 0L, handle_close, cub);
 	mlx_loop_hook(cub->mlx.mlx, game_loop, cub);
 }

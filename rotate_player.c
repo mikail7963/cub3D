@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rotate_player.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 10:56:00 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/06 12:50:58 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/07 16:55:37 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ int	is_valid_position(t_cub *cub, double x, double y)
 	if (!cub->map.map[map_y] || !cub->map.map[map_y][map_x])
 		return (0);
 	if (cub->map.map[map_y][map_x] == '1')	// Haritada '1' bir duvarı temsil eder. Yani buraya girilemez. (Duvardan geçemezsin/duvar çarpışması)
+	{		
+		return (0);
+	}
+	if (BONUS && cub->map.map[map_y][map_x] == 'D' && cub->door[find_true_door(cub,map_x,map_y)].is_open == 0)
 		return (0);
 	return (1);
 }

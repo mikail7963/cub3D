@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:10:14 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/05 13:08:47 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/07 16:52:40 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,13 @@ void	perform_dda(t_cub *cub, t_render *render)
 		}
 		if (cub->map.map[render->mapY][render->mapX] == '1')
 			render->hit = 1;
+		if (BONUS && cub->map.map[render->mapY][render->mapX] == 'D')
+		{
+			if (cub->door[find_true_door(cub, render->mapX, render->mapY)].is_open == 1)
+				continue;
+			render->hit = 1;
+			render->is_door = 1;
+		}
 	}
 }
 
@@ -133,6 +140,7 @@ void	render_map(t_cub *cub)
 	painting_sky_and_ground(cub);
 	while (x < WIDTH)
 	{
+		render.is_door = 0;
 		setup_ray(cub, &render, x);
 		calculate_step_and_side_dist(cub, &render);
 		perform_dda(cub, &render);

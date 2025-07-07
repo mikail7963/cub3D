@@ -29,3 +29,33 @@ Basit Raycasting Adımları:
 Render:
 Render (görüntüleme), bir sahnenin veya verinin işlenip görüntüye dönüştürülmesidir.
 
+
+
+Door
+----
+
+1. Harita ve Parsing
+.cub dosyasında D karakteri ekle (kapı için)
+Parsing fonksiyonlarını D karakterini tanıyacak şekilde güncelle
+Kapı texture'ları için yeni satırlar ekle (örn: DO door_texture.xpm)
+
+2. Veri Yapısı
+t_door structure oluştur (pozisyon, durum, texture)
+Game structure'a kapı listesi ekle
+Kapı durumları için enum tanımla (CLOSED, OPEN, OPENING, CLOSING)
+
+3. Raycasting Güncellemesi
+DDA algoritmasını kapıları detect edecek şekilde güncelle
+Kapı durumuna göre collision hesapla
+Kapı texture'ını render et
+
+4. Etkileşim
+Kapı açma tuşu ekle (örn: E)
+Player-kapı mesafe kontrolü
+Kapı durumunu toggle et
+5. Collision
+Movement fonksiyonlarını güncelle
+Kapalı kapı = duvar, açık kapı = geçiş
+6. Rendering
+draw_wall() fonksiyonunu kapı için adapte et
+Kapı texture'larını yükle ve çiz

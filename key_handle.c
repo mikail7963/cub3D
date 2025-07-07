@@ -23,11 +23,13 @@ int	handle_keypress(int key, t_cub *cub)
 	if (key == KEY_A)
 		cub->move_left = 1;
 	if (key == KEY_D)
-		cub->move_right = 1;
+		cub->move_right = 1;	
 	if (key == KEY_LEFT)
 		cub->rotate_left = 1;
 	if (key == KEY_RIGHT)
 		cub->rotate_right = 1;
+	if (BONUS && key == KEY_E)
+		handle_door(cub);
 	return (0);
 }
 
@@ -45,28 +47,6 @@ int	handle_keyrelease(int key, t_cub *cub)
 		cub->rotate_left = 0;
 	if (key == KEY_RIGHT)
 		cub->rotate_right = 0;
-	return (0);
-}
-
-int	handle_mouse_press(int button, int x, int y, t_cub *cub)
-{
-	(void)x;
-	(void)y;
-	if (button == MOUSE_LEFT)
-		cub->mouse_rotate_left = 1;
-	if (button == MOUSE_RIGHT)
-		cub->mouse_rotate_right = 1;
-	return (0);
-}
-
-int	handle_mouse_release(int button, int x, int y, t_cub *cub)
-{
-	(void)x;
-	(void)y;
-	if (button == MOUSE_LEFT)
-		cub->mouse_rotate_left = 0;
-	if (button == MOUSE_RIGHT)
-		cub->mouse_rotate_right = 0;
 	return (0);
 }
 

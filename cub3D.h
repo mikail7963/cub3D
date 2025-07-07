@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/06 13:20:43 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/07 16:54:55 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,16 @@
 # define KEY_A 97 
 # define KEY_S 115
 # define KEY_D 100
+# define KEY_E 101
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
 # define KEY_ESC 65307
 
 # define MOUSE_LEFT 1
 # define MOUSE_RIGHT 3
+# ifndef BONUS
+# define BONUS 0
+# endif
 
 /*cd /mnt/c/Users/90507/OneDrive/Masaüstü/cub3D*/
 /*export DISPLAY=172.24.64.1:0.0*/
@@ -91,8 +95,16 @@ typedef struct s_mlx
 	t_tex_data	win_data;
 }	t_mlx;
 
+typedef struct s_door
+{
+	int			door_x;
+	int			door_y;
+	int			is_open;
+}	t_door;
+
 typedef struct s_render
 {
+	int 	is_door;
     double rayDirX;
     double rayDirY;
     int mapX;
@@ -119,6 +131,9 @@ typedef struct s_cub
 	double		plane_y;
 	int			is_player;
 	int			map_index;
+	t_door		*door;
+	int			door_len;
+	t_tex_data	door_texture;
 	t_texture	texture;
 	t_map		map;
 	t_fc		fc;
@@ -138,6 +153,12 @@ typedef struct s_cub
 	int			mouse_rotate_left;
 	int			mouse_rotate_right;
 }	t_cub;
+
+
+void init_door(t_cub *cub);
+void	handle_door(t_cub *cub);
+int		find_true_door(t_cub *cub, int x, int y);
+
 
 int		is_player(char p);
 void	flood_fill(char **map_copy, int x, int y, int *error);

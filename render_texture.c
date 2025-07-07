@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_texture.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:25:06 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/05 13:08:15 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/07 16:51:47 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,15 @@ void	render_picture(t_cub *cub)
 	// Window image oluştur
 	cub->mlx.win_data.image = mlx_new_image(cub->mlx.mlx, WIDTH, HEIGHT);
 	cub->mlx.win_data.texture_data = mlx_get_data_addr(cub->mlx.win_data.image, &cub->mlx.win_data.bits_per_pixel, &cub->mlx.win_data.size_line, &cub->mlx.win_data.endian);
+	if (BONUS)
+	{
+		cub->door_texture.image = mlx_xpm_file_to_image(cub->mlx.mlx, "textures/door/door3.xpm", &cub->door_texture.tex_width, &cub->door_texture.tex_height);
+		if (!cub->door_texture.image )
+			error_msg("Texture is incorrect: Door", cub, 1);	
+		cub->door_texture.texture_data = mlx_get_data_addr(cub->door_texture.image, &cub->door_texture.bits_per_pixel, &cub->door_texture.size_line, &cub->door_texture.endian);
+		if (!cub->door_texture.texture_data)
+            error_msg("Door texture data is NULL", cub, 1);
+	}
 }
 
 /*
@@ -96,6 +105,11 @@ Hangi texture'ın kullanılacağını belirler
 */
 void	select_texture(t_cub *cub, t_render *render)
 {
+	if (BONUS && render->is_door == 1)
+	{
+		render->selected_texture = &cub->door_texture;
+		return;
+	}
 	if (render->side == 0 && render->rayDirX > 0)
 		render->selected_texture = &cub->east;
 	else if (render->side == 0 && render->rayDirX < 0)
@@ -104,6 +118,7 @@ void	select_texture(t_cub *cub, t_render *render)
 		render->selected_texture = &cub->south;
 	else
 		render->selected_texture = &cub->north;
+	
 }
 
 /*
