@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/08 18:44:55 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/08 19:23:39 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,13 +186,11 @@ char	**create_map_copy(t_cub *cub);
 void	check_map_around_wall(t_cub *cub);
 int		get_num_lines(char **map);
 
-
 void	painting_sky_and_ground(t_cub *cub);
 void	render_picture(t_cub *cub);
 void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
 void	select_texture(t_cub *cub, t_render *render);
 void	draw_texture(t_cub *cub, t_render *render, int x);
-
 
 void	validate_map_line(char *line, t_cub *cub);
 void	set_coor_and_pos(t_cub *cub, char *line, int i);

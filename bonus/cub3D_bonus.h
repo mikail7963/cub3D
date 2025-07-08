@@ -6,13 +6,12 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:33:41 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/08 18:46:24 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/08 19:24:15 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_BONUS_H
 # define CUB3D_BONUS_H
-
 # include "../cub3D.h"
 #define MINIMAP_SCALE 10
 #define MINIMAP_WIDTH 170
