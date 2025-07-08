@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:25:06 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/07 16:51:47 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:19:16 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color)
 {
 	char	*dst;
 
+	if (BONUS && color == 0x000000)
+		return;
 	// Koordinatların ekran sınırları içinde olup olmadığını kontrol et
 	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
 		return ;
@@ -58,15 +60,6 @@ void	render_picture(t_cub *cub)
 	// Window image oluştur
 	cub->mlx.win_data.image = mlx_new_image(cub->mlx.mlx, WIDTH, HEIGHT);
 	cub->mlx.win_data.texture_data = mlx_get_data_addr(cub->mlx.win_data.image, &cub->mlx.win_data.bits_per_pixel, &cub->mlx.win_data.size_line, &cub->mlx.win_data.endian);
-	if (BONUS)
-	{
-		cub->door_texture.image = mlx_xpm_file_to_image(cub->mlx.mlx, "textures/door/door3.xpm", &cub->door_texture.tex_width, &cub->door_texture.tex_height);
-		if (!cub->door_texture.image )
-			error_msg("Texture is incorrect: Door", cub, 1);	
-		cub->door_texture.texture_data = mlx_get_data_addr(cub->door_texture.image, &cub->door_texture.bits_per_pixel, &cub->door_texture.size_line, &cub->door_texture.endian);
-		if (!cub->door_texture.texture_data)
-            error_msg("Door texture data is NULL", cub, 1);
-	}
 }
 
 /*
@@ -106,10 +99,7 @@ Hangi texture'ın kullanılacağını belirler
 void	select_texture(t_cub *cub, t_render *render)
 {
 	if (BONUS && render->is_door == 1)
-	{
-		render->selected_texture = &cub->door_texture;
 		return;
-	}
 	if (render->side == 0 && render->rayDirX > 0)
 		render->selected_texture = &cub->east;
 	else if (render->side == 0 && render->rayDirX < 0)
@@ -134,36 +124,50 @@ Seçilen texture'ı duvara çizer
 */
 void	draw_texture(t_cub *cub, t_render *render, int x)
 {
-	double	wall_x;
-	int		y;
-	int		tex_y;
-	int		tex_x;
-	int		color;
-	double	step;
-	double	tex_pos;
+    double	wall_x;
+    int		y;
+    int		tex_y;
+    int		tex_x;
+    int		color;
+    double	step;
+    double	tex_pos;
 
-	wall_x = 0;
-	if (render->side == 0)
-		wall_x = cub->player.posy + render->perpWallDist * render->rayDirY;
-	else
-		wall_x = cub->player.posx + render->perpWallDist * render->rayDirX;
-	wall_x -= floor(wall_x);
-	tex_x = (int)(wall_x * (double)render->selected_texture->tex_width);
-	if (render->side == 0 && render->rayDirX < 0)
-		tex_x = render->selected_texture->tex_width - tex_x - 1;
-	if (render->side == 1 && render->rayDirY > 0)
-		tex_x = render->selected_texture->tex_width - tex_x - 1;
-	step = 1.0 * render->selected_texture->tex_height / render->lineHeight;
-	tex_pos = (render->drawStart - HEIGHT / 2 + render->lineHeight / 2) * step;
-	y = render->drawStart;
-	while (y < render->drawEnd)
-	{
-		tex_y = (int)tex_pos & (render->selected_texture->tex_height - 1);
-		tex_pos += step;
-		color = *(unsigned int *)(render->selected_texture->texture_data
-				+ (tex_y * render->selected_texture->size_line + tex_x
-					* (render->selected_texture->bits_per_pixel / 8)));
-		my_mlx_pixel_put(cub, x, y, color);
-		y++;
-	}
+   // ✅ ÖNCE arka plan çiz, SONRA kapı texture'ını çiz
+    if (BONUS && render->is_door)
+        draw_background_for_door(cub, render, x);
+    
+    if (render->side == 0)
+        wall_x = cub->player.posy + render->perpWallDist * render->rayDirY;
+    else
+        wall_x = cub->player.posx + render->perpWallDist * render->rayDirX;
+    wall_x -= floor(wall_x);
+    
+    tex_x = (int)(wall_x * (double)render->selected_texture->tex_width);
+    if (render->side == 0 && render->rayDirX < 0)
+        tex_x = render->selected_texture->tex_width - tex_x - 1;
+    if (render->side == 1 && render->rayDirY > 0)
+        tex_x = render->selected_texture->tex_width - tex_x - 1;
+    
+    step = 1.0 * render->selected_texture->tex_height / render->lineHeight;
+    tex_pos = (render->drawStart - HEIGHT / 2 + render->lineHeight / 2) * step;
+    y = render->drawStart;
+    
+    while (y < render->drawEnd)
+    {
+        tex_y = (int)tex_pos & (render->selected_texture->tex_height - 1);
+        tex_pos += step;
+        color = *(unsigned int *)(render->selected_texture->texture_data
+                + (tex_y * render->selected_texture->size_line + tex_x
+                    * (render->selected_texture->bits_per_pixel / 8)));
+        
+        // ✅ Kapı için SADECE şeffaf pikselleri atla
+        if (BONUS && render->is_door && color == 0x000000)
+        {
+            y++;
+            continue; // Şeffaf pixel'i atla, arka plan zaten çizildi
+        }
+        
+        my_mlx_pixel_put(cub, x, y, color);
+        y++;
+    }
 }

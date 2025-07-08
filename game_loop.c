@@ -31,6 +31,7 @@ void	init_movement_state(t_cub *cub)
 	cub->mouse_rotate_right = 0;
 }
 
+
 /*
 mlx_hook: Belirli olaylara (event) karşılık bir callback (geri çağırma) fonksiyonu tanımlar.
 mlx_loop_hook: Her frame'de (her döngüde) sürekli çalışan bir fonksiyon tanımlar.
@@ -41,9 +42,10 @@ void	setup_hooks(t_cub *cub)
 	mlx_hook(cub->mlx.win, 3, 1L << 1, handle_keyrelease, cub);
 	if (BONUS)
 	{
-		mlx_hook(cub->mlx.win, 4, 1L << 2, handle_mouse_press, cub);
-		mlx_hook(cub->mlx.win, 5, 1L << 3, handle_mouse_release, cub);
+		mlx_mouse_hide(cub->mlx.mlx, cub->mlx.win);
+		mlx_hook(cub->mlx.win, 6, 1L << 6, handle_mouse_move, cub);
 	}
+
 	mlx_hook(cub->mlx.win, 33, 0L, handle_close, cub);
 	mlx_loop_hook(cub->mlx.mlx, game_loop, cub);
 }

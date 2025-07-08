@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:10:14 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/07 17:45:03 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:42:51 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,15 @@ void	perform_dda(t_cub *cub, t_render *render)
 			render->side = 1;
 		}
 		if (cub->map.map[render->mapY][render->mapX] == '1')
+		{
 			render->hit = 1;
+			render->is_door = 0;	
+		}
 		if (BONUS && cub->map.map[render->mapY][render->mapX] == 'D')
 		{
-			if (cub->door[find_true_door(cub, render->mapX, render->mapY)].is_open == 1)
-				continue;
-			render->hit = 1;
+			play_door_sprite(cub,render);
 			render->is_door = 1;
+			render->hit = 1;
 		}
 	}
 }

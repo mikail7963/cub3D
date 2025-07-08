@@ -68,11 +68,11 @@ int	handle_close(t_cub *cub)
 		mlx_destroy_image(cub->mlx.mlx, cub->mlx.tex_image);
 	if (cub->mlx.win)
 		mlx_destroy_window(cub->mlx.mlx, cub->mlx.win);
-	if (BONUS && cub->door_texture.image)
-	{
-		mlx_destroy_image(cub->mlx.mlx, cub->door_texture.image);
-		free(cub->door);
-	}
+	//if (BONUS && cub->doors_manager.door_len > 0)
+	//{
+	//	mlx_destroy_image(cub->mlx.mlx, cub->doors_manager.door_texture.image);
+	//	free(cub->doors_manager.door);
+	//}
 
 	if (cub->mlx.mlx)
 	{

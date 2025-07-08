@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/07 19:38:37 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:24:28 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,21 @@
 # define BONUS 0
 # endif
 
+
 /*cd /mnt/c/Users/90507/OneDrive/Masaüstü/cub3D*/
 /*export DISPLAY=172.24.64.1:0.0*/
 
-//typedef struct s_door_sprite
-//{
-//	t_tex_data	door_0;
-//	t_tex_data	door_1;
-//	t_tex_data	door_2;
-//	t_tex_data	door_3;
-//	t_tex_data	door_4;
-//	t_tex_data	door_5;
-//	t_tex_data	door_6;
-//	t_tex_data	door_7;
-//}	t_door_sprite;
+
+typedef struct s_door
+{
+	int			door_x;
+	int			door_y;
+	int			is_open;
+	int			is_opening;
+	int			door_frame;
+	long		time;
+}	t_door;
+
 
 
 typedef struct s_texture
@@ -100,6 +101,16 @@ typedef struct s_tex_data
 	int		tex_height;
 }	t_tex_data;
 
+
+typedef struct s_door_manager
+{
+	t_tex_data	frames[8];
+	t_door		*door;
+	int			door_len;
+	struct s_tex_data	door_texture;
+}	t_doors_manager;
+
+
 typedef struct s_mlx
 {
 	void		*mlx;
@@ -107,13 +118,6 @@ typedef struct s_mlx
 	void		*tex_image;
 	t_tex_data	win_data;
 }	t_mlx;
-
-typedef struct s_door
-{
-	int			door_x;
-	int			door_y;
-	int			is_open;
-}	t_door;
 
 typedef struct s_render
 {
@@ -144,9 +148,7 @@ typedef struct s_cub
 	double		plane_y;
 	int			is_player;
 	int			map_index;
-	t_door		*door;
-	int			door_len;
-	t_tex_data	door_texture;
+    t_doors_manager doors_manager;
 	t_texture	texture;
 	t_map		map;
 	t_fc		fc;
@@ -168,10 +170,7 @@ typedef struct s_cub
 }	t_cub;
 
 
-void init_door(t_cub *cub);
-void	handle_door(t_cub *cub);
-int		find_true_door(t_cub *cub, int x, int y);
-
+# include "bonus/cub3D_bonus.h"
 
 int		is_player(char p);
 void	flood_fill(char **map_copy, int x, int y, int *error);
@@ -192,7 +191,7 @@ void	set_coor_and_pos(t_cub *cub, char *line, int i);
 int		map_reel_lenght(char *file, t_cub *cub);
 int		skip_whitespaces(char *line, int i);
 int		len_of_double_tmp(char **double_ptr);
-int		is_valid_position(t_cub *cub, double x, double y);
+int		check_wall_collisions(t_cub *cub, double x, double y);
 void	read_texture(t_cub *cub, int fd, int i, int j);
 int		check_texture(t_cub *cub, int i);
 void	open_file(t_cub *cub, char *file);
