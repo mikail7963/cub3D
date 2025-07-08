@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/08 13:30:07 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:44:18 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,11 @@ int	main(int argc, char **argv)
 	cub->mlx.win = mlx_new_window(cub->mlx.mlx, WIDTH, HEIGHT, "Cub3D");
 	render_picture(cub);
 	if (BONUS)
+	{
 		render_door(cub);
+		cub->minimap.mini_image = mlx_new_image(cub->mlx.mlx, MINIMAP_WIDTH, MINIMAP_HEIGHT);
+		cub->minimap.data = mlx_get_data_addr(cub->minimap.mini_image, &cub->minimap.bits_per_pixel, &cub->minimap.size_line, &cub->minimap.endian);
+	}
 	render_map(cub);
 	setup_hooks(cub);
 	mlx_loop(cub->mlx.mlx);

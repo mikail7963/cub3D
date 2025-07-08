@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/08 16:24:28 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:44:55 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,19 @@ typedef struct s_door
 	int			door_y;
 	int			is_open;
 	int			is_opening;
+	int			is_closing;
 	int			door_frame;
 	long		time;
 }	t_door;
 
-
+typedef struct s_minimap
+{
+	void	*mini_image;
+	char	*data;
+	int		bits_per_pixel;
+	int		size_line;
+	int		endian;
+}	t_minimap;
 
 typedef struct s_texture
 {
@@ -107,7 +115,6 @@ typedef struct s_door_manager
 	t_tex_data	frames[8];
 	t_door		*door;
 	int			door_len;
-	struct s_tex_data	door_texture;
 }	t_doors_manager;
 
 
@@ -159,6 +166,7 @@ typedef struct s_cub
 	t_tex_data	west;
 	t_tex_data	south;
 	t_tex_data	east;
+	t_minimap	minimap;
 	int			move_forward;
 	int			move_backward;
 	int			move_left;
@@ -209,8 +217,6 @@ void	move_player(t_cub *cub);
 int		handle_keypress(int key, t_cub *cub);
 int		handle_keyrelease(int key, t_cub *cub);
 int		handle_close(t_cub *cub);
-int		handle_mouse_press(int button, int x, int y, t_cub *cub);
-int		handle_mouse_release(int button, int x, int y, t_cub *cub);
 void	render_picture(t_cub *cub);
 void	rotate_player(t_cub *cub, double angle);
 

@@ -6,11 +6,23 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:21:53 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/08 16:35:41 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:18:17 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
+
+void	free_door_sprite(t_cub *cub)
+{
+	int	i;
+
+	i = 0;
+	while (i < 8)
+	{
+		mlx_destroy_image(cub->mlx.mlx, cub->doors_manager.frames[i].image);
+		i++;
+	}
+}
 
 int	find_true_door(t_cub *cub, int x, int y)
 {
@@ -49,17 +61,16 @@ void	handle_door(t_cub *cub)
         if (cub->doors_manager.door[i].is_open == 0 && cub->doors_manager.door[i].is_opening == 0)
         {
             cub->doors_manager.door[i].is_opening = 1;
+            cub->doors_manager.door[i].is_closing = 0;
             cub->doors_manager.door[i].time = get_time_ms();
             cub->doors_manager.door[i].door_frame = 1; // ✅ Frame 1'den başla
-            ft_putendl_fd("Kapı açılıyor", 1);
         }
         // ✅ Kapı açıksa kapat
         else if (cub->doors_manager.door[i].is_open == 1)
         {
-            cub->doors_manager.door[i].is_open = 0;
+            cub->doors_manager.door[i].is_closing = 1;
             cub->doors_manager.door[i].is_opening = 0;
-            cub->doors_manager.door[i].door_frame = 0;
-            ft_putendl_fd("Kapı kapandı", 1);
+            cub->doors_manager.door[i].door_frame = 7;
         }
     }	
 }
@@ -107,6 +118,7 @@ void init_door(t_cub *cub)
 				cub->doors_manager.door[i].door_y = y;
 				cub->doors_manager.door[i].is_open = 0;	// Başlangıçta Kapalı
 				cub->doors_manager.door[i].is_opening = 0;
+				cub->doors_manager.door[i].is_closing = 0;
 				cub->doors_manager.door[i].door_frame = 0;
 				i++;
 			}

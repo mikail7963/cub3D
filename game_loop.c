@@ -16,6 +16,7 @@ int	game_loop(t_cub *cub)
 {
 	move_player(cub);
 	render_map(cub);
+	minimap(cub);
 	return (0);
 }
 

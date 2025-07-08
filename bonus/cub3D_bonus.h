@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:33:41 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/08 16:13:06 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:46:24 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define CUB3D_BONUS_H
 
 # include "../cub3D.h"
+#define MINIMAP_SCALE 10
+#define MINIMAP_WIDTH 170
+#define MINIMAP_HEIGHT 150
 
 void	init_door(t_cub *cub);
 void	handle_door(t_cub *cub);
@@ -26,8 +29,7 @@ void	draw_background_for_door(t_cub *cub, t_render *render, int x);
 int		check_wall_collisions(t_cub *cub, double x, double y);
 void	play_door_sprite(t_cub *cub, t_render *render);
 long	get_time_ms(void);
-void	draw_background_pixels_only(t_cub *cub, t_render *bg_render, t_render *door_render, int x);
-void	draw_ceiling_floor_for_door(t_cub *cub, t_render *render, int x);
-
+void    minimap(t_cub *cub);
+void	free_door_sprite(t_cub *cub);
 
 #endif
