@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/08 18:44:18 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:41:11 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	init_cub(t_cub *cub)
 	cub->tex_data.tex_width = 0;
 	cub->tex_data.texture_data = 0;
 	cub->map.map = NULL;
+	cub->mlx.tex_image = NULL;
 	init_movement_state(cub);
 }
 
@@ -82,6 +83,7 @@ int	main(int argc, char **argv)
 	render_picture(cub);
 	if (BONUS)
 	{
+		mlx_mouse_hide(cub->mlx.mlx, cub->mlx.win);
 		render_door(cub);
 		cub->minimap.mini_image = mlx_new_image(cub->mlx.mlx, MINIMAP_WIDTH, MINIMAP_HEIGHT);
 		cub->minimap.data = mlx_get_data_addr(cub->minimap.mini_image, &cub->minimap.bits_per_pixel, &cub->minimap.size_line, &cub->minimap.endian);

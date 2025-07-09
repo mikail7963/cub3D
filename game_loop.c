@@ -16,7 +16,8 @@ int	game_loop(t_cub *cub)
 {
 	move_player(cub);
 	render_map(cub);
-	minimap(cub);
+	if (BONUS)
+		minimap(cub);
 	return (0);
 }
 
@@ -43,7 +44,6 @@ void	setup_hooks(t_cub *cub)
 	mlx_hook(cub->mlx.win, 3, 1L << 1, handle_keyrelease, cub);
 	if (BONUS)
 	{
-		mlx_mouse_hide(cub->mlx.mlx, cub->mlx.win);
 		mlx_hook(cub->mlx.win, 6, 1L << 6, handle_mouse_move, cub);
 	}
 

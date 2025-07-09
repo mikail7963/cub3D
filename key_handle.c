@@ -52,6 +52,8 @@ int	handle_keyrelease(int key, t_cub *cub)
 
 int	handle_close(t_cub *cub)
 {
+	if (BONUS)
+		mlx_mouse_show(cub->mlx.mlx,cub->mlx.win);
 	free_map(cub->map.map);
 	free_texture(cub->texture);
 	if (cub->north.image)
@@ -66,13 +68,17 @@ int	handle_close(t_cub *cub)
 		mlx_destroy_image(cub->mlx.mlx, cub->mlx.win_data.image);
 	if (cub->mlx.tex_image)
 		mlx_destroy_image(cub->mlx.mlx, cub->mlx.tex_image);
+	if (BONUS)
+	{
+		mlx_destroy_image(cub->mlx.mlx, cub->minimap.mini_image);
+		if (cub->doors_manager.door_len > 0)
+		{
+			free_door_sprite(cub);
+			free(cub->doors_manager.door);
+		}
+	}
 	if (cub->mlx.win)
 		mlx_destroy_window(cub->mlx.mlx, cub->mlx.win);
-	//if (BONUS && cub->doors_manager.door_len > 0)
-	//{
-	//	free_door_sprite(cub);
-	//	free(cub->doors_manager.door);
-	//}
 	if (cub->mlx.mlx)
 	{
 		mlx_destroy_display(cub->mlx.mlx);

@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:35:00 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/04 19:33:12 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:51:06 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	read_map(t_cub *cub, char *file)
 	fd = open(file, O_RDONLY);
 	tmp = read_xpm_until_map(cub, fd);
 	map_lengt = map_reel_lenght(file, cub);
-	cub->map.map = malloc(sizeof(char *) * map_lengt + 1);
+	cub->map.map = ft_calloc(map_lengt + 1, sizeof(char *));
 	while (tmp != NULL && tmp[0] != '\0')
 	{
 		if (!ft_strchr(tmp, '1'))

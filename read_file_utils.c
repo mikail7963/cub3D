@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 13:03:04 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/07 13:40:37 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:45:16 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	validate_map_line(char *line, t_cub *cub)
 				continue;
 			}
 			free(line);
-			error_msg("unknown character", cub, 3);
+			error_msg("Unknown character", cub, 3);
 		}
 		i++;
 	}

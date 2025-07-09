@@ -6,11 +6,11 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 13:32:22 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/08 18:07:05 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:17:57 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D_bonus.h"
+#include "cub3D.h"
 
 int	check_wall_collisions(t_cub *cub, double x, double y)
 {

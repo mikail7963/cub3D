@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/08 19:23:39 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:22:17 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ void	flood_fill(char **map_copy, int x, int y, int *error);
 char	**create_map_copy(t_cub *cub);
 void	check_map_around_wall(t_cub *cub);
 int		get_num_lines(char **map);
+int		check_wall_collisions(t_cub *cub, double x, double y);
 
 void	painting_sky_and_ground(t_cub *cub);
 void	render_picture(t_cub *cub);
