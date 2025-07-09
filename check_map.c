@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:55:10 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/04 19:29:15 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:25:33 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	get_num_lines(char **map)
 	return (count);
 }
 
-void	check_walls(t_cub *cub)
+void	check_walls(t_cub *cub, char *err_msg)
 {
 	int	i;
 	int	j;
@@ -53,10 +53,7 @@ void	check_walls(t_cub *cub)
 			{
 				if (cub->map.map[i][j] != '1' && cub->map.map[i][j] != '\n'
 					&& cub->map.map[i][j] != ' ' && cub->map.map[i][j] != '\t')
-				{
-					error_msg("There is no '1 in the first or \
-						last line of the map", cub, 3);
-				}
+					error_msg(err_msg, cub, 3);
 				j++;
 			}
 		}
@@ -82,6 +79,6 @@ void	check_map(t_cub *cub)
 			error_msg("Map line does not start and end with '1", cub, 3);
 		i++;
 	}
-	check_walls(cub);
+	check_walls(cub, "There is no '1 in the first or last line of the map");
 	check_map_around_wall(cub);
 }

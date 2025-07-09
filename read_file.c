@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:35:00 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/09 11:51:06 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:40:00 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	read_xpm_after_map(t_cub *cub, char *tmp, int fd)
 	int	i;
 
 	if (cub->is_player == 0)
-		error_msg("player is missing", cub, 3);
+		error_msg("Player is missing", cub, 3);
 	while (tmp != NULL)
 	{
 		i = 0;
@@ -26,7 +26,10 @@ void	read_xpm_after_map(t_cub *cub, char *tmp, int fd)
 		{
 			if (tmp[i] != '\0' && tmp[i] != ' '
 				&& tmp[i] != '\t' && tmp[i] != '\n')
-				error_msg("wrong map design", cub, 3);
+				{
+					free(tmp);
+					error_msg("Wrong map design", cub, 3);
+				}
 			i++;
 		}
 		free(tmp);
@@ -45,8 +48,7 @@ char	*read_xpm_until_map(t_cub *cub, int fd)
 	while (tmp)
 	{
 		if (ft_strchr(tmp, '1')
-			&& !ft_strchr(tmp, 'F')
-			&& !ft_strchr(tmp, 'C')
+			&& !ft_strchr(tmp, 'F') && !ft_strchr(tmp, 'C')
 			&& !ft_strnstr(tmp, "SO", ft_strlen(tmp))
 			&& !ft_strnstr(tmp, "WE", ft_strlen(tmp))
 			&& !ft_strnstr(tmp, "NO", ft_strlen(tmp))
@@ -60,7 +62,10 @@ char	*read_xpm_until_map(t_cub *cub, int fd)
 		error_msg("No map", cub, 2);
 	if (ft_strchr(tmp, 'W') || ft_strchr(tmp, 'E')
 		|| ft_strchr(tmp, 'N') || ft_strchr(tmp, 'S'))
-		error_msg("player on the wall", cub, 2);
+		{
+			free(tmp);
+			error_msg("Player on the wall", cub, 2);
+		}
 	return (tmp);
 }
 
@@ -117,7 +122,7 @@ void	open_file(t_cub *cub, char *file)
 		error_msg("can not open file", cub, 2);
 	line = get_next_line(fd);
 	if (!line)
-		error_msg("file is empty", cub, 2);
+		error_msg("File is empty", cub, 2);
 	while (line != NULL)
 	{
 		counter++;

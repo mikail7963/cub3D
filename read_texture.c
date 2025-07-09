@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:36:29 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/04 19:36:22 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:41:02 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,45 @@ int	check_texture(t_cub *cub, int i)
 		|| !(cub->texture.west) || !(cub->texture.east))
 		error_msg("Some of the texture packs is missing", cub, 2);
 	if (check_extension(cub->texture.east, ".xpm"))
-		error_msg("wall file extensions are not valid", cub, 2);
+		error_msg("Wall file extensions are not valid", cub, 2);
 	if (check_extension(cub->texture.north, ".xpm"))
-		error_msg("wall file extensions are not valid", cub, 2);
+		error_msg("Wall file extensions are not valid", cub, 2);
 	if (check_extension(cub->texture.west, ".xpm"))
-		error_msg("wall file extensions are not valid", cub, 2);
+		error_msg("Wall file extensions are not valid", cub, 2);
 	if (check_extension(cub->texture.south, ".xpm"))
-		error_msg("wall file extensions are not valid", cub, 2);
+		error_msg("Wall file extensions are not valid", cub, 2);
 	check_is_there_texture_file(cub);
 	if (i > 4)
 		error_msg("texture file is more than four", cub, 2);
+	return (0);
+}
+ 
+int	check_direction_in_map(t_cub *cub, char *line, int *i, int j)
+{
+	if (line[j] == 'N' && line[j + 1] == 'O' && *(++i))
+	{
+		if (cub->texture.north)
+			return (1);
+		cub->texture.north = ft_strtrim(line, "NO ");
+	}	
+	else if (line[j] == 'S' && line[j + 1] == 'O' && *(++i))
+	{
+		if (cub->texture.south)
+			return (1);
+		cub->texture.south = ft_strtrim(line, "SO ");
+	}
+	else if (line[j] == 'W' && line[j + 1] == 'E' && *(++i))
+	{
+		if (cub->texture.west)
+			return (1);
+		cub->texture.west = ft_strtrim(line, "WE ");
+	}
+	else if (line[j] == 'E' && line[j + 1] == 'A' && *(++i))
+	{
+		if (cub->texture.east)
+			return (1);
+		cub->texture.east = ft_strtrim(line, "EA ");
+	}
 	return (0);
 }
 
@@ -65,25 +94,21 @@ void	read_texture(t_cub *cub, int fd, int i, int j)
 	char	*line;
 
 	i = 0;
-	j = 0;
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
+		j = 0;
 		while (line[j] == ' ' || line[j] == '\t')
 			j++;
 		line[ft_strlen(line) - 1] = '\0';
-		if (line[j] == 'N' && line[j + 1] == 'O' && ++i)
-			cub->texture.north = ft_strtrim(line, "NO ");
-		else if (line[j] == 'S' && line[j + 1] == 'O' && ++i)
-			cub->texture.south = ft_strtrim(line, "SO ");
-		else if (line[j] == 'W' && line[j + 1] == 'E' && ++i)
-			cub->texture.west = ft_strtrim(line, "WE ");
-		else if (line[j] == 'E' && line[j + 1] == 'A' && ++i)
-			cub->texture.east = ft_strtrim(line, "EA ");
+		if (check_direction_in_map(cub, line, &i, j))
+		{
+			free(line);
+			error_msg("Duplicate texture", cub, 2);
+		}
 		free(line);
 		line = get_next_line(fd);
 		cub->map_index++;
-		j = 0;
 	}
 	check_texture(cub, i);
 	close(fd);

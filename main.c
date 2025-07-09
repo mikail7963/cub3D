@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/09 11:41:11 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:46:58 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	error_msg(char *msg, t_cub *cub, int is_free)
 {
+	get_next_line(-1);
 	ft_putendl_fd("Error", 2);
 	ft_putendl_fd(msg, 2);
 	if (is_free >= 3)
@@ -70,9 +71,9 @@ int	main(int argc, char **argv)
 	t_cub	*cub;
 
 	if (argc != 2)
-		error_msg("too many arguments", NULL, 0);
+		error_msg("Too many arguments", NULL, 0);
 	if (check_extension(argv[1], ".cub") == 1)
-		error_msg("wrong map extansion", NULL, 0);
+		error_msg("Wrong map extansion", NULL, 0);
 	cub = malloc(sizeof(t_cub));
 	init_cub(cub);
 	open_file(cub, argv[1]);
@@ -83,7 +84,7 @@ int	main(int argc, char **argv)
 	render_picture(cub);
 	if (BONUS)
 	{
-		mlx_mouse_hide(cub->mlx.mlx, cub->mlx.win);
+		//mlx_mouse_hide(cub->mlx.mlx, cub->mlx.win);
 		render_door(cub);
 		cub->minimap.mini_image = mlx_new_image(cub->mlx.mlx, MINIMAP_WIDTH, MINIMAP_HEIGHT);
 		cub->minimap.data = mlx_get_data_addr(cub->minimap.mini_image, &cub->minimap.bits_per_pixel, &cub->minimap.size_line, &cub->minimap.endian);

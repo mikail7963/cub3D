@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 13:03:04 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/09 11:45:16 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:39:36 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,7 @@ void	set_coor_and_pos(t_cub *cub, char *line, int i)
 				{
 					cub->map.map[i] = NULL;
 					free(line);
-					error_msg("There are Multiplayer or\
-						player number is 0", cub, 3);
+					error_msg("Player multiple", cub, 3);
 				}
 				cub->player.posx = (double)j + 0.5;
 			}

@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:21:53 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/08 18:18:17 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:48:38 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ void init_door(t_cub *cub)
 
 	i = 0;
 	cub->doors_manager.door_len = door_lenght(cub);
+	if (cub->doors_manager.door_len == 0)
+		return ;
 	cub->doors_manager.door = malloc(sizeof(t_door) * cub->doors_manager.door_len + 1);
 	y = 0;
 	while (cub->map.map[y])
@@ -147,6 +149,8 @@ void	render_door(t_cub *cub)
 	char		*door_files[8];
 	t_tex_data	*frames;
 
+	if (cub->doors_manager.door_len == 0)
+		return;
 	door_files[0] = "textures/door/Door0.xpm";
 	door_files[1] = "textures/door/Door1.xpm";
 	door_files[2] = "textures/door/Door2.xpm";

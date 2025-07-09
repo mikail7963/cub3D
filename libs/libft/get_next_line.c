@@ -84,7 +84,11 @@ char	*get_next_line(int fd)
 	static char	*leftover;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
+	{
+		free(leftover);
+		leftover = NULL;
 		return (NULL);
+	}
 	leftover = ft_read_file(fd, leftover);
 	if (!leftover)
 		return (NULL);

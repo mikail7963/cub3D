@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:37:13 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/07 19:09:37 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:30:17 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@ void	check_rgb_line(char *line, t_cub *cub)
 	while (line[i])
 	{
 		i = skip_whitespaces(line, i);
-		if (line[i] == ',')
+		if (line[i] == ',' && i++)
 		{
-			i++;
 			i = skip_whitespaces(line, i);
 			if (line[i] == '\n')
-				error_msg("rgb is not valid", cub, 2);
+				return (free(line),error_msg("Rgb is not valid", cub, 2));
 		}
 		if (line[i] != ',' && line[i] != '\n')
 		{
 			if (!ft_isdigit(line[i]))
-				error_msg("rgb is not valid", cub, 2);
+				return (free(line),error_msg("Rgb is not valid", cub, 2));
+
 		}
 		i++;
 	}
@@ -73,10 +73,7 @@ void	rbg_line(t_rgb *rgb, char *line, t_cub *cub)
 		free(double_tmp);
 		if (!(rgb->r >= 0 && rgb->r <= 255) || !(rgb->g >= 0 && rgb->g <= 255)
 			|| !(rgb->b >= 0 && rgb->b <= 255))
-		{
 			error_msg("RGB range value must be between 0 - 255", cub, 2);
-			exit(EXIT_FAILURE);
-		}
 	}
 }
 
@@ -108,7 +105,7 @@ void	read_fc_rgb(t_cub *cub, int fd)
 	}
 	free(line);
 	if (i != 2)
-		error_msg("missing floor or ceiling color", cub, 2);
+		error_msg("Missing floor or ceiling color", cub, 2);
 	cub->fc.ceiling_c.colour = rgb_to_colour(cub->fc.ceiling_c.r, \
 		cub->fc.ceiling_c.g, cub->fc.ceiling_c.b);
 	cub->fc.floor_c.colour = rgb_to_colour(cub->fc.floor_c.r, \
