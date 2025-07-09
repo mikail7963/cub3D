@@ -6,26 +6,26 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 13:27:38 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/08 18:19:00 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:22:03 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D_bonus.h"
 #include <sys/time.h>
 
-long get_time_ms(void)
+long	get_time_ms(void)
 {
-	struct timeval tv;
+	struct timeval	tv;
+
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
 void	play_door_sprite(t_cub *cub, t_render *render)
 {
-	int door_index;
-	
-	door_index = find_true_door(cub, render->mapX, render->mapY);
-	
+	int	door_index;
+
+	door_index = find_true_door(cub, render->map_x, render->map_y);	
 	// ✅ Animasyon kontrolü
 	if (cub->doors_manager.door[door_index].is_opening == 1 || cub->doors_manager.door[door_index].is_closing == 1)
 	{
@@ -78,22 +78,22 @@ void	draw_wall_texture(t_cub *cub, t_render *render, int x)
 
 	// Wall_x hesaplama
 	if (render->side == 0)
-		wall_x = cub->player.posy + render->perpWallDist * render->rayDirY;
+		wall_x = cub->player.posy + render->perp_wall_dist * render->ray_dir_y;
 	else
-		wall_x = cub->player.posx + render->perpWallDist * render->rayDirX;
+		wall_x = cub->player.posx + render->perp_wall_dist * render->ray_dir_x;
 	wall_x -= floor(wall_x);
 	
 	tex_x = (int)(wall_x * (double)render->selected_texture->tex_width);
-	if (render->side == 0 && render->rayDirX < 0)
+	if (render->side == 0 && render->ray_dir_x < 0)
 		tex_x = render->selected_texture->tex_width - tex_x - 1;
-	if (render->side == 1 && render->rayDirY > 0)
+	if (render->side == 1 && render->ray_dir_y > 0)
 		tex_x = render->selected_texture->tex_width - tex_x - 1;
 	
-	step = 1.0 * render->selected_texture->tex_height / render->lineHeight;
-	tex_pos = (render->drawStart - HEIGHT / 2 + render->lineHeight / 2) * step;
-	y = render->drawStart;
+	step = 1.0 * render->selected_texture->tex_height / render->line_height;
+	tex_pos = (render->draw_start - HEIGHT / 2 + render->line_height / 2) * step;
+	y = render->draw_start;
 	
-	while (y < render->drawEnd)
+	while (y < render->draw_end)
 	{
 		tex_y = (int)tex_pos & (render->selected_texture->tex_height - 1);
 		tex_pos += step;
@@ -122,8 +122,8 @@ void	draw_background_for_door(t_cub *cub, t_render *render, int x)
 		draw_wall_texture(cub, &bg_render, x);
 	else
 	{
-		int y = render->drawStart;  
-		while (y < render->drawEnd)
+		int y = render->draw_start;  
+		while (y < render->draw_end)
 		{
 			if (y < HEIGHT / 2)
 				my_mlx_pixel_put(cub, x, y, cub->fc.ceiling_c.colour);
@@ -141,23 +141,23 @@ void	continue_ray_after_door(t_cub *cub, t_render *render)
 	
 	while (render->hit == 0)
 	{
-		if (render->sideDistX < render->sideDistY)
+		if (render->side_dist_x < render->side_dist_y)
 		{
-			render->sideDistX += render->deltaDistX;
-			render->mapX += render->stepX;
+			render->side_dist_x += render->delta_dist_x;
+			render->map_x += render->step_x;
 			render->side = 0;
 		}
 		else
 		{
-			render->sideDistY += render->deltaDistY;
-			render->mapY += render->stepY;
+			render->side_dist_y += render->delta_dist_y;
+			render->map_y += render->step_y;
 			render->side = 1;
 		}
 		
 		// Map sınırlarını kontrol et
-		if (render->mapY < 0 || render->mapX < 0 || 
-			!cub->map.map[render->mapY] || 
-			render->mapX >= (int)ft_strlen(cub->map.map[render->mapY]))
+		if (render->map_y < 0 || render->map_x < 0 || 
+			!cub->map.map[render->map_y] || 
+			render->map_x >= (int)ft_strlen(cub->map.map[render->map_y]))
 		{
 			render->hit = 0;
 			render->selected_texture = NULL;
@@ -165,29 +165,27 @@ void	continue_ray_after_door(t_cub *cub, t_render *render)
 		}
 		
 		// Sadece duvarları ara, kapıları atla
-		if (cub->map.map[render->mapY][render->mapX] == '1')
+		if (cub->map.map[render->map_y][render->map_x] == '1')
 		{
 			render->hit = 1;
 			render->is_door = 0;
 			break;
 		}
 		// Kapıları atla
-		if (cub->map.map[render->mapY][render->mapX] == 'D')
+		if (cub->map.map[render->map_y][render->map_x] == 'D')
 			continue;
 		
 	}
-	
 	// Arka duvar mesafesini hesapla
 	if (render->side == 0)
-		render->perpWallDist = (render->mapX - cub->player.posx + (1 - render->stepX) / 2) / render->rayDirX;
+		render->perp_wall_dist = (render->map_x - cub->player.posx + (1 - render->step_x) / 2) / render->ray_dir_x;
 	else
-		render->perpWallDist = (render->mapY - cub->player.posy + (1 - render->stepY) / 2) / render->rayDirY;
-	
-	render->lineHeight = (int)(HEIGHT / render->perpWallDist);
-	render->drawStart = -render->lineHeight / 2 + HEIGHT / 2;
-	render->drawEnd = render->lineHeight / 2 + HEIGHT / 2;
-	if (render->drawStart < 0)
-		render->drawStart = 0;
-	if (render->drawEnd >= HEIGHT)
-		render->drawEnd = HEIGHT - 1;
+		render->perp_wall_dist = (render->map_y - cub->player.posy + (1 - render->step_y) / 2) / render->ray_dir_y;
+	render->line_height = (int)(HEIGHT / render->perp_wall_dist);
+	render->draw_start = -render->line_height / 2 + HEIGHT / 2;
+	render->draw_end = render->line_height / 2 + HEIGHT / 2;
+	if (render->draw_start < 0)
+		render->draw_start = 0;
+	if (render->draw_end >= HEIGHT)
+		render->draw_end = HEIGHT - 1;
 }

@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:10:14 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/08 18:45:45 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:22:03 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,53 +16,53 @@
 Her ekran sütunu için ışın (ray) oluşturur
 - Kamera düzlemindeki her piksel için ışın yönünü hesaplar
 - Oyuncunun bakış yönü + kamera düzlemi = ışın yönü
-- Başlangıç harita koordinatlarını (mapX, mapY) belirler
-- DeltaDistX/Y: ışının bir harita karesini geçmek için gereken mesafe
+- Başlangıç harita koordinatlarını (map_x, map_y) belirler
+- delta_dist_x/Y: ışının bir harita karesini geçmek için gereken mesafe
 */
 void	setup_ray(t_cub *cub, t_render *render, int x)
 {
-	render->rayDirX = cub->player.dirx + cub->plane_x * (2 * x / (double)WIDTH - 1);
-	render->rayDirY = cub->player.diry + cub->plane_y * (2 * x / (double)WIDTH - 1);
-	render->mapX = (int)cub->player.posx;
-	render->mapY = (int)cub->player.posy;
-	if (render->rayDirX != 0)
-		render->deltaDistX = fabs(1 / render->rayDirX);
+	render->ray_dir_x = cub->player.dirx + cub->plane_x * (2 * x / (double)WIDTH - 1);
+	render->ray_dir_y = cub->player.diry + cub->plane_y * (2 * x / (double)WIDTH - 1);
+	render->map_x = (int)cub->player.posx;
+	render->map_y = (int)cub->player.posy;
+	if (render->ray_dir_x != 0)
+		render->delta_dist_x = fabs(1 / render->ray_dir_x);
 	else
-		render->deltaDistX = 1e30;
-	if (render->rayDirY != 0)
-		render->deltaDistY = fabs(1 / render->rayDirY);
+		render->delta_dist_x = 1e30;
+	if (render->ray_dir_y != 0)
+		render->delta_dist_y = fabs(1 / render->ray_dir_y);
 	else
-		render->deltaDistY = 1e30;
+		render->delta_dist_y = 1e30;
 	render->hit = 0;
 }
 
 /*
 DDA algoritması için adım yönünü ve mesafeleri hesaplar
-- stepX/Y: Işının hangi yönde ilerleyeceği (-1 veya +1)
-- sideDistX/Y: Bir sonraki harita çizgisine olan mesafe
+- step_x/Y: Işının hangi yönde ilerleyeceği (-1 veya +1)
+- side_dist_x/Y: Bir sonraki harita çizgisine olan mesafe
 - Pozitif yön: sağ/aşağı, Negatif yön: sol/yukar
 */
 void	calculate_step_and_side_dist(t_cub *cub, t_render *render)
 {
-	if (render->rayDirX < 0)
+	if (render->ray_dir_x < 0)
 	{
-		render->stepX = -1;
-		render->sideDistX = (cub->player.posx - render->mapX) * render->deltaDistX;
+		render->step_x = -1;
+		render->side_dist_x = (cub->player.posx - render->map_x) * render->delta_dist_x;
 	}
 	else
 	{
-		render->stepX = 1;
-		render->sideDistX = (render->mapX + 1.0 - cub->player.posx) * render->deltaDistX;
+		render->step_x = 1;
+		render->side_dist_x = (render->map_x + 1.0 - cub->player.posx) * render->delta_dist_x;
 	}
-	if (render->rayDirY < 0)
+	if (render->ray_dir_y < 0)
 	{
-		render->stepY = -1;
-		render->sideDistY = (cub->player.posy - render->mapY) * render->deltaDistY;
+		render->step_y = -1;
+		render->side_dist_y = (cub->player.posy - render->map_y) * render->delta_dist_y;
 	}
 	else
 	{
-		render->stepY = 1;
-		render->sideDistY = (render->mapY + 1.0 - cub->player.posy) * render->deltaDistY;
+		render->step_y = 1;
+		render->side_dist_y = (render->map_y + 1.0 - cub->player.posy) * render->delta_dist_y;
 	}
 }
 
@@ -76,24 +76,24 @@ void	perform_dda(t_cub *cub, t_render *render)
 {
 	while (render->hit == 0)
 	{
-		if (render->sideDistX < render->sideDistY)
+		if (render->side_dist_x < render->side_dist_y)
 		{
-			render->sideDistX += render->deltaDistX;
-			render->mapX += render->stepX;
+			render->side_dist_x += render->delta_dist_x;
+			render->map_x += render->step_x;
 			render->side = 0;
 		}
 		else
 		{
-			render->sideDistY += render->deltaDistY;
-			render->mapY += render->stepY;
+			render->side_dist_y += render->delta_dist_y;
+			render->map_y += render->step_y;
 			render->side = 1;
 		}
-		if (cub->map.map[render->mapY][render->mapX] == '1')
+		if (cub->map.map[render->map_y][render->map_x] == '1')
 		{
 			render->hit = 1;
 			render->is_door = 0;	
 		}
-		if (BONUS && cub->map.map[render->mapY][render->mapX] == 'D')
+		if (BONUS && cub->map.map[render->map_y][render->map_x] == 'D')
 		{
 			play_door_sprite(cub,render);
 			render->is_door = 1;
@@ -104,23 +104,23 @@ void	perform_dda(t_cub *cub, t_render *render)
 
 /*
 Duvar mesafesini ve ekrandaki yüksekliğini hesaplar
-- perpWallDist: Balıkgözü etkisini önlemek için perpendicular mesafe
-- lineHeight: Duvarin ekrandaki pixel yüksekliği
-- drawStart/End: Duvarın çizileceği Y koordinatları
+- perp_wall_dist: Balıkgözü etkisini önlemek için perpendicular mesafe
+- line_height: Duvarin ekrandaki pixel yüksekliği
+- draw_start/End: Duvarın çizileceği Y koordinatları
 */
 void	calculate_wall_distance_and_height(t_cub *cub, t_render *render)
 {
 	if (render->side == 0)
-		render->perpWallDist = (render->mapX - cub->player.posx + (1 - render->stepX) / 2) / render->rayDirX;
+		render->perp_wall_dist = (render->map_x - cub->player.posx + (1 - render->step_x) / 2) / render->ray_dir_x;
 	else
-		render->perpWallDist = (render->mapY - cub->player.posy + (1 - render->stepY) / 2) / render->rayDirY;
-	render->lineHeight = (int)(HEIGHT / render->perpWallDist);
-	render->drawStart = -render->lineHeight / 2 + HEIGHT / 2;
-	render->drawEnd = render->lineHeight / 2 + HEIGHT / 2;
-	if (render->drawStart < 0)
-		render->drawStart = 0;
-	if (render->drawEnd >= HEIGHT)
-		render->drawEnd = HEIGHT - 1;
+		render->perp_wall_dist = (render->map_y - cub->player.posy + (1 - render->step_y) / 2) / render->ray_dir_y;
+	render->line_height = (int)(HEIGHT / render->perp_wall_dist);
+	render->draw_start = -render->line_height / 2 + HEIGHT / 2;
+	render->draw_end = render->line_height / 2 + HEIGHT / 2;
+	if (render->draw_start < 0)
+		render->draw_start = 0;
+	if (render->draw_end >= HEIGHT)
+		render->draw_end = HEIGHT - 1;
 }
 
 /*

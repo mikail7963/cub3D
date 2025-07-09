@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:25:06 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/08 19:24:42 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:22:03 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,11 @@ void	select_texture(t_cub *cub, t_render *render)
 {
 	if (BONUS && render->is_door == 1)
 		return;
-	if (render->side == 0 && render->rayDirX > 0)
+	if (render->side == 0 && render->ray_dir_x > 0)
 		render->selected_texture = &cub->east;
-	else if (render->side == 0 && render->rayDirX < 0)
+	else if (render->side == 0 && render->ray_dir_x < 0)
 		render->selected_texture = &cub->west;
-	else if (render->side == 1 && render->rayDirY > 0)
+	else if (render->side == 1 && render->ray_dir_y > 0)
 		render->selected_texture = &cub->south;
 	else
 		render->selected_texture = &cub->north;
@@ -137,22 +137,22 @@ void	draw_texture(t_cub *cub, t_render *render, int x)
 		draw_background_for_door(cub, render, x);
 	
 	if (render->side == 0)
-		wall_x = cub->player.posy + render->perpWallDist * render->rayDirY;
+		wall_x = cub->player.posy + render->perp_wall_dist * render->ray_dir_y;
 	else
-		wall_x = cub->player.posx + render->perpWallDist * render->rayDirX;
+		wall_x = cub->player.posx + render->perp_wall_dist * render->ray_dir_x;
 	wall_x -= floor(wall_x);
 	
 	tex_x = (int)(wall_x * (double)render->selected_texture->tex_width);
-	if (render->side == 0 && render->rayDirX < 0)
+	if (render->side == 0 && render->ray_dir_x < 0)
 		tex_x = render->selected_texture->tex_width - tex_x - 1;
-	if (render->side == 1 && render->rayDirY > 0)
+	if (render->side == 1 && render->ray_dir_y > 0)
 		tex_x = render->selected_texture->tex_width - tex_x - 1;
 	
-	step = 1.0 * render->selected_texture->tex_height / render->lineHeight;
-	tex_pos = (render->drawStart - HEIGHT / 2 + render->lineHeight / 2) * step;
-	y = render->drawStart;
+	step = 1.0 * render->selected_texture->tex_height / render->line_height;
+	tex_pos = (render->draw_start - HEIGHT / 2 + render->line_height / 2) * step;
+	y = render->draw_start;
 	
-	while (y < render->drawEnd)
+	while (y < render->draw_end)
 	{
 		tex_y = (int)tex_pos & (render->selected_texture->tex_height - 1);
 		tex_pos += step;

@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:36:29 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/09 13:41:02 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:51:22 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ void	check_is_there_texture_file(t_cub *cub)
 	fd3 = open(cub->texture.south, O_RDONLY);
 	fd4 = open(cub->texture.west, O_RDONLY);
 	if (fd1 == -1 || fd2 == -1 || fd3 == -1 || fd4 == -1)
-	{
-		ft_putendl_fd("wrong texture path", 1);
-		exit(EXIT_FAILURE);
-	}
+		error_msg("Wrong texture path", cub, 2);
 	close(fd1);
 	close(fd2);
 	close(fd3);

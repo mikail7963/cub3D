@@ -23,7 +23,7 @@ int	handle_keypress(int key, t_cub *cub)
 	if (key == KEY_A)
 		cub->move_left = 1;
 	if (key == KEY_D)
-		cub->move_right = 1;	
+		cub->move_right = 1;
 	if (key == KEY_LEFT)
 		cub->rotate_left = 1;
 	if (key == KEY_RIGHT)
@@ -53,21 +53,10 @@ int	handle_keyrelease(int key, t_cub *cub)
 int	handle_close(t_cub *cub)
 {
 	if (BONUS)
-		mlx_mouse_show(cub->mlx.mlx,cub->mlx.win);
+		mlx_mouse_show(cub->mlx.mlx, cub->mlx.win);
 	free_map(cub->map.map);
 	free_texture(cub->texture);
-	if (cub->north.image)
-		mlx_destroy_image(cub->mlx.mlx, cub->north.image);
-	if (cub->east.image)
-		mlx_destroy_image(cub->mlx.mlx, cub->east.image);
-	if (cub->west.image)
-		mlx_destroy_image(cub->mlx.mlx, cub->west.image);
-	if (cub->south.image)
-		mlx_destroy_image(cub->mlx.mlx, cub->south.image);
-	if (cub->mlx.win_data.image)
-		mlx_destroy_image(cub->mlx.mlx, cub->mlx.win_data.image);
-	if (cub->mlx.tex_image)
-		mlx_destroy_image(cub->mlx.mlx, cub->mlx.tex_image);
+	free_image(cub);
 	if (BONUS)
 	{
 		mlx_destroy_image(cub->mlx.mlx, cub->minimap.mini_image);

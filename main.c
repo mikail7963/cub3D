@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/09 13:46:58 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:30:35 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,23 @@ int	check_extension(char *file, char *ext)
 	return (0);
 }
 
-void	init_cub(t_cub *cub)
+void	init_cub_tex(t_cub *cub)
 {
 	cub->texture.north = NULL;
 	cub->texture.east = NULL;
 	cub->texture.west = NULL;
 	cub->texture.south = NULL;
+	cub->tex_data.bits_per_pixel = 0;
+	cub->tex_data.endian = 0;
+	cub->tex_data.size_line = 0;
+	cub->tex_data.tex_height = 0;
+	cub->tex_data.tex_width = 0;
+	cub->tex_data.texture_data = 0;
+	cub->mlx.tex_image = NULL;
+}
+
+void	init_cub(t_cub *cub)
+{
 	cub->map_index = 0;
 	cub->len_of_file = 0;
 	cub->is_player = 0;
@@ -55,14 +66,8 @@ void	init_cub(t_cub *cub)
 	cub->player.diry = 0;
 	cub->plane_x = 0;
 	cub->plane_y = 0;
-	cub->tex_data.bits_per_pixel = 0;
-	cub->tex_data.endian = 0;
-	cub->tex_data.size_line = 0;
-	cub->tex_data.tex_height = 0;
-	cub->tex_data.tex_width = 0;
-	cub->tex_data.texture_data = 0;
 	cub->map.map = NULL;
-	cub->mlx.tex_image = NULL;
+	init_cub_tex(cub);
 	init_movement_state(cub);
 }
 
@@ -83,12 +88,7 @@ int	main(int argc, char **argv)
 	cub->mlx.win = mlx_new_window(cub->mlx.mlx, WIDTH, HEIGHT, "Cub3D");
 	render_picture(cub);
 	if (BONUS)
-	{
-		//mlx_mouse_hide(cub->mlx.mlx, cub->mlx.win);
-		render_door(cub);
-		cub->minimap.mini_image = mlx_new_image(cub->mlx.mlx, MINIMAP_WIDTH, MINIMAP_HEIGHT);
-		cub->minimap.data = mlx_get_data_addr(cub->minimap.mini_image, &cub->minimap.bits_per_pixel, &cub->minimap.size_line, &cub->minimap.endian);
-	}
+		render_bonus(cub);
 	render_map(cub);
 	setup_hooks(cub);
 	mlx_loop(cub->mlx.mlx);

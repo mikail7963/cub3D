@@ -14,12 +14,12 @@ SRC = main.c read_file.c read_texture.c render.c rgb.c check_map.c free.c \
 	key_handle.c movement.c game_loop.c rotate_player.c read_file_utils.c \
 	render_texture.c flood_fill.c wall_collisions.c
 
-BONUS_SRC = bonus/key_handle_bonus.c bonus/door_bonus.c bonus/door_render_bonus.c \
+BONUS_SRC = bonus/key_handle_bonus.c bonus/door_bonus.c  bonus/door_render_bonus.c \
 			bonus/minimap.c
 
 OBJ = $(SRC:.c=.o)
 OBJ_BONUS = $(SRC:.c=_bonus.o)
-OBJ_BONUS_FILE = $(BONUS_SRC:.c=_bonus.o)
+OBJ_BONUS_FILE = $(BONUS_SRC:.c=.o)
 
 all: $(NAME)
 
@@ -46,6 +46,7 @@ bonus:  $(NAME_BONUS)
 clean:
 	@make clean -C $(LIBFT_PATH)
 	rm -rf $(OBJ)
+	rm -rf $(OBJ_BONUS_FILE)
 	rm -rf $(OBJ_BONUS)
 
 fclean: clean

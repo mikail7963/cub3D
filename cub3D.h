@@ -6,13 +6,14 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/09 11:22:17 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:46:48 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H 
 
+# include "bonus/cub3D_bonus.h"
 # include "libs/libft/libft.h"
 # include "libs/mlx/mlx.h"
 # include <fcntl.h>
@@ -35,13 +36,11 @@
 # define MOUSE_LEFT 1
 # define MOUSE_RIGHT 3
 # ifndef BONUS
-# define BONUS 0
+#  define BONUS 0
 # endif
-
 
 /*cd /mnt/c/Users/90507/OneDrive/Masaüstü/cub3D*/
 /*export DISPLAY=172.24.64.1:0.0*/
-
 
 typedef struct s_door
 {
@@ -109,14 +108,12 @@ typedef struct s_tex_data
 	int		tex_height;
 }	t_tex_data;
 
-
 typedef struct s_door_manager
 {
 	t_tex_data	frames[8];
 	t_door		*door;
 	int			door_len;
 }	t_doors_manager;
-
 
 typedef struct s_mlx
 {
@@ -128,58 +125,56 @@ typedef struct s_mlx
 
 typedef struct s_render
 {
-	int 	is_door;
-    double rayDirX;
-    double rayDirY;
-    int mapX;
-    int mapY;
-    double deltaDistX;
-    double deltaDistY;
-    double sideDistX;
-    double sideDistY;
-    int stepX;
-    int stepY;
-    int hit;
-    int side;
-    double perpWallDist;
-    int lineHeight;
-    int drawStart;
-    int drawEnd;
-    t_tex_data *selected_texture;
+	int			is_door;
+	double		ray_dir_x;
+	double		ray_dir_y;
+	int			map_x;
+	int			map_y;
+	double		delta_dist_x;
+	double		delta_dist_y;
+	double		side_dist_x;
+	double		side_dist_y;
+	int			step_x;
+	int			step_y;
+	int			hit;
+	int			side;
+	double		perp_wall_dist;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	t_tex_data	*selected_texture;
 }	t_render;
 
 typedef struct s_cub
 {
-	int			len_of_file;
-	double		plane_x;
-	double		plane_y;
-	int			is_player;
-	int			map_index;
-    t_doors_manager doors_manager;
-	t_texture	texture;
-	t_map		map;
-	t_fc		fc;
-	t_player	player;
-	t_mlx		mlx;
-	t_tex_data	tex_data;
-	t_tex_data	north;
-	t_tex_data	west;
-	t_tex_data	south;
-	t_tex_data	east;
-	t_minimap	minimap;
-	int			move_forward;
-	int			move_backward;
-	int			move_left;
-	int			move_right;
-	int			rotate_left;
-	int			rotate_right;
-	int			mouse_rotate_left;
-	int			mouse_rotate_right;
+	int				len_of_file;
+	double			plane_x;
+	double			plane_y;
+	int				is_player;
+	int				map_index;
+	t_doors_manager	doors_manager;
+	t_texture		texture;
+	t_map			map;
+	t_fc			fc;
+	t_player		player;
+	t_mlx			mlx;
+	t_tex_data		tex_data;
+	t_tex_data		north;
+	t_tex_data		west;
+	t_tex_data		south;
+	t_tex_data		east;
+	t_minimap		minimap;
+	int				move_forward;
+	int				move_backward;
+	int				move_left;
+	int				move_right;
+	int				rotate_left;
+	int				rotate_right;
+	int				mouse_rotate_left;
+	int				mouse_rotate_right;
 }	t_cub;
 
-
-# include "bonus/cub3D_bonus.h"
-
+void	free_image(t_cub *cub);
 int		is_player(char p);
 void	flood_fill(char **map_copy, int x, int y, int *error);
 char	**create_map_copy(t_cub *cub);

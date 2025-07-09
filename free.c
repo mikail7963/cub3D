@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:33:28 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/04 18:01:37 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:25:46 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,20 @@ void	free_map(char **map)
 		i++;
 	}
 	free(map);
+}
+
+void	free_image(t_cub *cub)
+{
+	if (cub->north.image)
+		mlx_destroy_image(cub->mlx.mlx, cub->north.image);
+	if (cub->east.image)
+		mlx_destroy_image(cub->mlx.mlx, cub->east.image);
+	if (cub->west.image)
+		mlx_destroy_image(cub->mlx.mlx, cub->west.image);
+	if (cub->south.image)
+		mlx_destroy_image(cub->mlx.mlx, cub->south.image);
+	if (cub->mlx.win_data.image)
+		mlx_destroy_image(cub->mlx.mlx, cub->mlx.win_data.image);
+	if (cub->mlx.tex_image)
+		mlx_destroy_image(cub->mlx.mlx, cub->mlx.tex_image);
 }
