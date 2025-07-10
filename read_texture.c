@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:36:29 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/09 14:51:22 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/10 11:16:37 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	check_texture(t_cub *cub, int i)
 		error_msg("texture file is more than four", cub, 2);
 	return (0);
 }
- 
+
 int	check_direction_in_map(t_cub *cub, char *line, int *i, int j)
 {
 	if (line[j] == 'N' && line[j + 1] == 'O' && *(++i))
@@ -105,7 +105,6 @@ void	read_texture(t_cub *cub, int fd, int i, int j)
 		}
 		free(line);
 		line = get_next_line(fd);
-		cub->map_index++;
 	}
 	check_texture(cub, i);
 	close(fd);

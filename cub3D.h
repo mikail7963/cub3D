@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/10 12:49:37 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/10 17:39:09 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,14 @@
 /*cd /mnt/c/Users/90507/OneDrive/Masaüstü/cub3D*/
 /*export DISPLAY=172.24.64.1:0.0*/
 
+typedef struct s_fps
+{
+    long		last_time;
+    int			frame_count;
+    int			fps;
+    char		fps_text[20];
+}	t_fps;
+
 typedef struct s_door
 {
 	int			door_x;
@@ -55,6 +63,11 @@ typedef struct s_door
 
 typedef struct s_minimap
 {
+	int		cell_size;
+	int		offset_x;
+	int		offset_y;
+	int		player_map_px;
+	int		player_map_py;
 	void	*mini_image;
 	char	*data;
 	int		bits_per_pixel;
@@ -87,6 +100,8 @@ typedef struct s_fc
 typedef struct s_map
 {
 	char	**map;
+	int		map_height;
+	int		map_width;
 }	t_map;
 
 typedef struct s_player
@@ -152,6 +167,7 @@ typedef struct s_cub
 	double			plane_y;
 	int				is_player;
 	int				map_index;
+	t_fps			fps_counter;
 	t_doors_manager	doors_manager;
 	t_texture		texture;
 	t_map			map;
@@ -181,7 +197,6 @@ char	**create_map_copy(t_cub *cub);
 void	check_map_around_wall(t_cub *cub);
 int		get_num_lines(char **map);
 int		is_valid_position(t_cub *cub, double x, double y);
-int		check_wall_collisions(t_cub *cub, double x, double y);
 
 void	painting_sky_and_ground(t_cub *cub);
 void	render_picture(t_cub *cub);
@@ -214,5 +229,6 @@ int		handle_keyrelease(int key, t_cub *cub);
 int		handle_close(t_cub *cub);
 void	render_picture(t_cub *cub);
 void	rotate_player(t_cub *cub, double angle);
+int		unknown_line_check(t_cub *cub, char *line);
 
 #endif

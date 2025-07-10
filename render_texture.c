@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:25:06 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/09 15:22:03 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:18:27 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color)
 {
 	char	*dst;
 
-	if (BONUS && color == 0x000000)
+	if (BONUS && color == 0x0B0A0A)
 		return;
 	// Koordinatların ekran sınırları içinde olup olmadığını kontrol et
 	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
@@ -161,7 +161,7 @@ void	draw_texture(t_cub *cub, t_render *render, int x)
 					* (render->selected_texture->bits_per_pixel / 8)));
 		
 		// ✅ Kapı için SADECE şeffaf pikselleri atla
-		if (BONUS && render->is_door && color == 0x000000)
+		if (BONUS && render->is_door && color == 0x0B0A0A)
 		{
 			y++;
 			continue; // Şeffaf pixel'i atla, arka plan zaten çizildi

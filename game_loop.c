@@ -17,7 +17,11 @@ int	game_loop(t_cub *cub)
 	move_player(cub);
 	render_map(cub);
 	if (BONUS)
+	{
 		minimap(cub);
+		update_fps(cub);
+		draw_fps(cub);
+	}
 	return (0);
 }
 

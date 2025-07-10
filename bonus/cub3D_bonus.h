@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:33:41 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/10 12:48:38 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/10 19:00:44 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,17 @@ void	draw_wall_texture(t_cub *cub, t_render *render, int x);
 void	draw_background_for_door(t_cub *cub, t_render *render, int x);
 int		check_wall_collisions(t_cub *cub, double x, double y);
 void	play_door_sprite(t_cub *cub, t_render *render);
-int     check_wall_collisions(t_cub *cub, double x, double y);
 long	get_time_ms(void);
 void	minimap(t_cub *cub);
 void	free_door_sprite(t_cub *cub);
 void	render_bonus(t_cub *cub);
+void	init_fps_counter(t_cub *cub);
+void	update_fps(t_cub *cub);
+void	draw_fps(t_cub *cub);
+void	draw_minimap(t_cub *cub);
+void	draw_player_in_minimap(t_cub *cub, float dx, float dy, int player_size);
+void	draw_rectangle(t_cub *cub, int start_x, int start_y, int width, int height, int color);
+void	my_mlx_pixel_put_for_minimap(t_cub *cub, int x, int y, int color);
+
 
 #endif

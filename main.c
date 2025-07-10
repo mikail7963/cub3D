@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/09 15:30:35 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/10 19:13:53 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	init_cub_tex(t_cub *cub)
 
 void	init_cub(t_cub *cub)
 {
-	cub->map_index = 0;
 	cub->len_of_file = 0;
 	cub->is_player = 0;
 	cub->fc.ceiling_c.r = -1;
@@ -67,6 +66,8 @@ void	init_cub(t_cub *cub)
 	cub->plane_x = 0;
 	cub->plane_y = 0;
 	cub->map.map = NULL;
+	cub->map.map_height = 0;
+	cub->map.map_width = 0;
 	init_cub_tex(cub);
 	init_movement_state(cub);
 }
@@ -88,7 +89,11 @@ int	main(int argc, char **argv)
 	cub->mlx.win = mlx_new_window(cub->mlx.mlx, WIDTH, HEIGHT, "Cub3D");
 	render_picture(cub);
 	if (BONUS)
+	{
+		cub->minimap.cell_size = 15;
 		render_bonus(cub);
+		init_fps_counter(cub);
+	}
 	render_map(cub);
 	setup_hooks(cub);
 	mlx_loop(cub->mlx.mlx);

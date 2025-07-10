@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wall_collisions.c                                  :+:      :+:    :+:   */
+/*   wall_collisions_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 12:48:11 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/10 12:50:19 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/10 19:09:22 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,3 @@ int	check_wall_collisions(t_cub *cub, double x, double y)
 	}	
 	return (1);
 }
-

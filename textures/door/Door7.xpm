@@ -2,7 +2,7 @@
 static char *c390a8b27e504e4df0fdee8dc8990dfbWdugtvzanDluCPNl[] = {
 /* columns rows colors chars-per-pixel */
 "64 64 121 2 ",
-"   c #000000",
+"   c #0b0a0a",
 ".  c #000000",
 "X  c #080A06",
 "o  c #0A0B0B",

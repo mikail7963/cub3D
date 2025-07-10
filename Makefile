@@ -12,10 +12,11 @@ MLX = $(MLX_PATH)libmlx.a
 
 SRC = main.c read_file.c read_texture.c render.c rgb.c check_map.c free.c \
 	key_handle.c movement.c game_loop.c rotate_player.c read_file_utils.c \
-	render_texture.c flood_fill.c is_valid_position.c
+	render_texture.c flood_fill.c read_file_line.c is_valid_position.c
 
 BONUS_SRC = bonus/key_handle_bonus.c bonus/door_bonus.c  bonus/door_render_bonus.c \
-			bonus/minimap.c bonus/wall_collisions.c 
+			bonus/minimap_bonus.c bonus/wall_collisions_bonus.c bonus/fps_counter.c \
+			bonus/minimap_draw_bonus.c
 
 OBJ = $(SRC:.c=.o)
 OBJ_BONUS = $(SRC:.c=_bonus.o)

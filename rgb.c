@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:37:13 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/09 13:30:17 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/10 11:17:16 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,12 @@ void	check_rgb_line(char *line, t_cub *cub)
 		{
 			i = skip_whitespaces(line, i);
 			if (line[i] == '\n')
-				return (free(line),error_msg("Rgb is not valid", cub, 2));
+				return (free(line), error_msg("Rgb is not valid", cub, 2));
 		}
 		if (line[i] != ',' && line[i] != '\n')
 		{
 			if (!ft_isdigit(line[i]))
-				return (free(line),error_msg("Rgb is not valid", cub, 2));
-
+				return (free(line), error_msg("Rgb is not valid", cub, 2));
 		}
 		i++;
 	}
@@ -95,7 +94,6 @@ void	read_fc_rgb(t_cub *cub, int fd)
 		j = 0;
 		while (line[j] == ' ' || line[j] == '\t')
 			j++;
-		cub->map_index++;
 		if (line[j] == 'F' && line[j + 1] == ' ' && ++i)
 			rbg_line(&cub->fc.floor_c, line, cub);
 		if (line[j] == 'C' && line[j + 1] == ' ' && ++i)

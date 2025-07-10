@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:21:53 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/09 15:08:12 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:20:15 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void	render_door(t_cub *cub)
 	while (i < 8)
 	{
 		if (!frames[i].image)
-			error_msg("hatalı image", cub, 3);
+			error_msg("Door image error", cub, 3);
 		i++;
 	}
 	doors_get_data_addres(cub->doors_manager.frames);

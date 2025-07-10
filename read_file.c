@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:35:00 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/09 15:33:05 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:25:53 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,30 +40,26 @@ void	read_xpm_after_map(t_cub *cub, char *tmp, int fd)
 
 char	*read_xpm_until_map(t_cub *cub, int fd, int map_start)
 {
-	char	*tmp;
+	char	*line;
 
-	tmp = get_next_line(fd);
-	while (tmp)
+	line = get_next_line(fd);
+	while (line)
 	{
-		if (ft_strchr(tmp, '1') && !ft_strnstr(tmp, "SO", ft_strlen(tmp))
-			&& !ft_strchr(tmp, 'F') && !ft_strchr(tmp, 'C')
-			&& !ft_strnstr(tmp, "WE", ft_strlen(tmp))
-			&& !ft_strnstr(tmp, "NO", ft_strlen(tmp))
-			&& !ft_strnstr(tmp, "EA", ft_strlen(tmp)))
+		if (unknown_line_check(cub, line))
 			break ;
 		map_start++;
-		free(tmp);
-		tmp = get_next_line(fd);
+		free(line);
+		line = get_next_line(fd);
 	}
-	if (!tmp)
+	if (!line)
 		error_msg("No map", cub, 2);
-	if (ft_strchr(tmp, 'W') || ft_strchr(tmp, 'E')
-		|| ft_strchr(tmp, 'N') || ft_strchr(tmp, 'S'))
+	if (ft_strchr(line, 'W') || ft_strchr(line, 'E')
+		|| ft_strchr(line, 'N') || ft_strchr(line, 'S'))
 	{
-		free(tmp);
+		free(line);
 		error_msg("Player on the wall", cub, 2);
 	}
-	return (tmp);
+	return (line);
 }
 
 void	read_map(t_cub *cub, char *file)
