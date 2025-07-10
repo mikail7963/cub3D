@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:33:41 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/09 16:47:22 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:48:38 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	draw_wall_texture(t_cub *cub, t_render *render, int x);
 void	draw_background_for_door(t_cub *cub, t_render *render, int x);
 int		check_wall_collisions(t_cub *cub, double x, double y);
 void	play_door_sprite(t_cub *cub, t_render *render);
+int     check_wall_collisions(t_cub *cub, double x, double y);
 long	get_time_ms(void);
 void	minimap(t_cub *cub);
 void	free_door_sprite(t_cub *cub);

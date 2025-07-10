@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   wall_collisions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/08 13:32:22 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/09 11:17:57 by mikkayma         ###   ########.fr       */
+/*   Created: 2025/07/10 12:48:11 by atursun           #+#    #+#             */
+/*   Updated: 2025/07/10 12:50:19 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 int	check_wall_collisions(t_cub *cub, double x, double y)
 {
@@ -31,7 +31,7 @@ int	check_wall_collisions(t_cub *cub, double x, double y)
 			check_y = (int)(y + dy);
 			if (cub->map.map[check_y] && cub->map.map[check_y][check_x] == '1')
 				return (0);
-			if (BONUS && cub->map.map[check_y] && cub->map.map[check_y][check_x] == 'D')
+			if (cub->map.map[check_y] && cub->map.map[check_y][check_x] == 'D')
 			{
 				if (cub->doors_manager.door[find_true_door(cub, check_x, check_y)].is_open == 0)
 					return (0);
@@ -42,3 +42,4 @@ int	check_wall_collisions(t_cub *cub, double x, double y)
 	}	
 	return (1);
 }
+

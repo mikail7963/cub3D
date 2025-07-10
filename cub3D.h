@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/09 15:46:48 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:49:37 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ void	flood_fill(char **map_copy, int x, int y, int *error);
 char	**create_map_copy(t_cub *cub);
 void	check_map_around_wall(t_cub *cub);
 int		get_num_lines(char **map);
+int		is_valid_position(t_cub *cub, double x, double y);
 int		check_wall_collisions(t_cub *cub, double x, double y);
 
 void	painting_sky_and_ground(t_cub *cub);
