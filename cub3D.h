@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/10 17:39:09 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:33:09 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,21 @@
 #  define BONUS 0
 # endif
 
-/*cd /mnt/c/Users/90507/OneDrive/Masaüstü/cub3D*/
-/*export DISPLAY=172.24.64.1:0.0*/
+typedef struct s_tmp
+{
+	int	start_x;
+	int	start_y;
+	int	width;
+	int	height;
+	int	color;
+}	t_tmp;
 
 typedef struct s_fps
 {
-    long		last_time;
-    int			frame_count;
-    int			fps;
-    char		fps_text[20];
+	long	last_time;
+	int		frame_count;
+	int		fps;
+	char	fps_text[20];
 }	t_fps;
 
 typedef struct s_door
@@ -134,7 +140,6 @@ typedef struct s_mlx
 {
 	void		*mlx;
 	void		*win;
-	void		*tex_image;
 	t_tex_data	win_data;
 }	t_mlx;
 
@@ -166,7 +171,6 @@ typedef struct s_cub
 	double			plane_x;
 	double			plane_y;
 	int				is_player;
-	int				map_index;
 	t_fps			fps_counter;
 	t_doors_manager	doors_manager;
 	t_texture		texture;
@@ -190,26 +194,24 @@ typedef struct s_cub
 	int				mouse_rotate_right;
 }	t_cub;
 
+void	xpm_to_image(t_cub *cub);
+t_tmp	fill_tmp(int start_x, int start_y, int color);
 void	free_image(t_cub *cub);
 int		is_player(char p);
-void	flood_fill(char **map_copy, int x, int y, int *error);
-char	**create_map_copy(t_cub *cub);
-void	check_map_around_wall(t_cub *cub);
 int		get_num_lines(char **map);
 int		is_valid_position(t_cub *cub, double x, double y);
 
 void	painting_sky_and_ground(t_cub *cub);
-void	render_picture(t_cub *cub);
 void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
 void	select_texture(t_cub *cub, t_render *render);
-void	draw_texture(t_cub *cub, t_render *render, int x);
+void	draw_texture(t_cub *cub, t_render *render, int x, int y);
+void	move_ray(t_render *render);
+void	check_map_around_wall(t_cub *cub);
 
 void	validate_map_line(char *line, t_cub *cub);
 void	set_coor_and_pos(t_cub *cub, char *line, int i);
 int		map_reel_lenght(char *file, t_cub *cub);
 int		skip_whitespaces(char *line, int i);
-int		len_of_double_tmp(char **double_ptr);
-int		check_wall_collisions(t_cub *cub, double x, double y);
 void	read_texture(t_cub *cub, int fd, int i, int j);
 int		check_texture(t_cub *cub, int i);
 void	open_file(t_cub *cub, char *file);
@@ -220,15 +222,14 @@ void	read_fc_rgb(t_cub *cub, int fd);
 void	error_msg(char *msg, t_cub *cub, int is_free);
 void	free_texture(t_texture texture);
 void	free_map(char **map);
-int		game_loop(t_cub *cub);
 void	init_movement_state(t_cub *cub);
 void	setup_hooks(t_cub *cub);
 void	move_player(t_cub *cub);
 int		handle_keypress(int key, t_cub *cub);
 int		handle_keyrelease(int key, t_cub *cub);
 int		handle_close(t_cub *cub);
-void	render_picture(t_cub *cub);
 void	rotate_player(t_cub *cub, double angle);
 int		unknown_line_check(t_cub *cub, char *line);
+void	calculate_wall_distance_and_height(t_cub *cub, t_render *render);
 
 #endif

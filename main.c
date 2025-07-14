@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/10 19:13:53 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/14 18:26:25 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@ void	error_msg(char *msg, t_cub *cub, int is_free)
 	get_next_line(-1);
 	ft_putendl_fd("Error", 2);
 	ft_putendl_fd(msg, 2);
+	if (is_free >= 4)
+	{
+		free_image(cub);
+		mlx_destroy_display(cub->mlx.mlx);
+		free(cub->mlx.mlx);
+	}
 	if (is_free >= 3)
 		free_map(cub->map.map);
 	if (is_free >= 2)
@@ -36,24 +42,23 @@ int	check_extension(char *file, char *ext)
 	return (0);
 }
 
-void	init_cub_tex(t_cub *cub)
+static void	init_cub_tex(t_cub *cub)
 {
 	cub->texture.north = NULL;
 	cub->texture.east = NULL;
 	cub->texture.west = NULL;
 	cub->texture.south = NULL;
+	cub->mlx.win_data.image = NULL;
 	cub->tex_data.bits_per_pixel = 0;
 	cub->tex_data.endian = 0;
 	cub->tex_data.size_line = 0;
 	cub->tex_data.tex_height = 0;
 	cub->tex_data.tex_width = 0;
 	cub->tex_data.texture_data = 0;
-	cub->mlx.tex_image = NULL;
 }
 
-void	init_cub(t_cub *cub)
+static void	init_cub(t_cub *cub)
 {
-	cub->len_of_file = 0;
 	cub->is_player = 0;
 	cub->fc.ceiling_c.r = -1;
 	cub->fc.ceiling_c.g = -1;
@@ -86,10 +91,10 @@ int	main(int argc, char **argv)
 	if (BONUS)
 		init_door(cub);
 	cub->mlx.mlx = mlx_init();
+	xpm_to_image(cub);
 	cub->mlx.win = mlx_new_window(cub->mlx.mlx, WIDTH, HEIGHT, "Cub3D");
-	render_picture(cub);
 	if (BONUS)
-	{
+	{		
 		cub->minimap.cell_size = 15;
 		render_bonus(cub);
 		init_fps_counter(cub);

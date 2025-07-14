@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:33:28 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/09 15:25:46 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:03:10 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,4 @@ void	free_image(t_cub *cub)
 		mlx_destroy_image(cub->mlx.mlx, cub->south.image);
 	if (cub->mlx.win_data.image)
 		mlx_destroy_image(cub->mlx.mlx, cub->mlx.win_data.image);
-	if (cub->mlx.tex_image)
-		mlx_destroy_image(cub->mlx.mlx, cub->mlx.tex_image);
 }

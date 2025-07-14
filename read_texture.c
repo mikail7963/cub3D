@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_texture.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:36:29 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/10 11:16:37 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:19:03 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	skip_whitespaces(char *line, int i)
 	return (i);
 }
 
-void	check_is_there_texture_file(t_cub *cub)
+static void	check_is_there_texture_file(t_cub *cub)
 {
 	int	fd1;
 	int	fd2;
@@ -57,7 +57,7 @@ int	check_texture(t_cub *cub, int i)
 	return (0);
 }
 
-int	check_direction_in_map(t_cub *cub, char *line, int *i, int j)
+static int	check_direction_in_map(t_cub *cub, char *line, int *i, int j)
 {
 	if (line[j] == 'N' && line[j + 1] == 'O' && *(++i))
 	{

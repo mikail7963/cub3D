@@ -6,21 +6,19 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 12:48:11 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/10 19:09:22 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:10:30 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D_bonus.h"
 
-int	check_wall_collisions(t_cub *cub, double x, double y)
+int	check_wall_collisions(t_cub *cub, double x, double y, double radius)
 {
-	double	radius;
 	double	dx;
 	double	dy;
 	int		check_x;
 	int		check_y;
 
-	radius = 0.2;
 	dx = -radius;
 	while (dx <= radius)
 	{
@@ -32,10 +30,9 @@ int	check_wall_collisions(t_cub *cub, double x, double y)
 			if (cub->map.map[check_y] && cub->map.map[check_y][check_x] == '1')
 				return (0);
 			if (cub->map.map[check_y] && cub->map.map[check_y][check_x] == 'D')
-			{
-				if (cub->doors_manager.door[find_true_door(cub, check_x, check_y)].is_open == 0)
+				if (cub->doors_manager.door
+					[find_true_door(cub, check_x, check_y)].is_open == 0)
 					return (0);
-			}
 			dy += 0.1;
 		}
 		dx += 0.1;

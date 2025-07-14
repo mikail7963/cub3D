@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:55:10 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/09 13:25:33 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:57:40 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	check_map_line_start_end(char *line, t_cub *cub)
+static void	check_map_line_start_end(char *line, t_cub *cub)
 {
 	int	i;
 
@@ -38,7 +38,7 @@ int	get_num_lines(char **map)
 	return (count);
 }
 
-void	check_walls(t_cub *cub, char *err_msg)
+static void	check_walls(t_cub *cub, char *err_msg)
 {
 	int	i;
 	int	j;

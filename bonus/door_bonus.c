@@ -3,93 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   door_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:21:53 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/10 14:20:15 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:04:41 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
-
-void	free_door_sprite(t_cub *cub)
-{
-	int	i;
-
-	i = 0;
-	while (i < 8)
-	{
-		mlx_destroy_image(cub->mlx.mlx, cub->doors_manager.frames[i].image);
-		i++;
-	}
-}
-
-int	find_true_door(t_cub *cub, int x, int y)
-{
-	int	i;
-
-	i = 0;
-	while (i < cub->doors_manager.door_len)
-	{
-		if (cub->doors_manager.door[i].door_x == x
-			&& cub->doors_manager.door[i].door_y == y)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-//Oyuncunun baktığı yönde kapı olup olmadığını kontrol eder ve varsa kapıyı açar/kapatır.
-void	handle_door(t_cub *cub)
-{
-	int	i;
-	int	check_x;
-	int	check_y;
-
-	check_x = (int)(cub->player.posx + cub->player.dirx * 1.5);
-	check_y = (int)(cub->player.posy + cub->player.diry * 1.5);
-	if (check_y < 0 || check_x < 0 || check_x >= (int)ft_strlen(cub->map.map[check_y]))
-		return ;
-	if (cub->map.map[check_y][check_x] == 'D')
-	{
-		i = find_true_door(cub, check_x, check_y);
-		if (cub->doors_manager.door[i].is_open == 0 && cub->doors_manager.door[i].is_opening == 0)
-		{
-			cub->doors_manager.door[i].is_opening = 1;
-			cub->doors_manager.door[i].is_closing = 0;
-			cub->doors_manager.door[i].time = get_time_ms();
-			cub->doors_manager.door[i].door_frame = 1;
-		}
-		else if (cub->doors_manager.door[i].is_open == 1)
-		{
-			cub->doors_manager.door[i].is_closing = 1;
-			cub->doors_manager.door[i].is_opening = 0;
-			cub->doors_manager.door[i].door_frame = 7;
-		}
-	}
-}
-
-int	door_lenght(t_cub *cub)
-{
-	int	x;	
-	int	y;
-	int	door_len;
-
-	y = 0;
-	door_len = 0;
-	while (cub->map.map[y])
-	{
-		x = 0;
-		while (cub->map.map[y][x])
-		{
-			if (cub->map.map[y][x] == 'D')
-				door_len++;
-			x++;
-		}
-		y++;
-	}
-	return (door_len);
-}
 
 void	init_door(t_cub *cub)
 {
@@ -111,12 +32,7 @@ void	init_door(t_cub *cub)
 		{
 			if (cub->map.map[y][x] == 'D')
 			{
-				cub->doors_manager.door[i].door_x = x;
-				cub->doors_manager.door[i].door_y = y;
-				cub->doors_manager.door[i].is_open = 0;
-				cub->doors_manager.door[i].is_opening = 0;
-				cub->doors_manager.door[i].is_closing = 0;
-				cub->doors_manager.door[i].door_frame = 0;
+				fill_doors_manager_struct(cub, i, x, y);
 				i++;
 			}
 			x++;
@@ -125,10 +41,17 @@ void	init_door(t_cub *cub)
 	}
 }
 
-void	doors_get_data_addres(t_tex_data *frames)
+static void	doors_get_data_addres(t_tex_data *frames, t_cub *cub)
 {
 	int	i;
 
+	i = 0;
+	while (i < 8)
+	{
+		if (!frames[i].image)
+			error_msg("Door image error", cub, 3);
+		i++;
+	}
 	i = 0;
 	while (i < 8)
 	{
@@ -163,12 +86,43 @@ void	render_door(t_cub *cub)
 				&frames[i].tex_width, &frames[i].tex_height);
 		i++;
 	}
-	i = 0;
-	while (i < 8)
+	doors_get_data_addres(cub->doors_manager.frames, cub);
+}
+
+static void	execute_door(t_cub *cub, int check_x, int check_y)
+{
+	int	i;
+
+	i = find_true_door(cub, check_x, check_y);
+	if (cub->doors_manager.door[i].is_opening == 1
+		|| cub->doors_manager.door[i].is_closing == 1)
+		return ;
+	if (cub->doors_manager.door[i].is_open == 0
+		&& cub->doors_manager.door[i].is_opening == 0)
 	{
-		if (!frames[i].image)
-			error_msg("Door image error", cub, 3);
-		i++;
+		cub->doors_manager.door[i].is_opening = 1;
+		cub->doors_manager.door[i].is_closing = 0;
+		cub->doors_manager.door[i].time = get_time_ms();
+		cub->doors_manager.door[i].door_frame = 1;
 	}
-	doors_get_data_addres(cub->doors_manager.frames);
+	else if (cub->doors_manager.door[i].is_open == 1)
+	{
+		cub->doors_manager.door[i].is_closing = 1;
+		cub->doors_manager.door[i].is_opening = 0;
+		cub->doors_manager.door[i].door_frame = 7;
+	}
+}
+
+void	handle_door(t_cub *cub)
+{
+	int	check_x;
+	int	check_y;
+
+	check_x = (int)(cub->player.posx + cub->player.dirx * 1.1);
+	check_y = (int)(cub->player.posy + cub->player.diry * 1.1);
+	if (check_y <= 0 || check_x <= 0
+		|| check_x >= (int)ft_strlen(cub->map.map[check_y]))
+		return ;
+	if (cub->map.map[check_y][check_x] == 'D')
+		execute_door(cub, check_x, check_y);
 }

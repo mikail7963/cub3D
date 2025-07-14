@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   flood_fill.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 18:08:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/04 19:26:54 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:57:54 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	flood_fill(char **map_copy, int x, int y, int *error)
+static void	flood_fill(char **map_copy, int x, int y, int *error)
 {
 	if (y < 0 || x < 0)
 	{
@@ -38,7 +38,7 @@ void	flood_fill(char **map_copy, int x, int y, int *error)
 	flood_fill(map_copy, x, y - 1, error);
 }
 
-char	**create_map_copy(t_cub *cub)
+static char	**create_map_copy(t_cub *cub)
 {
 	char	**copy;
 	int		i;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 17:11:11 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/10 18:58:28 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:09:51 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,34 +16,14 @@ void	my_mlx_pixel_put_for_minimap(t_cub *cub, int x, int y, int color)
 {
 	char	*dst;
 
-	// Koordinatların ekran sınırları içinde olup olmadığını kontrol et
 	if (x < 0 || x >= MINIMAP_WIDTH || y < 0 || y >= MINIMAP_HEIGHT)
 		return ;
-	dst = cub->minimap.data;  // Window buffer'ına erişim
-	// Pixel'in buffer'daki adresini hesapla (y * satır genişliği + x * pixel boyutu)
+	dst = cub->minimap.data;
 	dst += (y * cub->minimap.size_line + x * (cub->minimap.bits_per_pixel / 8));
-	// Renk değerini buffer'a yaz
 	*(unsigned int *)dst = color;
 }
 
-// Harita boyutlarını hesapla
-void	calculate_map_height_and_with(t_cub *cub)
-{
-	int	current_width;
-
-	current_width = 0;
-	while (cub->map.map[cub->map.map_height])
-	{
-		current_width = ft_strlen(cub->map.map[cub->map.map_height]);
-		if (current_width > cub->map.map_width)
-			cub->map.map_width = current_width;
-		cub->map.map_height++;
-	}
-}
-
-// Haritayı kaydırmak için ofset hesapla
-// Eğer harita minimap'ten küçükse, haritayı ortala ve kaydırmayı durdur
-void	check_minimap(t_cub *cub)
+static void	check_minimap(t_cub *cub)
 {
 	int	total_map_pixel_width;
 	int	total_map_pixel_height;
@@ -54,7 +34,6 @@ void	check_minimap(t_cub *cub)
 		cub->minimap.offset_x = (MINIMAP_WIDTH - total_map_pixel_width) / 2;
 	else
 	{
-		// Harita kenarlara ulaştığında kaydırmayı sınırla
 		if (cub->minimap.offset_x > 0)
 			cub->minimap.offset_x = 0;
 		if (cub->minimap.offset_x < MINIMAP_WIDTH - total_map_pixel_width)
@@ -71,24 +50,33 @@ void	check_minimap(t_cub *cub)
 	}
 }
 
-void	draw_minimap_edge(t_cub *cub)
+t_tmp	fill_tmp(int start_x, int start_y, int color)
 {
-	// Minimap'i temizle
-	draw_rectangle(cub, 0, 0, MINIMAP_WIDTH, MINIMAP_HEIGHT, 0x000000);
-	// Minimap çerçevesi
-	draw_rectangle(cub, 0, 0, MINIMAP_WIDTH, 1, 0xFFFFFF);
-	draw_rectangle(cub, 0, MINIMAP_HEIGHT - 1, MINIMAP_WIDTH, 1, 0xFFFFFF);
-	draw_rectangle(cub, 0, 0, 1, MINIMAP_HEIGHT, 0xFFFFFF);
-	draw_rectangle(cub, MINIMAP_WIDTH - 1, 0, 1, MINIMAP_HEIGHT, 0xFFFFFF);
+	t_tmp	tmp;
+
+	tmp.color = color;
+	tmp.start_x = start_x;
+	tmp.start_y = start_y;
+	return (tmp);
+}
+
+static void	draw_minimap_edge(t_cub *cub)
+{
+	draw_rectangle(cub, fill_tmp(0, 0, 0x000000),
+		MINIMAP_WIDTH, MINIMAP_HEIGHT);
+	draw_rectangle(cub, fill_tmp(0, 0, 0xFFFFFF), MINIMAP_WIDTH, 1);
+	draw_rectangle(cub, fill_tmp(0, MINIMAP_HEIGHT - 1, 0xFFFFFF),
+		MINIMAP_WIDTH, 1);
+	draw_rectangle(cub, fill_tmp(0, 0, 0xFFFFFF), 1, MINIMAP_HEIGHT);
+	draw_rectangle(cub, fill_tmp(MINIMAP_WIDTH - 1, 0, 0xFFFFFF), 1,
+		MINIMAP_HEIGHT);
 }
 
 void	minimap(t_cub *cub)
 {
 	calculate_map_height_and_with(cub);
-	// Oyuncunun harita üzerindeki pixel pozisyonu
 	cub->minimap.player_map_px = cub->player.posx * cub->minimap.cell_size;
 	cub->minimap.player_map_py = cub->player.posy * cub->minimap.cell_size;
-	// Başlangıçta ofset, oyuncuyu merkeze alır
 	cub->minimap.offset_x = (MINIMAP_WIDTH / 2) - cub->minimap.player_map_px;
 	cub->minimap.offset_y = (MINIMAP_HEIGHT / 2) - cub->minimap.player_map_py;
 	check_minimap(cub);

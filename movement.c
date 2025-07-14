@@ -12,15 +12,15 @@
 
 #include "cub3D.h"
 
-void	move_forward(t_cub *cub, double new_x, double new_y)
+static void	move_forward(t_cub *cub, double new_x, double new_y)
 {
 	new_x = cub->player.posx + cub->player.dirx * MOVE_SPEED;
 	new_y = cub->player.posy + cub->player.diry * MOVE_SPEED;
 	if (BONUS)
 	{
-		if (check_wall_collisions(cub, new_x, cub->player.posy))
+		if (check_wall_collisions(cub, new_x, cub->player.posy, 0.2))
 			cub->player.posx = new_x;
-		if (check_wall_collisions(cub, cub->player.posx, new_y))
+		if (check_wall_collisions(cub, cub->player.posx, new_y, 0.2))
 			cub->player.posy = new_y;
 	}
 	else
@@ -32,15 +32,15 @@ void	move_forward(t_cub *cub, double new_x, double new_y)
 	}
 }
 
-void	move_backward(t_cub *cub, double new_x, double new_y)
+static void	move_backward(t_cub *cub, double new_x, double new_y)
 {
 	new_x = cub->player.posx - cub->player.dirx * MOVE_SPEED;
 	new_y = cub->player.posy - cub->player.diry * MOVE_SPEED;
 	if (BONUS)
 	{
-		if (check_wall_collisions(cub, new_x, cub->player.posy))
+		if (check_wall_collisions(cub, new_x, cub->player.posy, 0.2))
 			cub->player.posx = new_x;
-		if (check_wall_collisions(cub, cub->player.posx, new_y))
+		if (check_wall_collisions(cub, cub->player.posx, new_y, 0.2))
 			cub->player.posy = new_y;
 	}
 	else
@@ -52,15 +52,15 @@ void	move_backward(t_cub *cub, double new_x, double new_y)
 	}
 }
 
-void	move_left(t_cub *cub, double new_x, double new_y)
+static void	move_left(t_cub *cub, double new_x, double new_y)
 {
 	new_x = cub->player.posx + cub->player.diry * MOVE_SPEED;
 	new_y = cub->player.posy - cub->player.dirx * MOVE_SPEED;
 	if (BONUS)
 	{
-		if (check_wall_collisions(cub, new_x, cub->player.posy))
+		if (check_wall_collisions(cub, new_x, cub->player.posy, 0.2))
 			cub->player.posx = new_x;
-		if (check_wall_collisions(cub, cub->player.posx, new_y))
+		if (check_wall_collisions(cub, cub->player.posx, new_y, 0.2))
 			cub->player.posy = new_y;
 	}
 	else
@@ -72,15 +72,15 @@ void	move_left(t_cub *cub, double new_x, double new_y)
 	}
 }
 
-void	move_right(t_cub *cub, double new_x, double new_y)
+static void	move_right(t_cub *cub, double new_x, double new_y)
 {
 	new_x = cub->player.posx - cub->player.diry * MOVE_SPEED;
 	new_y = cub->player.posy + cub->player.dirx * MOVE_SPEED;
 	if (BONUS)
 	{
-		if (check_wall_collisions(cub, new_x, cub->player.posy))
+		if (check_wall_collisions(cub, new_x, cub->player.posy, 0.2))
 			cub->player.posx = new_x;
-		if (check_wall_collisions(cub, cub->player.posx, new_y))
+		if (check_wall_collisions(cub, cub->player.posx, new_y, 0.2))
 			cub->player.posy = new_y;
 	}
 	else

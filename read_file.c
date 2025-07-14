@@ -6,14 +6,13 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:35:00 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/10 12:25:53 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:43:37 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-#include <stdio.h>
 
-void	read_xpm_after_map(t_cub *cub, char *tmp, int fd)
+static void	read_xpm_after_map(t_cub *cub, char *tmp, int fd)
 {
 	int	i;
 
@@ -38,7 +37,7 @@ void	read_xpm_after_map(t_cub *cub, char *tmp, int fd)
 	close(fd);
 }
 
-char	*read_xpm_until_map(t_cub *cub, int fd, int map_start)
+static char	*read_xpm_until_map(t_cub *cub, int fd)
 {
 	char	*line;
 
@@ -47,7 +46,6 @@ char	*read_xpm_until_map(t_cub *cub, int fd, int map_start)
 	{
 		if (unknown_line_check(cub, line))
 			break ;
-		map_start++;
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -62,7 +60,7 @@ char	*read_xpm_until_map(t_cub *cub, int fd, int map_start)
 	return (line);
 }
 
-void	read_map(t_cub *cub, char *file)
+static void	read_map(t_cub *cub, char *file)
 {
 	char	*tmp;
 	int		fd;
@@ -71,7 +69,7 @@ void	read_map(t_cub *cub, char *file)
 
 	i = 0;
 	fd = open(file, O_RDONLY);
-	tmp = read_xpm_until_map(cub, fd, 0);
+	tmp = read_xpm_until_map(cub, fd);
 	map_lengt = map_reel_lenght(file, cub);
 	cub->map.map = ft_calloc(map_lengt + 1, sizeof(char *));
 	while (tmp != NULL && tmp[0] != '\0')
@@ -88,9 +86,10 @@ void	read_map(t_cub *cub, char *file)
 	}
 	cub->map.map[i] = NULL;
 	read_xpm_after_map(cub, tmp, fd);
+	check_map(cub);
 }
 
-void	read_file(t_cub *cub, char *file)
+static void	read_file(t_cub *cub, char *file)
 {
 	int	fd;
 	int	fd2;
@@ -105,26 +104,16 @@ void	read_file(t_cub *cub, char *file)
 
 void	open_file(t_cub *cub, char *file)
 {
-	int		counter;
 	int		fd;
 	char	*line;
 
-	counter = 0;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		error_msg("can not open file", cub, 2);
 	line = get_next_line(fd);
 	if (!line)
 		error_msg("File is empty", cub, 2);
-	while (line != NULL)
-	{
-		counter++;
-		free(line);
-		line = get_next_line(fd);
-	}
-	cub->len_of_file = counter;
+	free(line);
 	close(fd);
 	read_file(cub, file);
-	check_texture(cub, 0);
-	check_map(cub);
 }

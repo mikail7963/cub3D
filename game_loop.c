@@ -3,16 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   game_loop.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 19:16:26 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/03 19:16:26 by mikkayma         ###   ########.fr       */
+/*   Created: 2025/07/14 11:25:47 by atursun           #+#    #+#             */
+/*   Updated: 2025/07/14 11:25:47 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int	game_loop(t_cub *cub)
+void	rotate_player(t_cub *cub, double angle)
+{
+	double	old_dirx;
+	double	old_planex;
+
+	old_planex = cub->plane_x;
+	old_dirx = cub->player.dirx;
+	cub->player.dirx = \
+		cub->player.dirx * cos(angle) - cub->player.diry * sin(angle);
+	cub->player.diry = old_dirx * sin(angle) + cub->player.diry * cos(angle);
+	cub->plane_x = cub->plane_x * cos(angle) - cub->plane_y * sin(angle);
+	cub->plane_y = old_planex * sin(angle) + cub->plane_y * cos(angle);
+}
+
+int	is_valid_position(t_cub *cub, double x, double y)
+{
+	double	radius;
+	double	dx;
+	double	dy;
+	int		check_x;
+	int		check_y;
+
+	radius = 0.2;
+	dx = -radius;
+	while (dx <= radius)
+	{
+		dy = -radius;
+		while (dy <= radius)
+		{
+			check_x = (int)(x + dx);
+			check_y = (int)(y + dy);
+			if (cub->map.map[check_y] && cub->map.map[check_y][check_x] == '1')
+				return (0);
+			dy += 0.1;
+		}
+		dx += 0.1;
+	}	
+	return (1);
+}
+
+static int	game_loop(t_cub *cub)
 {
 	move_player(cub);
 	render_map(cub);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 13:03:04 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/10 11:13:54 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:49:58 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,9 @@ int	is_player(char p)
 
 void	validate_map_line(char *line, t_cub *cub)
 {
-	int	has_content;
 	int	i;
 
 	i = 0;
-	has_content = 0;
 	while (line[i])
 	{
 		if (!(line[i] == '0' || line[i] == '1' || is_player(line[i])
@@ -40,15 +38,13 @@ void	validate_map_line(char *line, t_cub *cub)
 	}
 	if ((line[0] == ' ' || line[0] == '\t' || line[0] == '\n')
 		&& !ft_strchr(line, '1'))
-		has_content = 1;
-	if (has_content == 1)
 	{
 		free(line);
 		error_msg("Empty or whitespace-only line in map", cub, 3);
 	}
 }
 
-void	set_player_info(t_cub *cub, char *line)
+static void	set_player_info(t_cub *cub, char *line)
 {
 	if (ft_strchr(line, 'N'))
 	{
