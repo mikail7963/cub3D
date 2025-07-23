@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/15 14:36:22 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/23 16:55:00 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,15 @@ void	error_msg(char *msg, t_cub *cub, int is_free)
 int	check_extension(char *file, char *ext)
 {
 	char	*res;
+	int		file_len;
 
+	file_len = ft_strlen(file);
+	if (file_len <= 4)
+		return (1);
 	res = ft_strrchr(file, '.');
-	if (!res || ft_strncmp(res, ext, 4) != 0 || ft_strlen(file) <= 4)
+	if (!res || ft_strncmp(res, ext, 5) != 0)
+		return (1);
+	if (file[file_len - 5] == '/')
 		return (1);
 	return (0);
 }
