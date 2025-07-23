@@ -3,42 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   door_render_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 13:27:38 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/14 11:29:32 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/23 16:39:06 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D_bonus.h"
 
-static void	render_vertical_texture(t_cub *cub, t_render *render, int x
-	, int tex_x)
+static void	draw_the_walls_behind_the_door(t_cub *cub, t_render *render
+	, int y, int x)
 {
-	double	step;
+	t_render	bg_render;
+	int			bg_color;
+
+	bg_render = *render;
+	continue_ray_after_door(cub, &bg_render);
+	select_texture(cub, &bg_render);
+	if (bg_render.selected_texture)
+	{
+		if (y >= bg_render.draw_start && y < bg_render.draw_end)
+		{
+			bg_color = calculate_the_walls_behind_the_door(cub, bg_render, y);
+			my_mlx_pixel_put(cub, x, y, bg_color);
+		}
+		else
+			draw_floor_and_ceiling(cub, x, y);
+	}
+	else
+		draw_floor_and_ceiling(cub, x, y);
+}
+
+static void	render_vertical_texture(t_cub *cub, t_render *render
+	, int x, int tex_x)
+{
+	double	stp;
 	double	tex_pos;
 	int		color;
 	int		tex_y;
 	int		y;
 
-	step = 1.0 * render->selected_texture->tex_height / render->line_height;
-	tex_pos = (render->draw_start - HEIGHT
-			/ 2 + render->line_height / 2) * step;
+	stp = 1.0 * render->selected_texture->tex_height / render->line_height;
+	tex_pos = (render->draw_start - HEIGHT / 2 + render->line_height / 2) * stp;
 	y = render->draw_start;
 	while (y < render->draw_end)
 	{
 		tex_y = (int)tex_pos & (render->selected_texture->tex_height - 1);
-		tex_pos += step;
+		tex_pos += stp;
 		color = *(unsigned int *)(render->selected_texture->texture_data
 				+ (tex_y * render->selected_texture->size_line + tex_x
 					* (render->selected_texture->bits_per_pixel / 8)));
+		if (color == 0x0B0A0A)
+		{
+			draw_the_walls_behind_the_door(cub, render, y, x);
+			y++;
+			continue ;
+		}
 		my_mlx_pixel_put(cub, x, y, color);
 		y++;
 	}
 }
 
-static void	draw_wall_texture_for_door_back(t_cub *cub, t_render *render
-	, int x)
+static void	draw_wall_texture_for_door_back(t_cub *cub, t_render *render, int x)
 {
 	double	wall_x;
 	int		tex_x;
@@ -56,15 +83,15 @@ static void	draw_wall_texture_for_door_back(t_cub *cub, t_render *render
 	render_vertical_texture(cub, render, x, tex_x);
 }
 
-static void	continue_ray_after_door(t_cub *cub, t_render *render)
+void	continue_ray_after_door(t_cub *cub, t_render *render)
 {
 	render->hit = 0;
 	while (render->hit == 0)
 	{
 		move_ray(render);
-		if (render->map_y < 0 || render->map_x < 0
-			|| !cub->map.map[render->map_y] || render->map_x
-			>= (int)ft_strlen(cub->map.map[render->map_y]))
+		if (render->map_x >= (int)ft_strlen(cub->map.map[render->map_y])
+			|| render->map_y < 0 || render->map_x < 0
+			|| !cub->map.map[render->map_y])
 		{
 			render->hit = 0;
 			render->selected_texture = NULL;
@@ -77,15 +104,15 @@ static void	continue_ray_after_door(t_cub *cub, t_render *render)
 			break ;
 		}
 		if (cub->map.map[render->map_y][render->map_x] == 'D')
-			continue ;
+			check_the_door_after_the_door(cub, render);
 	}
 	calculate_wall_distance_and_height(cub, render);
 }
 
 void	draw_background_for_door(t_cub *cub, t_render *render, int x)
 {
-	int			y;
 	t_render	bg_render;
+	int			y;
 
 	bg_render = *render;
 	continue_ray_after_door(cub, &bg_render);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 17:11:11 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/14 11:09:51 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/17 17:52:46 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,6 @@ t_tmp	fill_tmp(int start_x, int start_y, int color)
 	return (tmp);
 }
 
-static void	draw_minimap_edge(t_cub *cub)
-{
-	draw_rectangle(cub, fill_tmp(0, 0, 0x000000),
-		MINIMAP_WIDTH, MINIMAP_HEIGHT);
-	draw_rectangle(cub, fill_tmp(0, 0, 0xFFFFFF), MINIMAP_WIDTH, 1);
-	draw_rectangle(cub, fill_tmp(0, MINIMAP_HEIGHT - 1, 0xFFFFFF),
-		MINIMAP_WIDTH, 1);
-	draw_rectangle(cub, fill_tmp(0, 0, 0xFFFFFF), 1, MINIMAP_HEIGHT);
-	draw_rectangle(cub, fill_tmp(MINIMAP_WIDTH - 1, 0, 0xFFFFFF), 1,
-		MINIMAP_HEIGHT);
-}
-
 void	minimap(t_cub *cub)
 {
 	calculate_map_height_and_with(cub);
@@ -80,7 +68,8 @@ void	minimap(t_cub *cub)
 	cub->minimap.offset_x = (MINIMAP_WIDTH / 2) - cub->minimap.player_map_px;
 	cub->minimap.offset_y = (MINIMAP_HEIGHT / 2) - cub->minimap.player_map_py;
 	check_minimap(cub);
-	draw_minimap_edge(cub);
+	draw_rectangle(cub, fill_tmp(0, 0, 0x000000),
+		MINIMAP_WIDTH, MINIMAP_HEIGHT);
 	draw_minimap(cub);
 	draw_player_in_minimap(cub, 0, 0, 0);
 	mlx_put_image_to_window(cub->mlx.mlx, cub->mlx.win,

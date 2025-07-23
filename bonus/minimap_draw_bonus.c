@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_draw_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:56:59 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/14 11:10:09 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/18 12:12:30 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,6 @@ void	draw_player_in_minimap(t_cub *cub, float dx, float dy, int pl_size)
 	pl_x = cub->minimap.offset_x + cub->minimap.player_map_px;
 	pl_y = cub->minimap.offset_y + cub->minimap.player_map_py;
 	pl_size = cub->minimap.cell_size / 2;
-	if (pl_size < 3)
-		pl_size = 3;
-	if (pl_size > 8)
-		pl_size = 8;
 	draw_rectangle(cub, fill_tmp(pl_x - pl_size / 2,
 			pl_y - pl_size / 2, 0xFF0000), pl_size, pl_size);
 	dx = cub->player.dirx;

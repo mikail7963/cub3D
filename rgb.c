@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:37:13 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/14 16:32:00 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/18 19:33:21 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,23 @@ static void	rbg_line(t_rgb *rgb, char *line, t_cub *cub)
 	check_rgb_line(line, cub);
 	tmp = ft_strdup(line + 2);
 	double_tmp = ft_split(tmp, ',');
+	free(tmp);
 	if (len_of_double_tmp(double_tmp) != 3)
+	{
+		free_map(double_tmp);
+		free(line);
 		error_msg("rgb num is not valid", cub, 2);
+	}
 	if (double_tmp[0] && double_tmp[1] && double_tmp[2])
 	{
 		rgb->r = ft_atoi(double_tmp[0]);
 		rgb->g = ft_atoi(double_tmp[1]);
 		rgb->b = ft_atoi(double_tmp[2]);
-		free(tmp);
-		free(double_tmp[0]);
-		free(double_tmp[1]);
-		free(double_tmp[2]);
-		free(double_tmp);
+		free_map(double_tmp);
 		if (!(rgb->r >= 0 && rgb->r <= 255) || !(rgb->g >= 0 && rgb->g <= 255)
 			|| !(rgb->b >= 0 && rgb->b <= 255))
-			error_msg("RGB range value must be between 0 - 255", cub, 2);
+			return (free(line),
+				error_msg("RGB range value must be between 0 - 255", cub, 2));
 	}
 }
 

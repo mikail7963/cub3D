@@ -16,7 +16,8 @@ SRC = main.c read_file.c read_texture.c render.c rgb.c check_map.c free.c \
 
 BONUS_SRC = bonus/key_handle_bonus.c bonus/door_bonus.c  bonus/door_render_bonus.c \
 			bonus/minimap_bonus.c bonus/wall_collisions_bonus.c bonus/fps_counter.c \
-			bonus/minimap_draw_bonus.c bonus/door_play_sprite_bonus.c bonus/door_utils_bonus.c
+			bonus/minimap_draw_bonus.c bonus/door_play_sprite_bonus.c \
+			bonus/door_utils_bonus.c bonus/door_render_utils_bonus.c
 
 OBJ = $(SRC:.c=.o)
 OBJ_BONUS = $(SRC:.c=_bonus.o)

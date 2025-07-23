@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   door_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:21:53 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/14 11:04:41 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/18 12:15:54 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,11 @@ static void	doors_get_data_addres(t_tex_data *frames, t_cub *cub)
 	while (i < 8)
 	{
 		if (!frames[i].image)
-			error_msg("Door image error", cub, 3);
+		{
+			free_door_sprite(cub);
+			free(cub->doors_manager.door);
+			error_msg("Door image error", cub, 4);
+		}
 		i++;
 	}
 	i = 0;
@@ -107,6 +111,7 @@ static void	execute_door(t_cub *cub, int check_x, int check_y)
 	}
 	else if (cub->doors_manager.door[i].is_open == 1)
 	{
+		cub->doors_manager.door[i].is_open = 0;
 		cub->doors_manager.door[i].is_closing = 1;
 		cub->doors_manager.door[i].is_opening = 0;
 		cub->doors_manager.door[i].door_frame = 7;

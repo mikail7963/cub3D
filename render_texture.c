@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_texture.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:25:06 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/14 18:24:15 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/18 12:13:24 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color)
 {
 	char	*dst;
 
-	if (BONUS && color == 0x0B0A0A)
-		return ;
 	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
 		return ;
 	dst = cub->mlx.win_data.texture_data;

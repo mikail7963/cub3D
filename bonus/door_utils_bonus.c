@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:04:12 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/11 15:21:13 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/23 16:05:15 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	free_door_sprite(t_cub *cub)
 	i = 0;
 	while (i < 8)
 	{
-		mlx_destroy_image(cub->mlx.mlx, cub->doors_manager.frames[i].image);
+		if (cub->doors_manager.frames[i].image)
+			mlx_destroy_image(cub->mlx.mlx, cub->doors_manager.frames[i].image);
 		i++;
 	}
 }
@@ -69,4 +70,14 @@ void	fill_doors_manager_struct(t_cub *cub, int i, int x, int y)
 	cub->doors_manager.door[i].is_opening = 0;
 	cub->doors_manager.door[i].is_closing = 0;
 	cub->doors_manager.door[i].door_frame = 0;
+}
+
+void	check_the_door_after_the_door(t_cub *cub, t_render *render)
+{
+	render->hit = 1;
+	render->is_door = 1;
+	render->selected_texture = &cub->doors_manager.frames
+	[cub->doors_manager.door
+	[find_true_door(cub, render->map_x, render->map_y)]
+		.door_frame];
 }

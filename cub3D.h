@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/14 16:33:09 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/23 16:38:35 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@
 # define KEY_RIGHT 65363
 # define KEY_ESC 65307
 
-# define MOUSE_LEFT 1
-# define MOUSE_RIGHT 3
 # ifndef BONUS
 #  define BONUS 0
 # endif
@@ -43,8 +41,6 @@ typedef struct s_tmp
 {
 	int	start_x;
 	int	start_y;
-	int	width;
-	int	height;
 	int	color;
 }	t_tmp;
 
@@ -167,7 +163,6 @@ typedef struct s_render
 
 typedef struct s_cub
 {
-	int				len_of_file;
 	double			plane_x;
 	double			plane_y;
 	int				is_player;
@@ -207,6 +202,7 @@ void	select_texture(t_cub *cub, t_render *render);
 void	draw_texture(t_cub *cub, t_render *render, int x, int y);
 void	move_ray(t_render *render);
 void	check_map_around_wall(t_cub *cub);
+void	continue_ray_after_door(t_cub *cub, t_render *render);
 
 void	validate_map_line(char *line, t_cub *cub);
 void	set_coor_and_pos(t_cub *cub, char *line, int i);
@@ -231,5 +227,5 @@ int		handle_close(t_cub *cub);
 void	rotate_player(t_cub *cub, double angle);
 int		unknown_line_check(t_cub *cub, char *line);
 void	calculate_wall_distance_and_height(t_cub *cub, t_render *render);
-
+void	check_the_door_after_the_door(t_cub *cub, t_render *render);
 #endif

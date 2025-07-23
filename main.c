@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/14 18:26:25 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/15 14:36:22 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,13 +92,13 @@ int	main(int argc, char **argv)
 		init_door(cub);
 	cub->mlx.mlx = mlx_init();
 	xpm_to_image(cub);
-	cub->mlx.win = mlx_new_window(cub->mlx.mlx, WIDTH, HEIGHT, "Cub3D");
 	if (BONUS)
 	{		
 		cub->minimap.cell_size = 15;
 		render_bonus(cub);
 		init_fps_counter(cub);
 	}
+	cub->mlx.win = mlx_new_window(cub->mlx.mlx, WIDTH, HEIGHT, "Cub3D");
 	render_map(cub);
 	setup_hooks(cub);
 	mlx_loop(cub->mlx.mlx);
