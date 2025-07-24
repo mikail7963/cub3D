@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_draw_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:56:59 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/18 12:12:30 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/24 14:24:53 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

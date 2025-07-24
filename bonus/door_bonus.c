@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   door_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:21:53 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/18 12:15:54 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/24 14:23:55 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,18 @@ static void	execute_door(t_cub *cub, int check_x, int check_y)
 
 void	handle_door(t_cub *cub)
 {
-	int	check_x;
-	int	check_y;
+	int		check_x;
+	int		check_y;
+	double	door_cx;
+	double	door_cy;
 
 	check_x = (int)(cub->player.posx + cub->player.dirx * 1.1);
 	check_y = (int)(cub->player.posy + cub->player.diry * 1.1);
+	door_cx = check_x + 0.5;
+	door_cy = check_y + 0.5;
+	if (sqrt(pow(door_cx - cub->player.posx, 2)
+			+ pow(door_cy - cub->player.posy, 2)) < 0.74)
+		return ;
 	if (check_y <= 0 || check_x <= 0
 		|| check_x >= (int)ft_strlen(cub->map.map[check_y]))
 		return ;

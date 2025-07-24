@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 13:27:38 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/23 16:39:06 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:34:23 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,12 @@ void	draw_background_for_door(t_cub *cub, t_render *render, int x)
 {
 	t_render	bg_render;
 	int			y;
+	t_door		door;
 
+	door = cub->doors_manager.door
+	[find_true_door(cub, render->map_x, render->map_y)];
+	if (door.is_open == 0 && door.is_opening != 1 && door.is_closing != 1)
+		return ;
 	bg_render = *render;
 	continue_ray_after_door(cub, &bg_render);
 	select_texture(cub, &bg_render);
