@@ -6,11 +6,11 @@
 /*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/25 12:54:48 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/25 14:08:07 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "cub3D.h"
 
 void	error_msg(char *msg, t_cub *cub, int is_free)
 {

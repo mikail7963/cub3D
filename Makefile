@@ -10,7 +10,7 @@ MLX_PATH = libs/mlx/
 LIBFT = $(LIBFT_PATH)libft.a
 MLX = $(MLX_PATH)libmlx.a
 
-SRC = mandatory/main.c mandatory/parse/read_file.c mandatory/parse/read_texture.c mandatory/render/render.c mandatory/parse/rgb.c mandatory/parse/check_map.c mandatory/free.c \
+SRC = main.c mandatory/parse/read_file.c mandatory/parse/read_texture.c mandatory/render/render.c mandatory/parse/rgb.c mandatory/parse/check_map.c mandatory/free.c \
 	mandatory/key_handle.c mandatory/movement.c mandatory/game_loop.c mandatory/parse/read_file_utils.c \
 	mandatory/render/render_texture.c mandatory/parse/flood_fill.c mandatory/parse/read_file_line.c mandatory/render/render_utils.c
 
