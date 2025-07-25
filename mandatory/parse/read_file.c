@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:35:00 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/14 16:43:37 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:55:43 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../../cub3D.h"
 
 static void	read_xpm_after_map(t_cub *cub, char *tmp, int fd)
 {
@@ -95,7 +95,7 @@ static void	read_file(t_cub *cub, char *file)
 	int	fd2;
 
 	fd = open(file, O_RDONLY);
-	read_texture(cub, fd, 0, 0);
+	read_texture(cub, fd, 0);
 	fd2 = open(file, O_RDONLY);
 	read_fc_rgb(cub, fd2);
 	close(fd2);

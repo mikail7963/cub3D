@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   flood_fill.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 18:08:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/14 11:57:54 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/25 12:55:24 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../../cub3D.h"
 
 static void	flood_fill(char **map_copy, int x, int y, int *error)
 {

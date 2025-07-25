@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:33:28 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/15 14:37:43 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:54:32 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../cub3D.h"
 
 void	free_texture(t_texture texture)
 {

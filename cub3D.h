@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/23 16:38:35 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/25 11:52:01 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,8 +208,8 @@ void	validate_map_line(char *line, t_cub *cub);
 void	set_coor_and_pos(t_cub *cub, char *line, int i);
 int		map_reel_lenght(char *file, t_cub *cub);
 int		skip_whitespaces(char *line, int i);
-void	read_texture(t_cub *cub, int fd, int i, int j);
-int		check_texture(t_cub *cub, int i);
+void	read_texture(t_cub *cub, int fd, int j);
+int		check_texture(t_cub *cub);
 void	open_file(t_cub *cub, char *file);
 int		check_extension(char *file, char *ext);
 void	check_map(t_cub *cub);

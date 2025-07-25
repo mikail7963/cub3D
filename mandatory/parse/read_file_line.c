@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   read_file_line.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 12:24:08 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/14 11:17:04 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/25 12:55:15 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../../cub3D.h"
 
 static int	is_empty_line(char *line)
 {

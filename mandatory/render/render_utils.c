@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   render_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 17:30:45 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/14 12:14:56 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/25 12:55:50 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../../cub3D.h"
 
 void	painting_sky_and_ground(t_cub *cub)
 {

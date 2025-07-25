@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_draw_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:56:59 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/24 14:24:53 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:57:46 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D_bonus.h"
+#include "../cub3D_bonus.h"
 
 static int	color_selection(t_cub *cub, int x, int y)
 {

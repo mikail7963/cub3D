@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   door_play_sprite_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:00:35 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/14 11:05:47 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/25 12:57:06 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D_bonus.h"
+#include "../cub3D_bonus.h"
 #include <sys/time.h>
 
 long	get_time_ms(void)

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:33:37 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/23 16:55:00 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:54:48 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../cub3D.h"
 
 void	error_msg(char *msg, t_cub *cub, int is_free)
 {
@@ -38,10 +38,8 @@ int	check_extension(char *file, char *ext)
 	int		file_len;
 
 	file_len = ft_strlen(file);
-	if (file_len <= 4)
-		return (1);
 	res = ft_strrchr(file, '.');
-	if (!res || ft_strncmp(res, ext, 5) != 0)
+	if (!res || file_len <= 4 || ft_strncmp(res, ext, 5) != 0)
 		return (1);
 	if (file[file_len - 5] == '/')
 		return (1);
@@ -88,7 +86,7 @@ int	main(int argc, char **argv)
 	t_cub	*cub;
 
 	if (argc != 2)
-		error_msg("Too many arguments", NULL, 0);
+		error_msg("Too Or Missing Arguments", NULL, 0);
 	if (check_extension(argv[1], ".cub") == 1)
 		error_msg("Wrong map extansion", NULL, 0);
 	cub = malloc(sizeof(t_cub));

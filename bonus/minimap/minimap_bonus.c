@@ -6,11 +6,11 @@
 /*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 17:11:11 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/17 17:52:46 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/25 12:57:43 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D_bonus.h"
+#include "../cub3D_bonus.h"
 
 void	my_mlx_pixel_put_for_minimap(t_cub *cub, int x, int y, int color)
 {

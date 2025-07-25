@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   read_file_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 13:03:04 by atursun           #+#    #+#             */
-/*   Updated: 2025/07/14 11:49:58 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/25 12:55:29 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../../cub3D.h"
 
 int	is_player(char p)
 {

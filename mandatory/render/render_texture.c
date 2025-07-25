@@ -6,11 +6,11 @@
 /*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:25:06 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/18 12:13:24 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/25 12:55:47 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../../cub3D.h"
 
 void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color)
 {

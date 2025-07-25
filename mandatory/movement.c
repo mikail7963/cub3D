@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../cub3D.h"
 
 static void	move_forward(t_cub *cub, double new_x, double new_y)
 {

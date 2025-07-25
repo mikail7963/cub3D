@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   door_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:21:53 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/24 14:23:55 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:57:32 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "../cub3D_bonus.h"
 
 void	init_door(t_cub *cub)
 {

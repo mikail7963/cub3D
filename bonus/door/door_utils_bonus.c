@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   door_utils_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:04:12 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/23 16:05:15 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:57:40 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D_bonus.h"
+#include "../cub3D_bonus.h"
 
 void	free_door_sprite(t_cub *cub)
 {

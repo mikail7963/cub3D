@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com.tr +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:55:10 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/14 11:57:40 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/25 12:55:05 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../../cub3D.h"
 
 static void	check_map_line_start_end(char *line, t_cub *cub)
 {

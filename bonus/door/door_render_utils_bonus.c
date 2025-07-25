@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   door_render_utils_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 16:29:21 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/23 16:30:10 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:57:36 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D_bonus.h"
+#include "../cub3D_bonus.h"
 
 void	draw_floor_and_ceiling(t_cub *cub, int x, int y)
 {

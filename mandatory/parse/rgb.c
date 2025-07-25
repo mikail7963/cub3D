@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   rgb.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:37:13 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/18 19:33:21 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:55:35 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../../cub3D.h"
 
 static void	check_rgb_line(char *line, t_cub *cub)
 {

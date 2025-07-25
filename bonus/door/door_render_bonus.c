@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   door_render_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 13:27:38 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/24 13:34:23 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:57:29 by atursun          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D_bonus.h"
+#include "../cub3D_bonus.h"
 
 static void	draw_the_walls_behind_the_door(t_cub *cub, t_render *render
 	, int y, int x)
@@ -54,7 +54,7 @@ static void	render_vertical_texture(t_cub *cub, t_render *render
 		color = *(unsigned int *)(render->selected_texture->texture_data
 				+ (tex_y * render->selected_texture->size_line + tex_x
 					* (render->selected_texture->bits_per_pixel / 8)));
-		if (color == 0x0B0A0A)
+		if (BONUS && render->is_door && color == 0x0B0A0A)
 		{
 			draw_the_walls_behind_the_door(cub, render, y, x);
 			y++;
