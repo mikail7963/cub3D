@@ -54,6 +54,9 @@ int	is_valid_position(t_cub *cub, double x, double y)
 
 static int	game_loop(t_cub *cub)
 {
+	long now = get_time_ms();
+    cub->delta_time = (now - cub->last_frame_time) / 1000.0;
+    cub->last_frame_time = now;
 	move_player(cub);
 	render_map(cub);
 	if (BONUS)
@@ -75,6 +78,7 @@ void	init_movement_state(t_cub *cub)
 	cub->rotate_right = 0;
 	cub->mouse_rotate_left = 0;
 	cub->mouse_rotate_right = 0;
+	cub->last_frame_time = get_time_ms();
 }
 
 void	setup_hooks(t_cub *cub)

@@ -12,10 +12,13 @@
 
 #include "../cub3D.h"
 
-static void	move_forward(t_cub *cub, double new_x, double new_y)
+static void	move_forward(t_cub *cub)
 {
-	new_x = cub->player.posx + cub->player.dirx * MOVE_SPEED;
-	new_y = cub->player.posy + cub->player.diry * MOVE_SPEED;
+	double new_x;
+	double new_y;
+
+	new_x = cub->player.posx + cub->player.dirx * MOVE_SPEED * cub->delta_time;
+	new_y = cub->player.posy + cub->player.diry * MOVE_SPEED * cub->delta_time;
 	if (BONUS)
 	{
 		if (check_wall_collisions(cub, new_x, cub->player.posy, 0.2))
@@ -32,10 +35,13 @@ static void	move_forward(t_cub *cub, double new_x, double new_y)
 	}
 }
 
-static void	move_backward(t_cub *cub, double new_x, double new_y)
+static void	move_backward(t_cub *cub)
 {
-	new_x = cub->player.posx - cub->player.dirx * MOVE_SPEED;
-	new_y = cub->player.posy - cub->player.diry * MOVE_SPEED;
+	double new_x;
+	double new_y;
+
+	new_x = cub->player.posx - cub->player.dirx * MOVE_SPEED * cub->delta_time;
+	new_y = cub->player.posy - cub->player.diry * MOVE_SPEED * cub->delta_time;
 	if (BONUS)
 	{
 		if (check_wall_collisions(cub, new_x, cub->player.posy, 0.2))
@@ -52,10 +58,13 @@ static void	move_backward(t_cub *cub, double new_x, double new_y)
 	}
 }
 
-static void	move_left(t_cub *cub, double new_x, double new_y)
+static void	move_left(t_cub *cub)
 {
-	new_x = cub->player.posx + cub->player.diry * MOVE_SPEED;
-	new_y = cub->player.posy - cub->player.dirx * MOVE_SPEED;
+	double new_x;
+	double new_y;
+
+	new_x = cub->player.posx + cub->player.diry * MOVE_SPEED * cub->delta_time;
+	new_y = cub->player.posy - cub->player.dirx * MOVE_SPEED * cub->delta_time;
 	if (BONUS)
 	{
 		if (check_wall_collisions(cub, new_x, cub->player.posy, 0.2))
@@ -72,10 +81,13 @@ static void	move_left(t_cub *cub, double new_x, double new_y)
 	}
 }
 
-static void	move_right(t_cub *cub, double new_x, double new_y)
+static void	move_right(t_cub *cub)
 {
-	new_x = cub->player.posx - cub->player.diry * MOVE_SPEED;
-	new_y = cub->player.posy + cub->player.dirx * MOVE_SPEED;
+	double new_x;
+	double new_y;
+
+	new_x = cub->player.posx - cub->player.diry * MOVE_SPEED * cub->delta_time;
+	new_y = cub->player.posy + cub->player.dirx * MOVE_SPEED * cub->delta_time;
 	if (BONUS)
 	{
 		if (check_wall_collisions(cub, new_x, cub->player.posy, 0.2))
@@ -94,25 +106,20 @@ static void	move_right(t_cub *cub, double new_x, double new_y)
 
 void	move_player(t_cub *cub)
 {
-	double	new_x;
-	double	new_y;
-
-	new_x = 0;
-	new_y = 0;
 	if (cub->move_forward)
-		move_forward(cub, new_x, new_y);
+		move_forward(cub);
 	if (cub->move_backward)
-		move_backward(cub, new_x, new_y);
+		move_backward(cub);
 	if (cub->move_left)
-		move_left(cub, new_x, new_y);
+		move_left(cub);
 	if (cub->move_right)
-		move_right(cub, new_x, new_y);
+		move_right(cub);
 	if (cub->rotate_left)
-		rotate_player(cub, -ROT_SPEED);
+		rotate_player(cub, -ROT_SPEED * cub->delta_time);
 	if (cub->rotate_right)
-		rotate_player(cub, ROT_SPEED);
+		rotate_player(cub, ROT_SPEED * cub->delta_time);
 	if (cub->mouse_rotate_left)
-		rotate_player(cub, -ROT_SPEED);
+		rotate_player(cub, -ROT_SPEED * cub->delta_time);
 	if (cub->mouse_rotate_right)
-		rotate_player(cub, ROT_SPEED);
+		rotate_player(cub, ROT_SPEED * cub->delta_time);
 }

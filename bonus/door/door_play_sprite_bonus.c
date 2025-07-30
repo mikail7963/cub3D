@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   door_play_sprite_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:00:35 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/25 12:57:06 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/29 13:58:30 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D_bonus.h"
-#include <sys/time.h>
-
-long	get_time_ms(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-}
 
 static void	start_door_sprite(t_cub *cub, int door_index)
 {

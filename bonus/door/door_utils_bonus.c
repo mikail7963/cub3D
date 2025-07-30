@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   door_utils_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:04:12 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/25 12:57:40 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/29 12:23:34 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,5 @@ void	check_the_door_after_the_door(t_cub *cub, t_render *render)
 {
 	render->hit = 1;
 	render->is_door = 1;
-	render->selected_texture = &cub->doors_manager.frames
-	[cub->doors_manager.door
-	[find_true_door(cub, render->map_x, render->map_y)]
-		.door_frame];
+	play_door_sprite(cub, render);
 }

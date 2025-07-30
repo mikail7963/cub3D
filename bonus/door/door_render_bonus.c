@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   door_render_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 13:27:38 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/25 12:57:29 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/29 14:02:06 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D_bonus.h"
 
-static void	draw_the_walls_behind_the_door(t_cub *cub, t_render *render
+static void draw_the_walls_behind_the_door(t_cub *cub, t_render *render
 	, int y, int x)
 {
 	t_render	bg_render;
@@ -25,7 +25,12 @@ static void	draw_the_walls_behind_the_door(t_cub *cub, t_render *render
 	{
 		if (y >= bg_render.draw_start && y < bg_render.draw_end)
 		{
-			bg_color = calculate_the_walls_behind_the_door(cub, bg_render, y);
+			bg_color = calculate_the_walls_behind_the_door(cub, &bg_render, y);
+			if (bg_render.is_door && bg_color == 0x0B0A0A)
+			{
+				return (render_vertical_texture(cub, &bg_render, x));
+				y++;
+			}
 			my_mlx_pixel_put(cub, x, y, bg_color);
 		}
 		else
@@ -35,8 +40,8 @@ static void	draw_the_walls_behind_the_door(t_cub *cub, t_render *render
 		draw_floor_and_ceiling(cub, x, y);
 }
 
-static void	render_vertical_texture(t_cub *cub, t_render *render
-	, int x, int tex_x)
+void	render_vertical_texture(t_cub *cub, t_render *render
+	, int x)
 {
 	double	stp;
 	double	tex_pos;
@@ -52,9 +57,9 @@ static void	render_vertical_texture(t_cub *cub, t_render *render
 		tex_y = (int)tex_pos & (render->selected_texture->tex_height - 1);
 		tex_pos += stp;
 		color = *(unsigned int *)(render->selected_texture->texture_data
-				+ (tex_y * render->selected_texture->size_line + tex_x
+				+ (tex_y * render->selected_texture->size_line + render->tex_x
 					* (render->selected_texture->bits_per_pixel / 8)));
-		if (BONUS && render->is_door && color == 0x0B0A0A)
+		if (render->is_door && color == 0x0B0A0A)
 		{
 			draw_the_walls_behind_the_door(cub, render, y, x);
 			y++;
@@ -68,19 +73,18 @@ static void	render_vertical_texture(t_cub *cub, t_render *render
 static void	draw_wall_texture_for_door_back(t_cub *cub, t_render *render, int x)
 {
 	double	wall_x;
-	int		tex_x;
 
 	if (render->side == 0)
 		wall_x = cub->player.posy + render->perp_wall_dist * render->ray_dir_y;
 	else
 		wall_x = cub->player.posx + render->perp_wall_dist * render->ray_dir_x;
 	wall_x -= floor(wall_x);
-	tex_x = (int)(wall_x * (double)render->selected_texture->tex_width);
+	render->tex_x = (int)(wall_x * (double)render->selected_texture->tex_width);
 	if (render->side == 0 && render->ray_dir_x < 0)
-		tex_x = render->selected_texture->tex_width - tex_x - 1;
+		render->tex_x = render->selected_texture->tex_width - render->tex_x - 1;
 	if (render->side == 1 && render->ray_dir_y > 0)
-		tex_x = render->selected_texture->tex_width - tex_x - 1;
-	render_vertical_texture(cub, render, x, tex_x);
+		render->tex_x = render->selected_texture->tex_width - render->tex_x - 1;
+	render_vertical_texture(cub, render, x);
 }
 
 void	continue_ray_after_door(t_cub *cub, t_render *render)

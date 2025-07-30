@@ -52,8 +52,6 @@ int	handle_keyrelease(int key, t_cub *cub)
 
 int	handle_close(t_cub *cub)
 {
-	if (BONUS)
-		mlx_mouse_show(cub->mlx.mlx, cub->mlx.win);
 	free_map(cub->map.map);
 	free_texture(cub->texture);
 	free_image(cub);

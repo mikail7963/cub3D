@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atursun <atursun@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 13:52:05 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/25 11:52:01 by atursun          ###   ########.fr       */
+/*   Updated: 2025/07/29 12:32:11 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 
 # define WIDTH 800
 # define HEIGHT 600
-# define MOVE_SPEED 0.02
-# define ROT_SPEED 0.02
+# define MOVE_SPEED 3.5
+# define ROT_SPEED 3.0
 
 # define KEY_W 119
 # define KEY_A 97 
@@ -35,6 +35,7 @@
 
 # ifndef BONUS
 #  define BONUS 0
+#  define MOUSE_ROT_SPEED 0.03
 # endif
 
 typedef struct s_tmp
@@ -141,6 +142,7 @@ typedef struct s_mlx
 
 typedef struct s_render
 {
+	int			tex_x;
 	int			is_door;
 	double		ray_dir_x;
 	double		ray_dir_y;
@@ -163,9 +165,6 @@ typedef struct s_render
 
 typedef struct s_cub
 {
-	double			plane_x;
-	double			plane_y;
-	int				is_player;
 	t_fps			fps_counter;
 	t_doors_manager	doors_manager;
 	t_texture		texture;
@@ -179,6 +178,11 @@ typedef struct s_cub
 	t_tex_data		south;
 	t_tex_data		east;
 	t_minimap		minimap;
+	double			plane_x;
+	double			plane_y;
+	int				is_player;
+	long 			last_frame_time;
+	double			delta_time;
 	int				move_forward;
 	int				move_backward;
 	int				move_left;

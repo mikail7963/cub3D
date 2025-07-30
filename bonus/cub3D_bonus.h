@@ -6,7 +6,7 @@
 /*   By: mikkayma <mikkayma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:33:41 by mikkayma          #+#    #+#             */
-/*   Updated: 2025/07/23 16:35:51 by mikkayma         ###   ########.fr       */
+/*   Updated: 2025/07/29 14:01:58 by mikkayma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	draw_rectangle(t_cub *cub, t_tmp tmp, int width, int height);
 void	calculate_map_height_and_with(t_cub *cub);
 void	draw_floor_and_ceiling(t_cub *cub, int x, int y);
 int		calculate_the_walls_behind_the_door(t_cub *cub,
-			t_render bg_render, int y);
+			t_render *bg_render, int y);
+void	render_vertical_texture(t_cub *cub, t_render *render, int x);
 
 #endif
