@@ -45,9 +45,4 @@ void	draw_player_in_minimap(t_cub *cub, float dx, float dy, int player_size);
 void	my_mlx_pixel_put_for_minimap(t_cub *cub, int x, int y, int color);
 void	draw_rectangle(t_cub *cub, t_tmp tmp, int width, int height);
 void	calculate_map_height_and_with(t_cub *cub);
-void	draw_floor_and_ceiling(t_cub *cub, int x, int y);
-int		calculate_the_walls_behind_the_door(t_cub *cub,
-			t_render *bg_render, int y);
-void	render_vertical_texture(t_cub *cub, t_render *render, int x);
-
 #endif
