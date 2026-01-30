@@ -1,5 +1,8 @@
 # cub3D - 42 Istanbul
-
+## 👥 Contributors
+This project was developed as a team at 42 Istanbul:
+- [Mikail]
+- [Abdullah Tursun]
 **cub3D** is a dynamic 3D graphical representation of a maze from a first-person perspective, inspired by the world-famous *Wolfenstein 3D*. The project focuses on exploring **ray-casting** principles to create a dynamic view inside a 3D environment using the **miniLibX** library.
 
 ## 🚀 Overview
